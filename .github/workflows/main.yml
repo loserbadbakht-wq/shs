@@ -212,10 +212,14 @@ jobs:
               return re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', text)).strip()
 
           def sanitize_filename(title):
+              # Remove only characters forbidden in filenames on Windows/Linux
               title = re.sub(r'[\\/*?:"<>|]', '', title)
-              title = re.sub(r'[^\w\s-]', '', title).strip()
+              # Replace spaces and multiple underscores/dashes with a single underscore
               title = re.sub(r'[-\s]+', '_', title)
-              return title[:100] or "untitled"
+              # Remove any leading/trailing underscores or dots
+              title = title.strip('_.')
+              # Limit length to 200 characters (adjust as needed)
+              return title[:200] or "untitled"
 
           for json_path in json_files:
               print(f"Processing {json_path}")
@@ -236,7 +240,6 @@ jobs:
                   clean_title = sanitize_filename(title)
                   filename = os.path.join(out_dir, f"{clean_title}.mp3")
 
-                  # Handle duplicates: append index if file exists
                   if os.path.exists(filename):
                       base, ext = os.path.splitext(filename)
                       filename = f"{base}_{idx}{ext}"
@@ -254,6 +257,15 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git fetch origin main
+          git rebase origin/main
+
           git add json/tts/*.mp3
-          git commit -m "Update TTS audio files [skip ci]" || echo "No changes to commit"
-          git push
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update TTS audio files [skip ci]"
+            git push origin HEAD:main
+          fi
