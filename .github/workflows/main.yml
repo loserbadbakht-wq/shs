@@ -186,12 +186,6 @@ jobs:
           TARGET_LANG: 'fa'   # change to 'fr', 'de', 'ja', etc.
         run: python translate_feeds.py
 
-      - name: Commit and push translated feeds
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "Auto-translate RSS feeds"
-          file_pattern: json/translated/*.json
-
       - name: Install dependencies
         run: pip install edge-tts requests
 
@@ -253,19 +247,10 @@ jobs:
                   print(f"  Generated: {filename}")
           EOF
 
-      - name: Commit and push audio files
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          git fetch origin main
-          git rebase origin/main
-
-          git add json/tts/*.mp3
-
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "Update TTS audio files [skip ci]"
-            git push origin HEAD:main
-          fi
+      - name: bah
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "buh"
+          file_pattern: |
+            json/translated/*.json
+            json/tts/*.mp4
