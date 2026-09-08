@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
@@ -201,32 +201,6 @@
             word-break: break-word;
         }
         
-        /* Full description (hidden by default, shown on click) */
-        .entry-card .entry-desc-full {
-            font-size: 14px;
-            color: var(--text-secondary);
-            line-height: 1.8;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid var(--border);
-            display: none;
-            word-break: break-word;
-        }
-        .entry-card .entry-desc-full img {
-            max-width: 100%;
-            border-radius: 4px;
-            margin: 8px 0;
-        }
-        .entry-card .entry-desc-full p {
-            margin: 6px 0;
-        }
-        .entry-card.expanded .entry-desc-full {
-            display: block;
-        }
-        .entry-card.expanded .entry-desc-preview {
-            display: none;
-        }
-        
         .entry-card .entry-actions {
             display: flex;
             gap: 8px;
@@ -328,6 +302,7 @@
             border-radius: var(--radius);
             padding: 30px;
             border: 1px solid var(--border);
+            position: relative;
         }
         .fullscreen-overlay .fullscreen-content .entry-title {
             font-size: 24px;
@@ -370,6 +345,64 @@
         .fullscreen-overlay .fullscreen-content .entry-desc p {
             margin: 6px 0;
         }
+        /* Translate button */
+        .fullscreen-overlay .translate-btn-wrapper {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10001;
+        }
+        .fullscreen-overlay .translate-btn-wrapper .translate-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text);
+            box-shadow: var(--shadow);
+            transition: all var(--transition);
+            border: none;
+        }
+        .fullscreen-overlay .translate-btn-wrapper .translate-btn:hover {
+            background: var(--bg-hover);
+            transform: scale(1.05);
+        }
+        .fullscreen-overlay .translate-dropdown {
+            position: absolute;
+            top: 55px;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow);
+            min-width: 120px;
+            display: none;
+            overflow: hidden;
+            z-index: 10002;
+        }
+        .fullscreen-overlay .translate-dropdown.active {
+            display: block;
+        }
+        .fullscreen-overlay .translate-dropdown .dropdown-item {
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: background var(--transition);
+            font-size: 14px;
+            color: var(--text);
+        }
+        .fullscreen-overlay .translate-dropdown .dropdown-item:hover {
+            background: var(--bg-hover);
+        }
+        .fullscreen-overlay .translate-dropdown .dropdown-item.active {
+            background: var(--primary-light);
+            color: var(--primary);
+            font-weight: 600;
+        }
         
         @media (max-width: 900px) {
             .app { flex-direction: column; padding: 12px 12px 16px; gap: 12px; }
@@ -383,6 +416,9 @@
             .sidebar-add .add-form input { flex: 1 1 100%; }
             .fullscreen-overlay .fullscreen-content { padding: 20px; }
             .fullscreen-overlay .fullscreen-content .entry-title { font-size: 20px; }
+            .fullscreen-overlay .close-btn { width: 40px; height: 40px; font-size: 20px; top: 12px; left: 12px; }
+            .fullscreen-overlay .translate-btn-wrapper { top: 12px; right: 12px; }
+            .fullscreen-overlay .translate-btn-wrapper .translate-btn { width: 40px; height: 40px; font-size: 18px; }
         }
         @media (max-width: 480px) {
             .header-logo span { display: none; }
@@ -392,7 +428,9 @@
             .toast-container { left: 12px; right: 12px; max-width: unset; bottom: 12px; }
             .content-header .feed-actions button { font-size: 11px; padding: 4px 10px; }
             .fullscreen-overlay { padding: 50px 10px 30px; }
-            .fullscreen-overlay .close-btn { width: 40px; height: 40px; font-size: 20px; top: 10px; left: 10px; }
+            .fullscreen-overlay .close-btn { width: 36px; height: 36px; font-size: 18px; top: 8px; left: 8px; }
+            .fullscreen-overlay .translate-btn-wrapper { top: 8px; right: 8px; }
+            .fullscreen-overlay .translate-btn-wrapper .translate-btn { width: 36px; height: 36px; font-size: 16px; }
         }
     </style>
 </head>
@@ -432,7 +470,7 @@
                     <span>Loading feed data from JSON files…</span>
                 </div>
             </div>
-            <div class="data-notice"><i class="fas fa-file-code"></i> Click card to expand inline · <i class="fas fa-expand"></i> Fullscreen for complete view</div>
+            <div class="data-notice"><i class="fas fa-file-code"></i> Click any card to open fullscreen view</div>
         </main>
     </div>
     <div class="toast-container" id="toastContainer"></div>
@@ -442,14 +480,20 @@
 
             // ============================================================
             //  ⭐ DEFAULT JSON FEEDS (load on first visit) ⭐
+            //  Each feed can have url_en and url_fa for translations.
+            //  If not provided, translate button will be hidden.
             //  ============================================================
             const DEFAULT_FEEDS = [
                 {
                     url: 'https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/safebooru-yuri-rss.json',
+                    url_en: 'https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/safebooru-yuri-rss.json',
+                    url_fa: 'https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/safebooru-yuri-rss.json',
                     title: 'Safebooru Yuri'
                 },
                 {
                     url: 'https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/new1.json',
+                    url_en: 'https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/new1.json',
+                    url_fa: 'https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/new1.json',
                     title: 'IGN News'
                 }
             ];
@@ -479,6 +523,8 @@
             let feeds = [];
             let activeFeedId = null;
             let isLoading = false;
+            // Language state for fullscreen translation
+            let currentLanguage = 'en'; // 'en' or 'fa'
 
             // ---- Helpers ----
             function generateId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
@@ -703,6 +749,8 @@
                         icon: feedData.icon || getFavicon(url),
                         items: feedData.items || [],
                     };
+                    // For dynamically added feeds, we don't have translation URLs, so we mark them as not translatable
+                    feed.hasTranslation = false;
                     feeds.push(feed);
                     saveFeeds();
                     renderFeeds();
@@ -786,9 +834,12 @@
                             const feed = {
                                 id: generateId(),
                                 url: defaultFeed.url,
+                                url_en: defaultFeed.url_en || defaultFeed.url,
+                                url_fa: defaultFeed.url_fa || defaultFeed.url,
                                 title: feedData.title || defaultFeed.title || 'Feed',
                                 icon: feedData.icon || getFavicon(defaultFeed.url),
                                 items: feedData.items || [],
+                                hasTranslation: !!(defaultFeed.url_en && defaultFeed.url_fa)
                             };
                             loadedFeeds.push(feed);
                             console.log(`✅ Loaded: ${feed.title} (${feed.items.length} items)`);
@@ -868,20 +919,23 @@
                 });
             }
 
-            // ---- Fullscreen overlay ----
+            // ---- Fullscreen overlay with translation support ----
             function openFullscreen(itemId) {
-                // find the item
+                // find the item and its feed
                 let foundItem = null;
-                let feedTitle = '';
+                let foundFeed = null;
                 for (const feed of feeds) {
                     const item = feed.items.find(i => i.id === itemId);
                     if (item) {
                         foundItem = item;
-                        feedTitle = feed.title;
+                        foundFeed = feed;
                         break;
                     }
                 }
-                if (!foundItem) return;
+                if (!foundItem || !foundFeed) return;
+
+                // Determine if translation is available
+                const hasTranslation = !!(foundFeed.url_en && foundFeed.url_fa && foundFeed.hasTranslation !== false);
 
                 const overlay = document.createElement('div');
                 overlay.className = 'fullscreen-overlay active';
@@ -889,12 +943,19 @@
                 const imageUrl = extractImage(foundItem.description);
                 overlay.innerHTML = `
                     <button class="close-btn" id="fullscreenClose"><i class="fas fa-arrow-left"></i></button>
-                    <div class="fullscreen-content">
+                    <div class="translate-btn-wrapper" id="translateWrapper" style="${hasTranslation ? '' : 'display:none;'}">
+                        <button class="translate-btn" id="translateBtn"><i class="fas fa-language"></i></button>
+                        <div class="translate-dropdown" id="translateDropdown">
+                            <div class="dropdown-item" data-lang="en">English</div>
+                            <div class="dropdown-item" data-lang="fa">فارسی</div>
+                        </div>
+                    </div>
+                    <div class="fullscreen-content" id="fullscreenContent" dir="ltr">
                         <h1 class="entry-title">${foundItem.title || 'Untitled'}</h1>
                         <div class="entry-meta">
                             <span><i class="far fa-calendar-alt"></i> ${timeAgo(foundItem.pubDate)}</span>
                             <span><i class="fas fa-link"></i> <a href="${foundItem.link}" target="_blank">Source</a></span>
-                            <span><i class="fas fa-rss"></i> ${feedTitle}</span>
+                            <span><i class="fas fa-rss"></i> ${foundFeed.title}</span>
                         </div>
                         ${imageUrl ? `<div class="entry-image"><img src="${imageUrl}" alt="Image" /></div>` : ''}
                         <div class="entry-desc">${foundItem.description || 'No description available.'}</div>
@@ -902,19 +963,18 @@
                 `;
                 document.body.appendChild(overlay);
 
-                // Close button
+                // Store current language
+                let currentLang = 'en';
+
+                // --- Close handlers ---
                 overlay.querySelector('#fullscreenClose').addEventListener('click', () => {
                     overlay.remove();
                 });
-
-                // Click outside content to close
                 overlay.addEventListener('click', (e) => {
                     if (e.target === overlay) {
                         overlay.remove();
                     }
                 });
-
-                // Escape key to close
                 const escHandler = (e) => {
                     if (e.key === 'Escape') {
                         overlay.remove();
@@ -922,6 +982,94 @@
                     }
                 };
                 document.addEventListener('keydown', escHandler);
+
+                // --- Translation dropdown ---
+                const translateBtn = overlay.querySelector('#translateBtn');
+                const dropdown = overlay.querySelector('#translateDropdown');
+                const contentDiv = overlay.querySelector('#fullscreenContent');
+
+                translateBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    dropdown.classList.toggle('active');
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', (e) => {
+                    if (!overlay.contains(e.target)) return;
+                    if (!e.target.closest('.translate-btn-wrapper')) {
+                        dropdown.classList.remove('active');
+                    }
+                });
+
+                // Language selection
+                dropdown.querySelectorAll('.dropdown-item').forEach(item => {
+                    item.addEventListener('click', async (e) => {
+                        const lang = item.dataset.lang;
+                        if (lang === currentLang) {
+                            dropdown.classList.remove('active');
+                            return;
+                        }
+                        // Update active state
+                        dropdown.querySelectorAll('.dropdown-item').forEach(el => el.classList.remove('active'));
+                        item.classList.add('active');
+                        dropdown.classList.remove('active');
+
+                        // Fetch the appropriate feed
+                        const feedUrl = lang === 'en' ? foundFeed.url_en : foundFeed.url_fa;
+                        if (!feedUrl) {
+                            showToast('Translation not available for this feed.', 'error');
+                            return;
+                        }
+
+                        try {
+                            // Show loading state
+                            contentDiv.innerHTML = '<div class="loading-message"><span class="spinner"></span> Loading translation…</div>';
+                            const feedData = await loadFeedFromJson(feedUrl);
+                            // Find the item with the same link
+                            const translatedItem = feedData.items.find(item => item.link === foundItem.link);
+                            if (!translatedItem) {
+                                throw new Error('Translated item not found.');
+                            }
+                            // Update content
+                            const imageUrlTrans = extractImage(translatedItem.description);
+                            const dir = lang === 'fa' ? 'rtl' : 'ltr';
+                            contentDiv.dir = dir;
+                            contentDiv.innerHTML = `
+                                <h1 class="entry-title">${translatedItem.title || 'Untitled'}</h1>
+                                <div class="entry-meta">
+                                    <span><i class="far fa-calendar-alt"></i> ${timeAgo(translatedItem.pubDate)}</span>
+                                    <span><i class="fas fa-link"></i> <a href="${translatedItem.link}" target="_blank">Source</a></span>
+                                    <span><i class="fas fa-rss"></i> ${foundFeed.title}</span>
+                                </div>
+                                ${imageUrlTrans ? `<div class="entry-image"><img src="${imageUrlTrans}" alt="Image" /></div>` : ''}
+                                <div class="entry-desc">${translatedItem.description || 'No description available.'}</div>
+                            `;
+                            currentLang = lang;
+                        } catch (err) {
+                            showToast(`Failed to load translation: ${err.message}`, 'error');
+                            // Reload original content
+                            const origDesc = foundItem.description;
+                            const origTitle = foundItem.title;
+                            const origImage = extractImage(origDesc);
+                            contentDiv.dir = 'ltr';
+                            contentDiv.innerHTML = `
+                                <h1 class="entry-title">${origTitle || 'Untitled'}</h1>
+                                <div class="entry-meta">
+                                    <span><i class="far fa-calendar-alt"></i> ${timeAgo(foundItem.pubDate)}</span>
+                                    <span><i class="fas fa-link"></i> <a href="${foundItem.link}" target="_blank">Source</a></span>
+                                    <span><i class="fas fa-rss"></i> ${foundFeed.title}</span>
+                                </div>
+                                ${origImage ? `<div class="entry-image"><img src="${origImage}" alt="Image" /></div>` : ''}
+                                <div class="entry-desc">${origDesc || 'No description available.'}</div>
+                            `;
+                            currentLang = 'en';
+                        }
+                    });
+                });
+
+                // Set initial active language (English)
+                dropdown.querySelector('.dropdown-item[data-lang="en"]').classList.add('active');
+                currentLang = 'en';
             }
 
             // ---- Render Items with Images ----
@@ -952,7 +1100,7 @@
                     const previewText = plainPreview.length > 200 ? plainPreview.slice(0, 200) + '…' : plainPreview;
                     
                     html += `
-                        <div class="entry-card ${readClass}" data-id="${item.id}" data-expanded="false">
+                        <div class="entry-card ${readClass}" data-id="${item.id}">
                             <div class="entry-title"><a href="${item.link}" target="_blank" rel="noopener">${item.title || 'Untitled'}</a></div>
                             <div class="entry-meta">
                                 <span class="entry-date"><i class="far fa-calendar-alt"></i> ${dateStr}</span>
@@ -960,7 +1108,6 @@
                             </div>
                             ${imageUrl ? `<div class="entry-image"><img src="${imageUrl}" alt="Image" loading="lazy" /></div>` : ''}
                             <div class="entry-desc-preview">${previewText || 'No description available.'}</div>
-                            <div class="entry-desc-full">${item.description || 'No description available.'}</div>
                             <div class="entry-actions">
                                 <button class="mark-read" data-id="${item.id}">${item.read ? '<i class="fas fa-undo"></i> Mark unread' : '<i class="fas fa-check"></i> Mark read'}</button>
                                 <button class="fullscreen-btn" data-id="${item.id}"><i class="fas fa-expand"></i> Fullscreen view</button>
@@ -970,11 +1117,12 @@
                 });
                 contentItemsEl.innerHTML = html;
 
-                // ---- Event: Click on card to toggle inline description ----
+                // ---- Event: Click on card opens fullscreen ----
                 contentItemsEl.querySelectorAll('.entry-card').forEach(card => {
                     card.addEventListener('click', (e) => {
                         if (e.target.closest('button') || e.target.closest('a')) return;
-                        toggleDescription(card);
+                        const itemId = card.dataset.id;
+                        openFullscreen(itemId);
                     });
                 });
 
@@ -995,14 +1143,6 @@
                         toggleRead(feed.id, itemId);
                     });
                 });
-            }
-
-            // ---- Toggle inline description ----
-            function toggleDescription(card) {
-                const isExpanded = card.dataset.expanded === 'true';
-                const newState = !isExpanded;
-                card.dataset.expanded = newState ? 'true' : 'false';
-                card.classList.toggle('expanded', newState);
             }
 
             function renderContentEmpty(title, msg) {
@@ -1085,8 +1225,8 @@
                 if ((e.metaKey || e.ctrlKey) && e.key === 'r') { e.preventDefault(); refreshAll(); }
             });
 
-            console.log('📰 Feed Reader ready – with fullscreen view and return button');
+            console.log('📰 Feed Reader ready – with translation support');
         })();
     </script>
 </body>
-    </html>
+  </html>
