@@ -183,7 +183,7 @@ jobs:
 
       - name: Run translation
         env:
-          TARGET_LANG: 'es'   # change to 'fr', 'de', 'ja', etc.
+          TARGET_LANG: 'fa'   # change to 'fr', 'de', 'ja', etc.
         run: python translate_feeds.py
 
       - name: Commit and push translated feeds
