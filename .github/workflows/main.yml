@@ -191,3 +191,69 @@ jobs:
         with:
           commit_message: "Auto-translate RSS feeds"
           file_pattern: json/translated/*.json
+
+      - name: Install dependencies
+        run: pip install edge-tts requests
+
+      - name: Generate TTS from all JSON files in json/
+        run: |
+          python - <<'EOF'
+          import os, json, re, subprocess, glob
+
+          out_dir = "json/tts"
+          os.makedirs(out_dir, exist_ok=True)
+
+          json_files = glob.glob("json/*.json")
+          if not json_files:
+              print("No JSON files found in json/")
+              exit(0)
+
+          def clean_text(text):
+              return re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', text)).strip()
+
+          def sanitize_filename(title):
+              title = re.sub(r'[\\/*?:"<>|]', '', title)
+              title = re.sub(r'[^\w\s-]', '', title).strip()
+              title = re.sub(r'[-\s]+', '_', title)
+              return title[:100] or "untitled"
+
+          for json_path in json_files:
+              print(f"Processing {json_path}")
+              with open(json_path, 'r', encoding='utf-8') as f:
+                  data = json.load(f)
+
+              items = data.get('rss', {}).get('channel', {}).get('item', [])
+              if not items:
+                  print(f"  No items in {json_path}, skipping.")
+                  continue
+
+              for idx, item in enumerate(items):
+                  desc = item.get('description', '')
+                  if not desc:
+                      continue
+
+                  title = item.get('title', f'item_{idx:03d}')
+                  clean_title = sanitize_filename(title)
+                  filename = os.path.join(out_dir, f"{clean_title}.mp3")
+
+                  # Handle duplicates: append index if file exists
+                  if os.path.exists(filename):
+                      base, ext = os.path.splitext(filename)
+                      filename = f"{base}_{idx}{ext}"
+
+                  clean_desc = clean_text(desc)[:5000] + ("..." if len(desc) > 5000 else "")
+                  subprocess.run([
+                      "edge-tts", "--text", clean_desc,
+                      "--write-media", filename,
+                      "--voice", "en-US-JennyNeural"
+                  ], check=True)
+                  print(f"  Generated: {filename}")
+          EOF
+
+      - name: Commit and push audio files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add json/tts/*.mp3
+          git commit -m "Update TTS audio files [skip ci]" || echo "No changes to commit"
+          git push
