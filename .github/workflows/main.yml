@@ -138,45 +138,66 @@ jobs:
       - name: Install dependencies
         run: pip install edge-tts requests
 
-      - name: Generate TTS from all JSON files
+      - name: Generate TTS from all JSON files (with error handling)
         run: |
           python - <<'EOF'
-          import os, json, re, subprocess, glob
+          import os, json, re, subprocess, glob, hashlib
+
           out_dir = "json/tts"
           os.makedirs(out_dir, exist_ok=True)
           json_files = glob.glob("json/*.json")
           if not json_files:
               print("No JSON files found in json/")
               exit(0)
+
           def clean_text(text):
               return re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', text)).strip()
-          def sanitize_filename(title):
+
+          def safe_filename(title):
+              # Remove invalid chars, replace spaces with underscores
               title = re.sub(r'[\\/*?:"<>|]', '', title)
               title = re.sub(r'[-\s]+', '_', title)
               title = title.strip('_.')
-              return title[:50] or "untitled"
+              # Truncate to 80 chars and add a hash to avoid collisions
+              if len(title) > 80:
+                  title_hash = hashlib.md5(title.encode('utf-8')).hexdigest()[:8]
+                  title = title[:80] + '_' + title_hash
+              return title or "untitled"
+
           for json_path in json_files:
               print(f"\nProcessing {json_path}")
               with open(json_path, 'r', encoding='utf-8') as f:
                   data = json.load(f)
+
               items = data.get('rss', {}).get('channel', {}).get('item', [])
               if not items:
                   print(f"  No items in {json_path}, skipping.")
                   continue
+
               for idx, item in enumerate(items):
                   desc = item.get('description', '')
                   if not desc:
+                      print(f"  Item {idx}: no description, skipping")
                       continue
+
                   title = item.get('title', f'item_{idx:03d}')
-                  clean_title = sanitize_filename(title)
-                  filename = os.path.join(out_dir, f"{clean_title}.mp3")
-                  if os.path.exists(filename):
-                      base, ext = os.path.splitext(filename)
-                      filename = f"{base}_{idx}{ext}"
-                  print(f"  Generating: {filename}")
-                  clean_desc = clean_text(desc)[:5000]
-                  subprocess.run(["edge-tts", "--text", clean_desc, "--write-media", filename, "--voice", "en-US-JennyNeural"], check=True, capture_output=True, text=True)
-                  print(f"  ✅ Generated: {filename}")
+                  clean_title = safe_filename(title)
+                  filename = os.path.join(out_dir, f"{clean_title}_{idx}.mp3")
+
+                  print(f"  Generating: {filename} (description length: {len(desc)})")
+                  clean_desc = clean_text(desc)[:5000] + ("..." if len(desc) > 5000 else "")
+
+                  try:
+                      subprocess.run([
+                          "edge-tts", "--text", clean_desc,
+                          "--write-media", filename,
+                          "--voice", "en-US-JennyNeural"
+                      ], check=True, capture_output=True, text=True)
+                      print(f"  ✅ Generated: {filename}")
+                  except subprocess.CalledProcessError as e:
+                      print(f"  ❌ Error for item {idx}: {e.stderr}")
+                      # Continue with next item instead of crashing
+                      continue
           EOF
 
       - name: Show git status (debug)
@@ -188,7 +209,4 @@ jobs:
           commit_message: "Update RSS, translations and TTS [skip ci]"
           commit_user_name: "github-actions[bot]"
           commit_user_email: "github-actions[bot]@users.noreply.github.com"
-          file_pattern: |
-            json/*.json
-            json/translated/*.json
-            json/tts/*.mp3
+          # No file_pattern – stages everything (including deletions)
