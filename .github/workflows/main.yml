@@ -196,8 +196,11 @@ jobs:
 
           out_dir = "json/tts"
           os.makedirs(out_dir, exist_ok=True)
+          print(f"Output directory: {out_dir}")
 
           json_files = glob.glob("json/*.json")
+          print(f"Found JSON files: {json_files}")
+
           if not json_files:
               print("No JSON files found in json/")
               exit(0)
@@ -206,21 +209,19 @@ jobs:
               return re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', text)).strip()
 
           def sanitize_filename(title):
-              # Remove only characters forbidden in filenames on Windows/Linux
               title = re.sub(r'[\\/*?:"<>|]', '', title)
-              # Replace spaces and multiple underscores/dashes with a single underscore
               title = re.sub(r'[-\s]+', '_', title)
-              # Remove any leading/trailing underscores or dots
               title = title.strip('_.')
-              # Limit length to 200 characters (adjust as needed)
               return title[:200] or "untitled"
 
           for json_path in json_files:
-              print(f"Processing {json_path}")
+              print(f"\nProcessing {json_path}")
               with open(json_path, 'r', encoding='utf-8') as f:
                   data = json.load(f)
 
               items = data.get('rss', {}).get('channel', {}).get('item', [])
+              print(f"  Found {len(items)} items")
+
               if not items:
                   print(f"  No items in {json_path}, skipping.")
                   continue
@@ -228,6 +229,7 @@ jobs:
               for idx, item in enumerate(items):
                   desc = item.get('description', '')
                   if not desc:
+                      print(f"  Item {idx}: no description, skipping")
                       continue
 
                   title = item.get('title', f'item_{idx:03d}')
@@ -238,19 +240,31 @@ jobs:
                       base, ext = os.path.splitext(filename)
                       filename = f"{base}_{idx}{ext}"
 
+                  print(f"  Generating: {filename} (description length: {len(desc)})")
                   clean_desc = clean_text(desc)[:5000] + ("..." if len(desc) > 5000 else "")
-                  subprocess.run([
-                      "edge-tts", "--text", clean_desc,
-                      "--write-media", filename,
-                      "--voice", "en-US-JennyNeural"
-                  ], check=True)
-                  print(f"  Generated: {filename}")
+                  try:
+                      subprocess.run([
+                          "edge-tts", "--text", clean_desc,
+                          "--write-media", filename,
+                          "--voice", "en-US-JennyNeural"
+                      ], check=True, capture_output=True, text=True)
+                      print(f"  ✅ Generated: {filename}")
+                  except subprocess.CalledProcessError as e:
+                      print(f"  ❌ Error: {e.stderr}")
           EOF
 
-      - name: bah
+      - name: List generated MP3 files
+        run: |
+          echo "Files in json/tts/:"
+          ls -la json/tts/ || echo "Directory empty or not found"
+
+      - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
-          commit_message: "buh"
+          commit_message: "Update TTS audio files [skip ci]"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"
           file_pattern: |
-            json/translated/*.json
             json/tts/*.mp3
+            json/translated/*.json
+          # If you only want MP3s, remove the translated pattern
