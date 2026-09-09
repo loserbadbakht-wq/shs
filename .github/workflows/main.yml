@@ -74,14 +74,9 @@ jobs:
           
           node convert.js
 
-      - name: Commit and push changes
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add json/
-          git diff --staged --quiet || git commit -m "Update RSS feeds JSON [skip ci]"
-          git push
-
+      # =============================================
+      # REMOVED: manual git add/commit/push block
+      # =============================================
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -258,13 +253,17 @@ jobs:
           echo "Files in json/tts/:"
           ls -la json/tts/ || echo "Directory empty or not found"
 
-      - name: Commit and push changes
+      # =============================================
+      # SINGLE COMMIT FOR ALL CHANGED FILES
+      # =============================================
+      - name: Commit and push all changes
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
-          commit_message: "Update TTS audio files [skip ci]"
+          commit_message: "Update RSS feeds, translations and TTS [skip ci]"
           commit_user_name: "github-actions[bot]"
           commit_user_email: "github-actions[bot]@users.noreply.github.com"
           file_pattern: |
-            json/tts/*.mp3
+            json/*.json
             json/translated/*.json
-          # If you only want MP3s, remove the translated pattern
+            json/tts/*.mp3
+          # Optional: add push_options: '--force-with-lease' if you need it
