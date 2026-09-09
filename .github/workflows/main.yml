@@ -1,71 +1,221 @@
-- name: Generate TTS from all JSON files (50‑char filenames)
-  run: |
-    python - <<'EOF'
-    import os, json, re, subprocess, glob
+name: Fetch RSS and convert to JSON
 
-    out_dir = "json/tts"
-    os.makedirs(out_dir, exist_ok=True)
-    json_files = glob.glob("json/*.json")
-    if not json_files:
-        print("No JSON files found in json/")
-        exit(0)
+on:
+  schedule:
+    - cron: '0 * * * *'
+  workflow_dispatch:
 
-    def clean_text(text):
-        return re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', text)).strip()
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
-    def sanitize_filename(title):
-        # Remove invalid filesystem chars, replace spaces with underscores
-        title = re.sub(r'[\\/*?:"<>|]', '', title)
-        title = re.sub(r'[-\s]+', '_', title)
-        title = title.strip('_.')
-        # Keep only the first 50 characters (user request)
-        if len(title) > 50:
-            title = title[:50]
-        return title or "untitled"
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '20'
 
-    used_names = set()   # track filenames (without .mp3) to avoid duplicates
+      - name: Fetch and convert RSS feeds (with fallback)
+        run: |
+          mkdir -p json
+          npm init -y
+          npm install axios xml2js
+          cat > convert.js << 'EOF'
+          const axios = require('axios');
+          const xml2js = require('xml2js');
+          const fs = require('fs');
+          const parser = new xml2js.Parser({ explicitArray: false });
+          const feeds = [
+            { url: 'https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/safebooru/safebooru-yuri-rss.xml', filename: 'safebooru-yuri-rss.json' },
+            { url: 'https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/notif/new1.xml', filename: 'new1.json' }
+          ];
+          async function fetchAndConvert(feed) {
+            const jsonPath = `json/${feed.filename}`;
+            try {
+              console.log(`Fetching: ${feed.url}`);
+              const response = await axios.get(feed.url);
+              const result = await parser.parseStringPromise(response.data);
+              fs.writeFileSync(jsonPath, JSON.stringify(result, null, 2));
+              console.log(`✅ Saved: ${jsonPath}`);
+            } catch (error) {
+              console.error(`❌ Error processing ${feed.url}:`, error.message);
+              const fallback = { error: `Failed to fetch: ${error.message}`, timestamp: new Date().toISOString() };
+              fs.writeFileSync(jsonPath, JSON.stringify(fallback, null, 2));
+              console.log(`⚠️  Fallback written: ${jsonPath}`);
+            }
+          }
+          async function processAllFeeds() {
+            await Promise.all(feeds.map(feed => fetchAndConvert(feed)));
+            console.log('All feeds processed!');
+          }
+          processAllFeeds();
+          EOF
+          node convert.js
 
-    for json_path in json_files:
-        print(f"\nProcessing {json_path}")
-        with open(json_path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
 
-        items = data.get('rss', {}).get('channel', {}).get('item', [])
-        if not items:
-            print(f"  No items in {json_path}, skipping.")
-            continue
+      - name: Install googletrans
+        run: pip install googletrans==4.0.0-rc1
 
-        for idx, item in enumerate(items):
-            desc = item.get('description', '')
-            if not desc:
-                print(f"  Item {idx}: no description, skipping")
-                continue
+      - name: Create translation script with timestamp
+        run: |
+          cat > translate_feeds.py << 'EOF'
+          import json, os, glob, time
+          from googletrans import Translator
+          SOURCE_DIR = 'json'
+          OUTPUT_DIR = 'json/translated'
+          TARGET_LANG = os.getenv('TARGET_LANG', 'es')
+          os.makedirs(OUTPUT_DIR, exist_ok=True)
+          def translate_text(text, translator, retries=3):
+              if not text or not isinstance(text, str):
+                  return text
+              for attempt in range(retries):
+                  try:
+                      result = translator.translate(text, dest=TARGET_LANG)
+                      return result.text
+                  except Exception as e:
+                      print(f"  Translation error (attempt {attempt+1}): {e}")
+                      time.sleep(2 ** attempt)
+              return text
+          def translate_feed(data, translator):
+              channel = data.get('rss', {}).get('channel', {})
+              if channel:
+                  if 'title' in channel:
+                      channel['title'] = translate_text(channel['title'], translator)
+                  if 'description' in channel:
+                      channel['description'] = translate_text(channel['description'], translator)
+                  items = channel.get('item', [])
+                  for idx, item in enumerate(items):
+                      if 'title' in item:
+                          item['title'] = translate_text(item['title'], translator)
+                      if 'description' in item:
+                          item['description'] = translate_text(item['description'], translator)
+                      time.sleep(0.3)
+              return data
+          def main():
+              if not os.path.isdir(SOURCE_DIR):
+                  print(f"Source folder '{SOURCE_DIR}' does not exist.")
+                  return
+              json_files = glob.glob(os.path.join(SOURCE_DIR, '*.json'))
+              if not json_files:
+                  print(f"No JSON files found in '{SOURCE_DIR}'.")
+                  return
+              translator = Translator()
+              for file_path in json_files:
+                  filename = os.path.basename(file_path)
+                  print(f"\n--- Processing: {filename} ---")
+                  with open(file_path, 'r', encoding='utf-8') as f:
+                      data = json.load(f)
+                  translated_data = translate_feed(data, translator)
+                  translated_data['_translated_at'] = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
+                  output_path = os.path.join(OUTPUT_DIR, filename)
+                  with open(output_path, 'w', encoding='utf-8') as f:
+                      json.dump(translated_data, f, indent=2, ensure_ascii=False)
+                  print(f"  ✅ Saved to: {output_path}")
+              print("\nAll feeds translated successfully.")
+          if __name__ == "__main__":
+              main()
+          EOF
 
-            title = item.get('title', f'item_{idx:03d}')
-            base_name = sanitize_filename(title)
+      - name: Run translation
+        env:
+          TARGET_LANG: 'fa'
+        run: python translate_feeds.py
 
-            # Ensure uniqueness within this run
-            if base_name in used_names:
-                counter = 1
-                while f"{base_name}_{counter}" in used_names:
-                    counter += 1
-                final_name = f"{base_name}_{counter}"
-            else:
-                final_name = base_name
-            used_names.add(final_name)
+      - name: Clean old TTS files (to force regeneration)
+        run: rm -rf json/tts/
 
-            filename = os.path.join(out_dir, f"{final_name}.mp3")
-            print(f"  Generating: {filename} (description length: {len(desc)})")
-            clean_desc = clean_text(desc)[:5000] + ("..." if len(desc) > 5000 else "")
+      - name: Install dependencies
+        run: pip install edge-tts requests
 
-            try:
-                subprocess.run([
-                    "edge-tts", "--text", clean_desc,
-                    "--write-media", filename,
-                    "--voice", "en-US-JennyNeural"
-                ], check=True, capture_output=True, text=True)
-                print(f"  ✅ Generated: {filename}")
-            except subprocess.CalledProcessError as e:
-                print(f"  ❌ Error for item {idx}: {e.stderr}")
-                continue
-    EOF
+      - name: Generate TTS from all JSON files (50‑char filenames)
+        run: |
+          python - <<'EOF'
+          import os, json, re, subprocess, glob
+
+          out_dir = "json/tts"
+          os.makedirs(out_dir, exist_ok=True)
+          json_files = glob.glob("json/*.json")
+          if not json_files:
+              print("No JSON files found in json/")
+              exit(0)
+
+          def clean_text(text):
+              return re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', text)).strip()
+
+          def sanitize_filename(title):
+              # Remove invalid filesystem chars, replace spaces with underscores
+              title = re.sub(r'[\\/*?:"<>|]', '', title)
+              title = re.sub(r'[-\s]+', '_', title)
+              title = title.strip('_.')
+              # Keep only the first 50 characters (user request)
+              if len(title) > 50:
+                  title = title[:50]
+              return title or "untitled"
+
+          used_names = set()   # track filenames (without .mp3) to avoid duplicates
+
+          for json_path in json_files:
+              print(f"\nProcessing {json_path}")
+              with open(json_path, 'r', encoding='utf-8') as f:
+                  data = json.load(f)
+
+              items = data.get('rss', {}).get('channel', {}).get('item', [])
+              if not items:
+                  print(f"  No items in {json_path}, skipping.")
+                  continue
+
+              for idx, item in enumerate(items):
+                  desc = item.get('description', '')
+                  if not desc:
+                      print(f"  Item {idx}: no description, skipping")
+                      continue
+
+                  title = item.get('title', f'item_{idx:03d}')
+                  base_name = sanitize_filename(title)
+
+                  # Ensure uniqueness within this run
+                  if base_name in used_names:
+                      counter = 1
+                      while f"{base_name}_{counter}" in used_names:
+                          counter += 1
+                      final_name = f"{base_name}_{counter}"
+                  else:
+                      final_name = base_name
+                  used_names.add(final_name)
+
+                  filename = os.path.join(out_dir, f"{final_name}.mp3")
+                  print(f"  Generating: {filename} (description length: {len(desc)})")
+                  clean_desc = clean_text(desc)[:5000] + ("..." if len(desc) > 5000 else "")
+
+                  try:
+                      subprocess.run([
+                          "edge-tts", "--text", clean_desc,
+                          "--write-media", filename,
+                          "--voice", "en-US-JennyNeural"
+                      ], check=True, capture_output=True, text=True)
+                      print(f"  ✅ Generated: {filename}")
+                  except subprocess.CalledProcessError as e:
+                      print(f"  ❌ Error for item {idx}: {e.stderr}")
+                      continue
+          EOF
+
+      - name: Show git status (debug)
+        run: git status --porcelain
+
+      - name: Commit and push all changes
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "Update RSS, translations and TTS [skip ci]"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"
+          # No file_pattern – stages everything (additions, modifications, deletions)
