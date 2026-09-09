@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Feed Reader – JSON Feed</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        /* ====== CSS – full styles (unchanged) ====== */
+        :root {
+            --bg: #f1f5f9;
+            --bg-card: #ffffff;
+            --bg-sidebar: #f8fafc;
+            --bg-input: #ffffff;
+            --bg-hover: #eef2ff;
+            --bg-active: #dbeafe;
+            --text: #0f172a;
+            --text-secondary: #475569;
+            --text-muted: #94a3b8;
+            --border: #e2e8f0;
+            --border-hover: #cbd5e1;
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --primary-light: #eff6ff;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --transition: 0.2s ease;
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --max-width: 1280px;
+            --header-height: 64px;
+        }
+        [data-theme="dark"] {
+            --bg: #0f172a;
+            --bg-card: #1e293b;
+            --bg-sidebar: #1a2332;
+            --bg-input: #1e293b;
+            --bg-hover: #334155;
+            --bg-active: #1e3a5f;
+            --text: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --text-muted: #64748b;
+            --border: #334155;
+            --border-hover: #475569;
+            --primary: #3b82f6;
+            --primary-hover: #60a5fa;
+            --primary-light: #1e3a5f;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font); background: var(--bg); color: var(--text); min-height: 100vh; transition: background var(--transition), color var(--transition); display: flex; flex-direction: column; }
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+        .header { background: var(--bg-card); border-bottom: 1px solid var(--border); padding: 0 24px; height: var(--header-height); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; backdrop-filter: blur(8px); transition: background var(--transition), border var(--transition); flex-shrink: 0; }
+        .header-left { display: flex; align-items: center; gap: 12px; }
+        .header-logo { font-size: 22px; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 8px; letter-spacing: -0.3px; }
+        .header-logo i { font-size: 24px; }
+        .header-logo span { color: var(--text); font-weight: 400; }
+        .header-actions { display: flex; align-items: center; gap: 10px; }
+        .header-actions .btn-icon { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border); background: transparent; color: var(--text-secondary); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all var(--transition); }
+        .header-actions .btn-icon:hover { background: var(--bg-hover); border-color: var(--border-hover); color: var(--text); }
+        .header-actions .btn-icon.active { background: var(--primary-light); color: var(--primary); border-color: var(--primary); }
+        .app { display: flex; flex: 1; max-width: var(--max-width); width: 100%; margin: 0 auto; padding: 16px 20px 20px; gap: 20px; min-height: calc(100vh - var(--header-height)); }
+        .sidebar { width: 280px; min-width: 280px; background: var(--bg-card); border-radius: var(--radius); border: 1px solid var(--border); padding: 16px 0; display: flex; flex-direction: column; height: fit-content; max-height: calc(100vh - var(--header-height) - 40px); overflow: hidden; transition: background var(--transition), border var(--transition); position: sticky; top: calc(var(--header-height) + 16px); }
+        .sidebar-header { padding: 0 16px 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+        .sidebar-header h2 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); }
+        .sidebar-header .badge { background: var(--bg-hover); color: var(--text-secondary); font-size: 11px; font-weight: 600; padding: 2px 10px; border-radius: 20px; }
+        .sidebar-add { padding: 12px 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+        .sidebar-add .add-form { display: flex; gap: 8px; }
+        .sidebar-add .add-form input { flex: 1; padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-size: 13px; background: var(--bg-input); color: var(--text); transition: border var(--transition), background var(--transition); outline: none; min-width: 0; }
+        .sidebar-add .add-form input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
+        .sidebar-add .add-form input::placeholder { color: var(--text-muted); }
+        .sidebar-add .add-form button { padding: 8px 14px; background: var(--primary); color: #fff; border: none; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; transition: background var(--transition); white-space: nowrap; display: flex; align-items: center; gap: 4px; }
+        .sidebar-add .add-form button:hover { background: var(--primary-hover); }
+        .sidebar-add .add-form button:disabled { opacity: 0.6; cursor: not-allowed; }
+        .sidebar-feed-list { flex: 1; overflow-y: auto; padding: 8px 8px 8px 0; }
+        .feed-item { display: flex; align-items: center; gap: 10px; padding: 10px 16px 10px 12px; margin: 0 8px 2px 8px; border-radius: var(--radius-sm); cursor: pointer; transition: all var(--transition); border-left: 3px solid transparent; position: relative; }
+        .feed-item:hover { background: var(--bg-hover); }
+        .feed-item.active { background: var(--bg-active); border-left-color: var(--primary); }
+        .feed-item .feed-icon { width: 32px; height: 32px; border-radius: 6px; background: var(--bg-hover); display: flex; align-items: center; justify-content: center; font-size: 15px; color: var(--text-secondary); flex-shrink: 0; overflow: hidden; }
+        .feed-item .feed-icon img { width: 100%; height: 100%; object-fit: cover; }
+        .feed-item .feed-info { flex: 1; min-width: 0; }
+        .feed-item .feed-info .feed-title { font-size: 14px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .feed-item .feed-info .feed-url { font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 1px; }
+        .feed-item .feed-count { font-size: 11px; font-weight: 600; color: var(--text-muted); background: var(--bg-hover); padding: 1px 10px; border-radius: 20px; flex-shrink: 0; }
+        .feed-item .feed-remove { background: none; border: none; color: var(--text-muted); font-size: 13px; cursor: pointer; padding: 4px 6px; border-radius: 4px; opacity: 0; transition: all var(--transition); flex-shrink: 0; }
+        .feed-item:hover .feed-remove { opacity: 1; }
+        .feed-item .feed-remove:hover { background: #fee2e2; color: #dc2626; }
+        [data-theme="dark"] .feed-item .feed-remove:hover { background: #7f1d1d; color: #fca5a5; }
+        .sidebar-empty { padding: 40px 20px; text-align: center; color: var(--text-muted); font-size: 14px; }
+        .sidebar-empty i { font-size: 32px; display: block; margin-bottom: 12px; opacity: 0.5; }
+        .sidebar-empty p { line-height: 1.6; }
+        .content { flex: 1; min-width: 0; background: var(--bg-card); border-radius: var(--radius); border: 1px solid var(--border); padding: 0; display: flex; flex-direction: column; transition: background var(--transition), border var(--transition); overflow: hidden; height: fit-content; max-height: calc(100vh - var(--header-height) - 40px); }
+        .content-header { padding: 16px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; flex-wrap: wrap; gap: 8px; }
+        .content-header .feed-title-large { font-size: 18px; font-weight: 600; display: flex; align-items: center; gap: 10px; }
+        .content-header .feed-title-large .feed-icon-large { width: 32px; height: 32px; border-radius: 6px; background: var(--bg-hover); display: flex; align-items: center; justify-content: center; font-size: 16px; overflow: hidden; }
+        .content-header .feed-title-large .feed-icon-large img { width: 100%; height: 100%; object-fit: cover; }
+        .content-header .feed-meta { font-size: 13px; color: var(--text-secondary); }
+        .content-header .feed-actions { display: flex; gap: 6px; }
+        .content-header .feed-actions button { padding: 6px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: transparent; color: var(--text-secondary); font-size: 12px; font-weight: 500; cursor: pointer; transition: all var(--transition); display: flex; align-items: center; gap: 5px; }
+        .content-header .feed-actions button:hover { background: var(--bg-hover); border-color: var(--border-hover); }
+        .content-header .feed-actions button.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .content-header .feed-actions button.primary:hover { background: var(--primary-hover); }
+        .content-items { flex: 1; overflow-y: auto; padding: 12px 16px 20px; }
+        
+        /* ====== Entry Cards with Images ====== */
+        .entry-card {
+            padding: 16px 18px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 12px;
+            transition: all var(--transition);
+            cursor: pointer;
+            background: var(--bg-card);
+        }
+        .entry-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+        }
+        .entry-card.read {
+            opacity: 0.7;
+        }
+        .entry-card.read .entry-title {
+            font-weight: 400;
+        }
+        .entry-card .entry-title {
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            line-height: 1.4;
+            color: var(--text);
+        }
+        .entry-card .entry-title a {
+            color: inherit;
+            text-decoration: none;
+        }
+        .entry-card .entry-title a:hover {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+        .entry-card .entry-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        .entry-card .entry-meta .entry-date {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .entry-card .entry-meta .entry-link {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .entry-card .entry-meta a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .entry-card .entry-meta a:hover {
+            text-decoration: underline;
+        }
+        .entry-card .entry-image {
+            margin: 8px 0 10px 0;
+            border-radius: 6px;
+            overflow: hidden;
+            background: var(--bg);
+            max-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .entry-card .entry-image img {
+            width: 100%;
+            height: auto;
+            max-height: 400px;
+            object-fit: contain;
+            display: block;
+        }
+        .entry-card .entry-desc-preview {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            word-break: break-word;
+        }
+        .entry-card .entry-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        .entry-card .entry-actions button {
+            padding: 4px 12px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+        .entry-card .entry-actions button:hover { background: var(--bg-hover); }
+        .entry-card .entry-actions button.mark-read { color: var(--primary); border-color: var(--primary); }
+        .entry-card .entry-actions button.mark-read:hover { background: var(--primary-light); }
+        .entry-card .entry-actions button.fullscreen-btn { color: var(--primary); border-color: var(--primary); }
+        .entry-card .entry-actions button.fullscreen-btn:hover { background: var(--primary-light); }
+
+        .content-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; min-height: 300px; color: var(--text-muted); text-align: center; padding: 40px 20px; }
+        .content-empty i { font-size: 48px; margin-bottom: 16px; opacity: 0.4; }
+        .content-empty h3 { font-size: 18px; font-weight: 500; color: var(--text-secondary); margin-bottom: 4px; }
+        .content-empty p { font-size: 14px; max-width: 400px; line-height: 1.6; }
+        .toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 999; display: flex; flex-direction: column; gap: 8px; max-width: 360px; width: 100%; }
+        .toast { padding: 12px 18px; border-radius: var(--radius-sm); background: var(--bg-card); border: 1px solid var(--border); box-shadow: var(--shadow); font-size: 14px; color: var(--text); display: flex; align-items: center; gap: 10px; animation: slideUp 0.3s ease; transition: all var(--transition); }
+        .toast.error { border-left: 4px solid #dc2626; }
+        .toast.success { border-left: 4px solid #22c55e; }
+        .toast.info { border-left: 4px solid var(--primary); }
+        .toast .toast-icon { font-size: 18px; flex-shrink: 0; }
+        .toast .toast-close { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 16px; margin-left: auto; padding: 0 4px; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.6s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loading-message { display: flex; align-items: center; justify-content: center; padding: 40px 20px; gap: 12px; color: var(--text-secondary); }
+        .loading-message .spinner { width: 24px; height: 24px; }
+        .data-notice { background: var(--primary-light); color: var(--primary); padding: 6px 16px; font-size: 12px; border-radius: 0 0 var(--radius-sm) var(--radius-sm); border-top: 1px solid var(--border); text-align: center; flex-shrink: 0; }
+        .data-notice i { margin-right: 6px; }
+        .data-notice code { background: var(--bg-card); padding: 1px 8px; border-radius: 3px; font-size: 11px; border: 1px solid var(--border); }
+        
+        /* ====== Fixed Buttons ====== */
+        #fullscreenButtons {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            right: 0;
+            z-index: 10000;
+            padding: 0 20px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.25s ease 0.05s;
+        }
+        #fullscreenButtons.active { opacity: 1; }
+        #fullscreenButtons.closing { opacity: 0; transition: opacity 0.15s ease; }
+        #fullscreenButtons .btn-row { max-width: 840px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; pointer-events: auto; }
+        #fullscreenButtons .btn-group { display: flex; gap: 8px; align-items: center; }
+        #fullscreenButtons .close-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            width: 48px;
+            height: 48px;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text);
+            box-shadow: var(--shadow);
+            transition: all var(--transition);
+            border: none;
+        }
+        #fullscreenButtons .close-btn:hover { background: var(--bg-hover); transform: scale(1.05); }
+        #fullscreenButtons .translate-btn-wrapper,
+        #fullscreenButtons .tts-btn-wrapper { position: relative; pointer-events: auto; }
+        #fullscreenButtons .translate-btn-wrapper .translate-btn,
+        #fullscreenButtons .tts-btn-wrapper .tts-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 0 18px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            color: var(--text);
+            box-shadow: var(--shadow);
+            transition: all var(--transition);
+            border: none;
+            font-size: 15px;
+            font-family: var(--font);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+        #fullscreenButtons .translate-btn-wrapper .translate-btn:hover,
+        #fullscreenButtons .tts-btn-wrapper .tts-btn:hover { background: var(--bg-hover); transform: scale(1.03); }
+        #fullscreenButtons .translate-btn-wrapper .translate-btn i,
+        #fullscreenButtons .tts-btn-wrapper .tts-btn i { font-size: 18px; }
+        #fullscreenButtons .translate-dropdown {
+            position: absolute;
+            top: 55px;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            box-shadow: var(--shadow);
+            min-width: 120px;
+            display: none;
+            overflow: hidden;
+            z-index: 10002;
+        }
+        #fullscreenButtons .translate-dropdown.active { display: block; }
+        #fullscreenButtons .translate-dropdown .dropdown-item {
+            padding: 8px 16px;
+            cursor: pointer;
+            transition: background var(--transition);
+            font-size: 14px;
+            color: var(--text);
+        }
+        #fullscreenButtons .translate-dropdown .dropdown-item:hover { background: var(--bg-hover); }
+        #fullscreenButtons .translate-dropdown .dropdown-item.active { background: var(--primary-light); color: var(--primary); font-weight: 600; }
+        #fullscreenButtons .tts-btn-wrapper .tts-btn.playing { background: var(--primary); color: #fff; border-color: var(--primary); }
+        #fullscreenButtons .tts-btn-wrapper .tts-btn.playing:hover { background: var(--primary-hover); }
+        
+        /* ====== Fullscreen Overlay ====== */
+        .fullscreen-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            z-index: 9999;
+            overflow-y: auto;
+            padding: 80px 20px 40px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+        .fullscreen-overlay.active { opacity: 1; pointer-events: auto; }
+        .fullscreen-overlay.closing { opacity: 0; transition: opacity 0.2s ease; }
+        .fullscreen-overlay .fullscreen-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 30px;
+            border: 1px solid var(--border);
+            position: relative;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.3s ease 0.1s, transform 0.3s ease 0.1s;
+        }
+        .fullscreen-overlay.active .fullscreen-content { opacity: 1; transform: translateY(0); }
+        .fullscreen-overlay.closing .fullscreen-content { opacity: 0; transform: translateY(15px); transition: opacity 0.15s ease, transform 0.15s ease; }
+        .fullscreen-overlay .fullscreen-content .entry-title { font-size: 24px; font-weight: 600; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
+        .fullscreen-overlay .fullscreen-content .entry-meta { font-size: 14px; color: var(--text-muted); margin-bottom: 20px; display: flex; flex-wrap: wrap; gap: 12px; }
+        .fullscreen-overlay .fullscreen-content .entry-meta a { color: var(--primary); text-decoration: none; }
+        .fullscreen-overlay .fullscreen-content .entry-meta a:hover { text-decoration: underline; }
+        .fullscreen-overlay .fullscreen-content .entry-desc { font-size: 16px; line-height: 1.8; color: var(--text-secondary); }
+        .fullscreen-overlay .fullscreen-content .entry-desc img { max-width: 100%; border-radius: 4px; margin: 10px 0; }
+        .fullscreen-overlay .fullscreen-content .entry-desc p { margin: 6px 0; }
+        
+        @media (max-width: 900px) {
+            .app { flex-direction: column; padding: 12px 12px 16px; gap: 12px; }
+            .sidebar { width: 100%; min-width: unset; max-height: 340px; position: static; top: unset; }
+            .content { max-height: unset; min-height: 500px; }
+            .header { padding: 0 16px; }
+            .header-logo { font-size: 18px; }
+            .content-header { padding: 12px 16px; flex-direction: column; align-items: stretch; gap: 8px; }
+            .content-header .feed-title-large { font-size: 16px; }
+            .sidebar-add .add-form { flex-wrap: wrap; }
+            .sidebar-add .add-form input { flex: 1 1 100%; }
+            .fullscreen-overlay .fullscreen-content { padding: 20px; }
+            .fullscreen-overlay .fullscreen-content .entry-title { font-size: 20px; }
+            #fullscreenButtons { top: 15px; padding: 0 15px; }
+            #fullscreenButtons .close-btn { width: 42px; height: 42px; font-size: 20px; }
+            #fullscreenButtons .translate-btn-wrapper .translate-btn,
+            #fullscreenButtons .tts-btn-wrapper .tts-btn { height: 42px; padding: 0 14px; font-size: 14px; }
+            #fullscreenButtons .translate-btn-wrapper .translate-btn i,
+            #fullscreenButtons .tts-btn-wrapper .tts-btn i { font-size: 16px; }
+        }
+        @media (max-width: 480px) {
+            .header-logo span { display: none; }
+            .header-actions .btn-icon { width: 34px; height: 34px; font-size: 14px; }
+            .entry-card { padding: 12px 14px; }
+            .entry-card .entry-title { font-size: 15px; }
+            .toast-container { left: 12px; right: 12px; max-width: unset; bottom: 12px; }
+            .content-header .feed-actions button { font-size: 11px; padding: 4px 10px; }
+            .fullscreen-overlay { padding: 70px 10px 20px; }
+            .fullscreen-overlay .fullscreen-content { padding: 16px; }
+            .fullscreen-overlay .fullscreen-content .entry-title { font-size: 18px; }
+            #fullscreenButtons { top: 10px; padding: 0 10px; }
+            #fullscreenButtons .close-btn { width: 38px; height: 38px; font-size: 18px; }
+            #fullscreenButtons .translate-btn-wrapper .translate-btn,
+            #fullscreenButtons .tts-btn-wrapper .tts-btn { height: 38px; padding: 0 12px; font-size: 13px; }
+            #fullscreenButtons .translate-btn-wrapper .translate-btn i,
+            #fullscreenButtons .tts-btn-wrapper .tts-btn i { font-size: 14px; }
+            #fullscreenButtons .btn-group { gap: 4px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-left">
+            <div class="header-logo"><i class="fas fa-rss"></i> Feed<span>Reader</span></div>
+        </div>
+        <div class="header-actions">
+            <button class="btn-icon" id="themeToggle" title="Toggle theme"><i class="fas fa-moon"></i></button>
+            <button class="btn-icon" id="refreshAllBtn" title="Refresh all feeds"><i class="fas fa-sync-alt"></i></button>
+        </div>
+    </header>
+    <div class="app">
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header"><h2><i class="fas fa-list-ul" style="margin-right:6px;"></i> Your Feeds</h2><span class="badge" id="feedCount">0</span></div>
+            <div class="sidebar-add">
+                <form class="add-form" id="addFeedForm">
+                    <input type="url" id="feedUrlInput" placeholder="Paste JSON feed URL…" required />
+                    <button type="submit" id="addFeedBtn"><i class="fas fa-plus"></i> Add</button>
+                </form>
+            </div>
+            <div class="sidebar-feed-list" id="feedList"><div class="sidebar-empty"><i class="fas fa-rss"></i><p>No feeds yet.<br />Add one above to get started.</p></div></div>
+        </aside>
+        <main class="content" id="content">
+            <div class="content-header">
+                <div class="feed-title-large" id="contentFeedTitle"><span class="feed-icon-large" id="contentFeedIcon"><i class="fas fa-rss"></i></span><span id="contentFeedName">Loading feed…</span></div>
+                <div class="feed-meta" id="contentFeedMeta"><span id="entryCount">0 items</span></div>
+                <div class="feed-actions">
+                    <button id="markAllReadBtn" title="Mark all as read"><i class="fas fa-check-double"></i> Mark all read</button>
+                    <button id="refreshFeedBtn" class="primary" title="Refresh this feed"><i class="fas fa-sync-alt"></i> Refresh</button>
+                </div>
+            </div>
+            <div class="content-items" id="contentItems">
+                <div class="loading-message">
+                    <span class="spinner"></span>
+                    <span>Loading feed data from JSON files…</span>
+                </div>
+            </div>
+            <div class="data-notice"><i class="fas fa-file-code"></i> Click any card to open fullscreen view</div>
+        </main>
+    </div>
+    <div class="toast-container" id="toastContainer"></div>
+    <script>
+        (function() {
+            'use strict';
+
+            const DEFAULT_FEEDS = [
+                {
+                    url: 'https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/safebooru-yuri-rss.json',
+                    url_en: 'https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/safebooru-yuri-rss.json',
+                    url_fa: 'https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/safebooru-yuri-rss.json',
+                    title: 'Safebooru Yuri'
+                },
+                {
+                    url: 'https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/new1.json',
+                    url_en: 'https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/new1.json',
+                    url_fa: 'https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/new1.json',
+                    title: 'IGN News'
+                }
+            ];
+
+            // ---- References ----
+            const feedListEl = document.getElementById('feedList');
+            const contentItemsEl = document.getElementById('contentItems');
+            const contentFeedName = document.getElementById('contentFeedName');
+            const contentFeedIcon = document.getElementById('contentFeedIcon');
+            const contentFeedMeta = document.getElementById('contentFeedMeta');
+            const entryCountEl = document.getElementById('entryCount');
+            const feedCountEl = document.getElementById('feedCount');
+            const addForm = document.getElementById('addFeedForm');
+            const feedUrlInput = document.getElementById('feedUrlInput');
+            const addBtn = document.getElementById('addFeedBtn');
+            const themeToggle = document.getElementById('themeToggle');
+            const refreshAllBtn = document.getElementById('refreshAllBtn');
+            const refreshFeedBtn = document.getElementById('refreshFeedBtn');
+            const markAllReadBtn = document.getElementById('markAllReadBtn');
+            const toastContainer = document.getElementById('toastContainer');
+
+            // ---- State ----
+            let feeds = [];
+            let activeFeedId = null;
+            let isLoading = false;
+            let currentOverlay = null;
+            let currentButtons = null;
+            let ttsAudio = null;
+
+            // ---- Helpers ----
+            function generateId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+            function timeAgo(date) {
+                const diff = Date.now() - new Date(date).getTime();
+                const mins = Math.floor(diff / 60000);
+                if (mins < 1) return 'Just now';
+                if (mins < 60) return mins + 'm ago';
+                const hrs = Math.floor(mins / 60);
+                if (hrs < 24) return hrs + 'h ago';
+                const days = Math.floor(hrs / 24);
+                if (days < 7) return days + 'd ago';
+                return new Date(date).toLocaleDateString();
+            }
+            function getDomain(url) {
+                try { const u = new URL(url); return u.hostname.replace(/^www\./, ''); } catch { return url; }
+            }
+            function getFavicon(url) {
+                try { const u = new URL(url); return `https://www.google.com/s2/favicons?domain=${u.hostname}&sz=32`; } catch { return ''; }
+            }
+
+            // ---- TTS sanitization ----
+            function sanitizeForTTS(title) {
+                if (!title) return 'untitled';
+                let sanitized = title.replace(/\s+/g, '_');
+                sanitized = sanitized.replace(/-/g, '_');
+                sanitized = sanitized.replace(/[\/:*?<>\\\."]/g, '');
+                sanitized = sanitized.replace(/[^a-zA-Z0-9_,\u2013\u2014\u2018\u2019\u201C\u201D']/g, '');
+                if (sanitized.length > 200) sanitized = sanitized.slice(0, 200);
+                return sanitized;
+            }
+
+            function getTtsUrl(title) {
+                const baseUrl = 'https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/';
+                return baseUrl + sanitizeForTTS(title) + '.mp3';
+            }
+
+            // ---- FIXED: extract image – uses description first, fallback to thumbnail with preserved special chars ----
+            function extractImage(description, title) {
+                if (!description) return null;
+                
+                // 1. Try to extract from <img> tag (preserves full URL)
+                let match = description.match(/<img[^>]+src=["']([^"']*?)["']/i);
+                if (match && match[1]) {
+                    return match[1];
+                }
+                
+                // 2. Try direct image URL in the description
+                match = description.match(/https?:\/\/[^\s<>]+\.(?:jpg|jpeg|png|gif|webp)/i);
+                if (match) {
+                    return match[0];
+                }
+                
+                // 3. Fallback: generate thumbnail from title (for feeds with [Image X])
+                //    Only strip truly invalid filename characters: / : * ? " < > | \
+                //    KEEP apostrophes, commas, periods, and other special chars.
+                if (title) {
+                    let filename = title.replace(/\s+/g, '_');
+                    // Remove only invalid characters for filenames
+                    filename = filename.replace(/[\/:*?"<>|\\]/g, '');
+                    return `https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/notif/ign_tumb/${filename}.jpg`;
+                }
+                
+                return null;
+            }
+
+            function stripHtml(html) {
+                const tmp = document.createElement('div');
+                tmp.innerHTML = html;
+                return tmp.textContent || tmp.innerText || '';
+            }
+
+            // ---- Toast ----
+            function showToast(message, type = 'info', duration) {
+                if (!duration) duration = type === 'error' ? 10000 : 5000;
+                const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', info: 'fa-info-circle' };
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.innerHTML = `
+                    <span class="toast-icon"><i class="fas ${icons[type] || icons.info}"></i></span>
+                    <span>${message}</span>
+                    <button class="toast-close"><i class="fas fa-times"></i></button>
+                `;
+                toast.querySelector('.toast-close').addEventListener('click', () => toast.remove());
+                toastContainer.appendChild(toast);
+                setTimeout(() => { if (toast.parentNode) toast.remove(); }, duration);
+            }
+
+            // ---- Theme ----
+            function getTheme() {
+                return localStorage.getItem('fr-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            }
+            function setTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('fr-theme', theme);
+                const icon = themeToggle.querySelector('i');
+                icon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            }
+            themeToggle.addEventListener('click', () => {
+                const current = document.documentElement.getAttribute('data-theme');
+                setTheme(current === 'dark' ? 'light' : 'dark');
+            });
+            setTheme(getTheme());
+
+            // ---- LocalStorage ----
+            function saveFeeds() { try { localStorage.setItem('fr-feeds', JSON.stringify(feeds)); } catch (e) {} }
+            function loadFeeds() {
+                try {
+                    const data = localStorage.getItem('fr-feeds');
+                    if (data) {
+                        const parsed = JSON.parse(data);
+                        if (Array.isArray(parsed) && parsed.length > 0) {
+                            feeds = parsed;
+                            feeds.forEach(f => {
+                                if (!f.items) f.items = [];
+                                f.items.forEach(i => { if (i.read === undefined) i.read = false; });
+                            });
+                            return true;
+                        }
+                    }
+                } catch (e) {}
+                return false;
+            }
+
+            // ---- Parse JSON feed ----
+            function parseJsonFeed(data, url) {
+                let feedData;
+                if (data.rss && data.rss.channel) {
+                    const channel = data.rss.channel;
+                    feedData = {
+                        feed: {
+                            title: channel.title || 'Feed',
+                            url: channel.link || url,
+                            image: channel.image || getFavicon(url)
+                        },
+                        items: (channel.item || []).map(item => ({
+                            title: item.title || 'Untitled',
+                            link: item.link || '#',
+                            description: item.description || '',
+                            pubDate: item.pubDate || new Date().toISOString()
+                        }))
+                    };
+                } else if (data.feed && data.items) {
+                    feedData = {
+                        feed: {
+                            title: data.feed.title || 'Feed',
+                            url: data.feed.url || url,
+                            image: data.feed.image || data.feed.icon || getFavicon(url)
+                        },
+                        items: (data.items || []).map(item => ({
+                            title: item.title || 'Untitled',
+                            link: item.link || '#',
+                            description: item.description || item.content || '',
+                            pubDate: item.pubDate || new Date().toISOString()
+                        }))
+                    };
+                } else if (data.status === 'ok' && data.feed) {
+                    feedData = {
+                        feed: {
+                            title: data.feed.title || 'Feed',
+                            url: data.feed.url || url,
+                            image: data.feed.image || getFavicon(url)
+                        },
+                        items: (data.items || []).map(item => ({
+                            title: item.title || 'Untitled',
+                            link: item.link || '#',
+                            description: item.description || item.content || '',
+                            pubDate: item.pubDate || new Date().toISOString()
+                        }))
+                    };
+                } else if (Array.isArray(data) && data.length > 0 && data[0].feedTitle) {
+                    feedData = {
+                        feed: {
+                            title: data[0].feedTitle || 'Feed',
+                            url: data[0].feedUrl || url,
+                            image: data[0].feedIcon || getFavicon(url)
+                        },
+                        items: data.map(item => ({
+                            title: item.title || 'Untitled',
+                            link: item.link || '#',
+                            description: item.description || '',
+                            pubDate: item.pubDate || new Date().toISOString()
+                        }))
+                    };
+                } else {
+                    throw new Error('Unrecognised JSON format.');
+                }
+                return {
+                    title: feedData.feed.title || 'Feed',
+                    icon: feedData.feed.image || getFavicon(url),
+                    items: (feedData.items || []).map(item => ({
+                        id: generateId(),
+                        title: item.title || 'Untitled',
+                        link: item.link || '#',
+                        description: item.description || '',
+                        pubDate: item.pubDate || new Date().toISOString(),
+                        read: false,
+                    }))
+                };
+            }
+
+            // ---- Load from JSON URL ----
+            async function loadFeedFromJson(url) {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP ${response.status} – ${response.statusText}`);
+                const data = await response.json();
+                return parseJsonFeed(data, url);
+            }
+
+            // ---- Add Feed ----
+            async function addFeed(url) {
+                url = url.trim();
+                if (!url) return;
+                if (feeds.some(f => f.url.toLowerCase() === url.toLowerCase())) {
+                    showToast('Feed already exists.', 'error');
+                    return;
+                }
+                addBtn.disabled = true;
+                addBtn.innerHTML = '<span class="spinner" style="width:16px;height:16px;"></span>';
+                try {
+                    const feedData = await loadFeedFromJson(url);
+                    const feed = {
+                        id: generateId(),
+                        url: url,
+                        title: feedData.title || 'Feed',
+                        icon: feedData.icon || getFavicon(url),
+                        items: feedData.items || [],
+                        hasTranslation: false
+                    };
+                    feeds.push(feed);
+                    saveFeeds();
+                    renderFeeds();
+                    selectFeed(feed.id);
+                    showToast(`Added "${feed.title}" with ${feed.items.length} items.`, 'success');
+                    feedUrlInput.value = '';
+                } catch (err) {
+                    showToast(`Failed to add feed: ${err.message}`, 'error');
+                } finally {
+                    addBtn.disabled = false;
+                    addBtn.innerHTML = '<i class="fas fa-plus"></i> Add';
+                }
+            }
+
+            // ---- Refresh Feed ----
+            async function refreshFeed(id) {
+                const feed = feeds.find(f => f.id === id);
+                if (!feed) return;
+                isLoading = true;
+                refreshFeedBtn.disabled = true;
+                refreshFeedBtn.innerHTML = '<span class="spinner" style="width:16px;height:16px;"></span>';
+                try {
+                    const data = await loadFeedFromJson(feed.url);
+                    feed.title = data.title || feed.title;
+                    feed.icon = data.icon || feed.icon || getFavicon(feed.url);
+                    const existingLinks = new Set(feed.items.map(i => i.link));
+                    let newCount = 0;
+                    (data.items || []).forEach(item => {
+                        if (!existingLinks.has(item.link)) {
+                            feed.items.unshift({
+                                id: generateId(),
+                                title: item.title || 'Untitled',
+                                link: item.link || '#',
+                                description: item.description || '',
+                                pubDate: item.pubDate || new Date().toISOString(),
+                                read: false,
+                            });
+                            newCount++;
+                            existingLinks.add(item.link);
+                        }
+                    });
+                    feed.items.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+                    saveFeeds();
+                    renderFeeds();
+                    if (activeFeedId === feed.id) renderItems(feed);
+                    showToast(`Refreshed "${feed.title}" — ${newCount} new item${newCount !== 1 ? 's' : ''}.`, 'success');
+                } catch (err) {
+                    showToast(`Failed to refresh: ${err.message}`, 'error');
+                } finally {
+                    isLoading = false;
+                    refreshFeedBtn.disabled = false;
+                    refreshFeedBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh';
+                }
+            }
+
+            // ---- Init ----
+            async function initFeed() {
+                if (loadFeeds() && feeds.length > 0) {
+                    console.log('📡 Loaded feeds from localStorage:', feeds.length);
+                    activeFeedId = feeds[0].id;
+                    renderFeeds();
+                    renderItems(feeds[0]);
+                    showToast(`Loaded ${feeds.length} feed(s) from localStorage`, 'success', 3000);
+                    return;
+                }
+                try {
+                    contentItemsEl.innerHTML = `<div class="loading-message"><span class="spinner"></span> Loading ${DEFAULT_FEEDS.length} default feeds…</div>`;
+                    const loadedFeeds = [];
+                    for (const defaultFeed of DEFAULT_FEEDS) {
+                        try {
+                            const feedData = await loadFeedFromJson(defaultFeed.url);
+                            const feed = {
+                                id: generateId(),
+                                url: defaultFeed.url,
+                                url_en: defaultFeed.url_en || defaultFeed.url,
+                                url_fa: defaultFeed.url_fa || defaultFeed.url,
+                                title: feedData.title || defaultFeed.title || 'Feed',
+                                icon: feedData.icon || getFavicon(defaultFeed.url),
+                                items: feedData.items || [],
+                                hasTranslation: !!(defaultFeed.url_en && defaultFeed.url_fa)
+                            };
+                            loadedFeeds.push(feed);
+                            console.log(`✅ Loaded: ${feed.title} (${feed.items.length} items)`);
+                        } catch (err) {
+                            console.warn(`❌ Failed to load ${defaultFeed.url}:`, err.message);
+                            showToast(`Failed to load "${defaultFeed.title}": ${err.message}`, 'error', 5000);
+                        }
+                    }
+                    if (loadedFeeds.length === 0) throw new Error('No default feeds could be loaded.');
+                    feeds = loadedFeeds;
+                    saveFeeds();
+                    activeFeedId = feeds[0].id;
+                    renderFeeds();
+                    renderItems(feeds[0]);
+                    showToast(`Loaded ${feeds.length} feed(s) with ${feeds.reduce((sum, f) => sum + f.items.length, 0)} total items`, 'success', 4000);
+                } catch (err) {
+                    console.error(err);
+                    feeds = [];
+                    renderFeeds();
+                    renderContentEmpty('Error loading feeds', `Could not load default feeds: ${err.message}`);
+                    showToast(`Error: ${err.message}`, 'error', 10000);
+                }
+            }
+
+            // ---- Select Feed ----
+            function selectFeed(id) {
+                activeFeedId = id;
+                const feed = feeds.find(f => f.id === id);
+                if (!feed) {
+                    renderContentEmpty('Feed not found', 'Please select another feed.');
+                    renderFeeds();
+                    return;
+                }
+                renderFeeds();
+                renderItems(feed);
+            }
+
+            // ---- Render Feeds ----
+            function renderFeeds() {
+                if (feeds.length === 0) {
+                    feedListEl.innerHTML = `<div class="sidebar-empty"><i class="fas fa-rss"></i><p>No feeds yet.<br />Add one above to get started.</p></div>`;
+                    feedCountEl.textContent = '0';
+                    return;
+                }
+                let html = '';
+                feeds.forEach(feed => {
+                    const unread = feed.items.filter(i => !i.read).length;
+                    const isActive = feed.id === activeFeedId;
+                    const iconHtml = feed.icon ? `<img src="${feed.icon}" alt="" loading="lazy" />` : `<i class="fas fa-rss"></i>`;
+                    html += `
+                        <div class="feed-item ${isActive ? 'active' : ''}" data-id="${feed.id}">
+                            <div class="feed-icon">${iconHtml}</div>
+                            <div class="feed-info"><div class="feed-title">${feed.title || 'Untitled'}</div><div class="feed-url">${getDomain(feed.url)}</div></div>
+                            ${unread > 0 ? `<span class="feed-count">${unread}</span>` : ''}
+                            <button class="feed-remove" data-id="${feed.id}" title="Remove feed"><i class="fas fa-times"></i></button>
+                        </div>
+                    `;
+                });
+                feedListEl.innerHTML = html;
+                feedCountEl.textContent = feeds.length;
+                feedListEl.querySelectorAll('.feed-item').forEach(el => {
+                    el.addEventListener('click', (e) => {
+                        if (e.target.closest('.feed-remove')) return;
+                        selectFeed(el.dataset.id);
+                    });
+                });
+                feedListEl.querySelectorAll('.feed-remove').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        removeFeed(btn.dataset.id);
+                    });
+                });
+            }
+
+            // ---- Fullscreen overlay with TTS ----
+            function openFullscreen(itemId) {
+                let foundItem = null, foundFeed = null;
+                for (const feed of feeds) {
+                    const item = feed.items.find(i => i.id === itemId);
+                    if (item) {
+                        foundItem = item;
+                        foundFeed = feed;
+                        break;
+                    }
+                }
+                if (!foundItem || !foundFeed) return;
+
+                const hasTranslation = !!(foundFeed.url_en && foundFeed.url_fa && foundFeed.hasTranslation !== false);
+                const ttsUrl = getTtsUrl(foundItem.title);
+
+                // Cleanup previous
+                if (currentOverlay) { currentOverlay.remove(); currentOverlay = null; }
+                if (currentButtons) { currentButtons.remove(); currentButtons = null; }
+                if (ttsAudio) {
+                    ttsAudio._stopped = true;
+                    ttsAudio.pause();
+                    ttsAudio.currentTime = 0;
+                    ttsAudio = null;
+                }
+
+                // Overlay
+                const overlay = document.createElement('div');
+                overlay.className = 'fullscreen-overlay';
+                overlay.id = 'fullscreenOverlay';
+                overlay.innerHTML = `
+                    <div class="fullscreen-content" id="fullscreenContent" dir="ltr">
+                        <h1 class="entry-title">${foundItem.title || 'Untitled'}</h1>
+                        <div class="entry-meta">
+                            <span><i class="far fa-calendar-alt"></i> ${timeAgo(foundItem.pubDate)}</span>
+                            <span><i class="fas fa-link"></i> <a href="${foundItem.link}" target="_blank">Source</a></span>
+                            <span><i class="fas fa-rss"></i> ${foundFeed.title}</span>
+                        </div>
+                        <div class="entry-desc">${foundItem.description || 'No description available.'}</div>
+                    </div>
+                `;
+                document.body.appendChild(overlay);
+                currentOverlay = overlay;
+
+                // Buttons
+                const buttons = document.createElement('div');
+                buttons.id = 'fullscreenButtons';
+                buttons.innerHTML = `
+                    <div class="btn-row">
+                        <button class="close-btn" id="fullscreenClose"><i class="fas fa-arrow-left"></i></button>
+                        <div class="btn-group">
+                            <div class="tts-btn-wrapper">
+                                <button class="tts-btn" id="ttsBtn" title="Play TTS audio"><i class="fas fa-volume-up"></i> TTS</button>
+                            </div>
+                            <div class="translate-btn-wrapper" id="translateWrapper" style="${hasTranslation ? '' : 'display:none;'}">
+                                <button class="translate-btn" id="translateBtn"><i class="fas fa-language"></i> Translate</button>
+                                <div class="translate-dropdown" id="translateDropdown">
+                                    <div class="dropdown-item" data-lang="en">English</div>
+                                    <div class="dropdown-item" data-lang="fa">فارسی</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(buttons);
+                currentButtons = buttons;
+
+                // Animate in
+                void overlay.offsetWidth;
+                void buttons.offsetWidth;
+                overlay.classList.add('active');
+                buttons.classList.add('active');
+
+                let currentLang = 'en';
+
+                // ---- Close handler ----
+                const closeOverlay = () => {
+                    if (overlay.classList.contains('closing')) return;
+                    // Stop TTS
+                    if (ttsAudio) {
+                        ttsAudio._stopped = true;
+                        ttsAudio.pause();
+                        ttsAudio.currentTime = 0;
+                        ttsAudio = null;
+                        const ttsBtn = buttons.querySelector('#ttsBtn');
+                        if (ttsBtn) {
+                            ttsBtn.classList.remove('playing');
+                            ttsBtn.innerHTML = '<i class="fas fa-volume-up"></i> TTS';
+                            ttsBtn.disabled = false;
+                        }
+                    }
+                    overlay.classList.remove('active');
+                    overlay.classList.add('closing');
+                    buttons.classList.remove('active');
+                    buttons.classList.add('closing');
+                    const onTransitionEnd = (e) => {
+                        if (e.target === overlay) {
+                            overlay.removeEventListener('transitionend', onTransitionEnd);
+                            if (overlay.parentNode) overlay.remove();
+                            if (buttons.parentNode) buttons.remove();
+                            currentOverlay = null;
+                            currentButtons = null;
+                        }
+                    };
+                    overlay.addEventListener('transitionend', onTransitionEnd);
+                    setTimeout(() => {
+                        if (overlay.parentNode) overlay.remove();
+                        if (buttons.parentNode) buttons.remove();
+                        currentOverlay = null;
+                        currentButtons = null;
+                    }, 500);
+                };
+
+                const closeBtn = buttons.querySelector('#fullscreenClose');
+                closeBtn.addEventListener('click', closeOverlay);
+                overlay.addEventListener('click', (e) => { if (e.target === overlay) closeOverlay(); });
+                const escHandler = (e) => { if (e.key === 'Escape') { closeOverlay(); document.removeEventListener('keydown', escHandler); } };
+                document.addEventListener('keydown', escHandler);
+
+                // ---- TTS button ----
+                const ttsBtn = buttons.querySelector('#ttsBtn');
+                ttsBtn.addEventListener('click', async (e) => {
+                    e.stopPropagation();
+
+                    // If currently playing, stop it
+                    if (ttsAudio && !ttsAudio.paused) {
+                        ttsAudio._stopped = true;
+                        ttsAudio.pause();
+                        ttsAudio.currentTime = 0;
+                        ttsAudio = null;
+                        ttsBtn.classList.remove('playing');
+                        ttsBtn.innerHTML = '<i class="fas fa-volume-up"></i> TTS';
+                        return;
+                    }
+
+                    // If audio exists but is paused
+                    if (ttsAudio && ttsAudio.paused) {
+                        ttsAudio = null;
+                    }
+
+                    // Create new audio
+                    try {
+                        ttsBtn.innerHTML = '<span class="spinner" style="width:16px;height:16px;"></span>';
+                        ttsBtn.disabled = true;
+
+                        const audio = new Audio(ttsUrl);
+                        audio._stopped = false;
+                        let hasStarted = false;
+
+                        const handleCanPlay = () => {
+                            if (audio._stopped) return;
+                            ttsBtn.disabled = false;
+                            ttsBtn.innerHTML = '<i class="fas fa-stop"></i> Stop';
+                            ttsBtn.classList.add('playing');
+                            hasStarted = true;
+                            audio.play().catch((err) => {
+                                console.warn('Play failed:', err);
+                                if (!audio._stopped) {
+                                    ttsBtn.innerHTML = '<i class="fas fa-volume-up"></i> TTS';
+                                    ttsBtn.classList.remove('playing');
+                                    if (ttsAudio === audio) ttsAudio = null;
+                                    showToast('Failed to play TTS audio.', 'error');
+                                }
+                            });
+                        };
+                        const handleError = () => {
+                            if (audio._stopped) return;
+                            if (hasStarted) {
+                                console.warn('TTS error after playback started, ignoring.');
+                                return;
+                            }
+                            ttsBtn.disabled = false;
+                            ttsBtn.innerHTML = '<i class="fas fa-volume-up"></i> TTS';
+                            ttsBtn.classList.remove('playing');
+                            if (audio.error && audio.error.code === 4) {
+                                showToast('TTS audio not found for this article.', 'error');
+                            } else {
+                                showToast('Failed to load TTS audio.', 'error');
+                            }
+                            if (ttsAudio === audio) ttsAudio = null;
+                        };
+                        const handleEnded = () => {
+                            if (audio._stopped) return;
+                            ttsBtn.classList.remove('playing');
+                            ttsBtn.innerHTML = '<i class="fas fa-volume-up"></i> TTS';
+                            if (ttsAudio === audio) ttsAudio = null;
+                        };
+
+                        ttsAudio = audio;
+
+                        audio.addEventListener('canplaythrough', handleCanPlay);
+                        audio.addEventListener('error', handleError);
+                        audio.addEventListener('ended', handleEnded);
+
+                        audio.load();
+                    } catch (err) {
+                        ttsBtn.disabled = false;
+                        ttsBtn.innerHTML = '<i class="fas fa-volume-up"></i> TTS';
+                        ttsBtn.classList.remove('playing');
+                        ttsAudio = null;
+                        showToast('Failed to load TTS audio.', 'error');
+                    }
+                });
+
+                // ---- Translation dropdown ----
+                const translateBtn = buttons.querySelector('#translateBtn');
+                const dropdown = buttons.querySelector('#translateDropdown');
+                const contentDiv = overlay.querySelector('#fullscreenContent');
+
+                translateBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    dropdown.classList.toggle('active');
+                });
+                document.addEventListener('click', (e) => {
+                    if (!buttons.contains(e.target)) return;
+                    if (!e.target.closest('.translate-btn-wrapper')) {
+                        dropdown.classList.remove('active');
+                    }
+                });
+
+                dropdown.querySelectorAll('.dropdown-item').forEach(item => {
+                    item.addEventListener('click', async (e) => {
+                        const lang = item.dataset.lang;
+                        if (lang === currentLang) { dropdown.classList.remove('active'); return; }
+                        dropdown.querySelectorAll('.dropdown-item').forEach(el => el.classList.remove('active'));
+                        item.classList.add('active');
+                        dropdown.classList.remove('active');
+
+                        const feedUrl = lang === 'en' ? foundFeed.url_en : foundFeed.url_fa;
+                        if (!feedUrl) { showToast('Translation not available for this feed.', 'error'); return; }
+                        try {
+                            contentDiv.innerHTML = '<div class="loading-message"><span class="spinner"></span> Loading translation…</div>';
+                            const feedData = await loadFeedFromJson(feedUrl);
+                            const translatedItem = feedData.items.find(item => item.link === foundItem.link);
+                            if (!translatedItem) throw new Error('Translated item not found.');
+                            const dir = lang === 'fa' ? 'rtl' : 'ltr';
+                            contentDiv.dir = dir;
+                            contentDiv.innerHTML = `
+                                <h1 class="entry-title">${translatedItem.title || 'Untitled'}</h1>
+                                <div class="entry-meta">
+                                    <span><i class="far fa-calendar-alt"></i> ${timeAgo(translatedItem.pubDate)}</span>
+                                    <span><i class="fas fa-link"></i> <a href="${translatedItem.link}" target="_blank">Source</a></span>
+                                    <span><i class="fas fa-rss"></i> ${foundFeed.title}</span>
+                                </div>
+                                <div class="entry-desc">${translatedItem.description || 'No description available.'}</div>
+                            `;
+                            currentLang = lang;
+                        } catch (err) {
+                            showToast(`Failed to load translation: ${err.message}`, 'error');
+                            const origDesc = foundItem.description;
+                            const origTitle = foundItem.title;
+                            contentDiv.dir = 'ltr';
+                            contentDiv.innerHTML = `
+                                <h1 class="entry-title">${origTitle || 'Untitled'}</h1>
+                                <div class="entry-meta">
+                                    <span><i class="far fa-calendar-alt"></i> ${timeAgo(foundItem.pubDate)}</span>
+                                    <span><i class="fas fa-link"></i> <a href="${foundItem.link}" target="_blank">Source</a></span>
+                                    <span><i class="fas fa-rss"></i> ${foundFeed.title}</span>
+                                </div>
+                                <div class="entry-desc">${origDesc || 'No description available.'}</div>
+                            `;
+                            currentLang = 'en';
+                        }
+                    });
+                });
+                dropdown.querySelector('.dropdown-item[data-lang="en"]').classList.add('active');
+                currentLang = 'en';
+            }
+
+            // ---- Render Items ----
+            function renderItems(feed) {
+                if (!feed) { renderContentEmpty('No feed selected', 'Choose a feed from the sidebar.'); return; }
+                const iconHtml = feed.icon ? `<img src="${feed.icon}" alt="" loading="lazy" />` : `<i class="fas fa-rss"></i>`;
+                contentFeedIcon.innerHTML = iconHtml;
+                contentFeedName.textContent = feed.title || 'Untitled';
+                const total = feed.items.length;
+                const unread = feed.items.filter(i => !i.read).length;
+                entryCountEl.textContent = `${total} item${total !== 1 ? 's' : ''}${unread > 0 ? ` · ${unread} unread` : ''}`;
+                contentFeedMeta.style.display = 'block';
+                if (feed.items.length === 0) {
+                    contentItemsEl.innerHTML = `<div class="content-empty"><i class="fas fa-newspaper"></i><h3>No articles</h3><p>This feed has no items yet. Try refreshing.</p></div>`;
+                    return;
+                }
+                let html = '';
+                feed.items.forEach(item => {
+                    const readClass = item.read ? 'read' : '';
+                    const date = item.pubDate ? new Date(item.pubDate) : new Date();
+                    const dateStr = !isNaN(date.getTime()) ? timeAgo(date) : 'Unknown date';
+                    // Pass title for fallback thumbnail generation
+                    const imageUrl = extractImage(item.description, item.title);
+                    const plainPreview = stripHtml(item.description);
+                    const previewText = plainPreview.length > 200 ? plainPreview.slice(0, 200) + '…' : plainPreview;
+                    html += `
+                        <div class="entry-card ${readClass}" data-id="${item.id}">
+                            <div class="entry-title"><a href="${item.link}" target="_blank" rel="noopener">${item.title || 'Untitled'}</a></div>
+                            <div class="entry-meta">
+                                <span class="entry-date"><i class="far fa-calendar-alt"></i> ${dateStr}</span>
+                                <span class="entry-link"><i class="fas fa-external-link-alt"></i> <a href="${item.link}" target="_blank" rel="noopener">Source</a></span>
+                            </div>
+                            ${imageUrl ? `<div class="entry-image"><img src="${imageUrl}" alt="Image" loading="lazy" /></div>` : ''}
+                            <div class="entry-desc-preview">${previewText || 'No description available.'}</div>
+                            <div class="entry-actions">
+                                <button class="mark-read" data-id="${item.id}">${item.read ? '<i class="fas fa-undo"></i> Mark unread' : '<i class="fas fa-check"></i> Mark read'}</button>
+                                <button class="fullscreen-btn" data-id="${item.id}"><i class="fas fa-expand"></i> Fullscreen view</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                contentItemsEl.innerHTML = html;
+
+                contentItemsEl.querySelectorAll('.entry-card').forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        if (e.target.closest('button') || e.target.closest('a')) return;
+                        const itemId = card.dataset.id;
+                        openFullscreen(itemId);
+                    });
+                });
+                contentItemsEl.querySelectorAll('.fullscreen-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const itemId = btn.dataset.id;
+                        openFullscreen(itemId);
+                    });
+                });
+                contentItemsEl.querySelectorAll('.mark-read').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const itemId = btn.dataset.id;
+                        toggleRead(feed.id, itemId);
+                    });
+                });
+            }
+
+            function renderContentEmpty(title, msg) {
+                contentFeedName.textContent = title || 'No feed selected';
+                contentFeedIcon.innerHTML = '<i class="fas fa-rss"></i>';
+                entryCountEl.textContent = '0 items';
+                contentFeedMeta.style.display = 'block';
+                contentItemsEl.innerHTML = `<div class="content-empty"><i class="fas fa-inbox"></i><h3>${title || 'No feed selected'}</h3><p>${msg || 'Choose a feed from the sidebar to view its articles.'}</p></div>`;
+            }
+
+            function toggleRead(feedId, itemId) {
+                const feed = feeds.find(f => f.id === feedId);
+                if (!feed) return;
+                const item = feed.items.find(i => i.id === itemId);
+                if (!item) return;
+                item.read = !item.read;
+                saveFeeds();
+                const active = feeds.find(f => f.id === activeFeedId);
+                if (active) renderItems(active);
+                renderFeeds();
+            }
+
+            function markAllRead() {
+                const feed = feeds.find(f => f.id === activeFeedId);
+                if (!feed) return;
+                feed.items.forEach(item => item.read = true);
+                saveFeeds();
+                renderItems(feed);
+                renderFeeds();
+                showToast('All items marked as read.', 'success');
+            }
+
+            async function refreshAll() {
+                if (feeds.length === 0) { showToast('No feeds to refresh.', 'info'); return; }
+                refreshAllBtn.disabled = true;
+                refreshAllBtn.innerHTML = '<span class="spinner" style="width:16px;height:16px;"></span>';
+                let successCount = 0;
+                for (const feed of feeds) {
+                    try { await refreshFeed(feed.id); successCount++; } catch (e) {}
+                }
+                refreshAllBtn.disabled = false;
+                refreshAllBtn.innerHTML = '<i class="fas fa-sync-alt"></i>';
+                if (successCount > 0) showToast(`Refreshed ${successCount} feed${successCount !== 1 ? 's' : ''}.`, 'success');
+                const active = feeds.find(f => f.id === activeFeedId);
+                if (active) renderItems(active);
+                renderFeeds();
+            }
+
+            function removeFeed(id) {
+                if (!confirm('Remove this feed?')) return;
+                const idx = feeds.findIndex(f => f.id === id);
+                if (idx === -1) return;
+                feeds.splice(idx, 1);
+                saveFeeds();
+                if (activeFeedId === id) { activeFeedId = feeds.length > 0 ? feeds[0].id : null; }
+                renderFeeds();
+                if (activeFeedId) selectFeed(activeFeedId);
+                else renderContentEmpty('No feed selected', 'Choose a feed from the sidebar.');
+                showToast('Feed removed.', 'info');
+            }
+
+            // ---- Event listeners ----
+            addForm.addEventListener('submit', (e) => { e.preventDefault(); addFeed(feedUrlInput.value); });
+            refreshFeedBtn.addEventListener('click', () => { if (activeFeedId) refreshFeed(activeFeedId); });
+            refreshAllBtn.addEventListener('click', refreshAll);
+            markAllReadBtn.addEventListener('click', markAllRead);
+
+            // ---- Init ----
+            initFeed();
+
+            document.addEventListener('keydown', (e) => {
+                if ((e.metaKey || e.ctrlKey) && e.key === 'r') { e.preventDefault(); refreshAll(); }
+            });
+
+            console.log('📰 Feed Reader ready – thumbnail generation preserves special characters');
+        })();
+    </script>
+</body>
+  </html>
