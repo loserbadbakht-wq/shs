@@ -154,7 +154,7 @@ jobs:
               title = re.sub(r'[\\/*?:"<>|]', '', title)
               title = re.sub(r'[-\s]+', '_', title)
               title = title.strip('_.')
-              return title[:255] or "untitled"
+              return title[:50] or "untitled"
           for json_path in json_files:
               print(f"\nProcessing {json_path}")
               with open(json_path, 'r', encoding='utf-8') as f:
