@@ -253,4 +253,4 @@ jobs:
           commit_message: "buh"
           file_pattern: |
             json/translated/*.json
-            json/tts/*.mp4
+            json/tts/*.mp3
