@@ -45,7 +45,6 @@ def main():
         with open(file_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
         translated_data = translate_feed(data, translator)
-        # Add timestamp to force change
         translated_data['_translated_at'] = time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime())
         output_path = os.path.join(OUTPUT_DIR, filename)
         with open(output_path, 'w', encoding='utf-8') as f:
