@@ -5,7 +5,7 @@ const parser = new xml2js.Parser({ explicitArray: false });
 const feeds = [
   { url: 'https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/safebooru/safebooru-yuri-rss.xml', filename: 'safebooru-yuri-rss.json' },
   { url: 'https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/notif/new1.xml', filename: 'new1.json' },
-  { url: 'https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/notif/new2.xml', filename: 'new2.jaon' }
+  { url: 'https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/notif/new2.xml', filename: 'new2.json' }
 ];
 async function fetchAndConvert(feed) {
   const jsonPath = `json/${feed.filename}`;
