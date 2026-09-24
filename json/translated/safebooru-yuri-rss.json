@@ -1,5 +1,265 @@
 {
-  "error": "Failed to fetch: Invalid character in entity name\nLine: 249\nColumn: 148\nChar: =",
-  "timestamp": "2026-09-24T01:02:11.767Z",
-  "_translated_at": "2026-09-24T01:02:17Z"
+  "rss": {
+    "$": {
+      "version": "2.0"
+    },
+    "channel": {
+      "title": "Safebooru Yuri - فید RSS",
+      "link": "https://github.com",
+      "description": "جدیدترین تصاویر یوری از safebooru",
+      "item": [
+        {
+          "title": "",
+          "link": "https://x.com/konton_hakusai/status/2102749718397014174",
+          "description": "<b>حق نسخه‌برداری:</b> touhou<br/> <br/><b>شخصیت(ها):</b> hakurei_reimu shameimaru_aya<br/> <br/><b>برچسب‌ها:</b> 2girls_alterne_costume bird_wings black_wings blush brown_requestary brown_heads embarushar_hasبال‌های پردار فوسوما موی_بین_چشم‌های بلند لباس ژاپنی کیمونو کنتون_هاکوسایی آستین‌های بلند مفقود شده_سرپوش چندگانه_دخترانه امضای پیراهن دهان باز درهای کشویی سخنرانی_حباب ترجمه_درخواست سفید_کیمونو سفید_پیراهن_آستین_گشاد بال یوری<br/><gsrc=\"https://safebooru.org/samples/81/sample_1f9fe868b25a04c2d0c623644ceadf55c4c75bda.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/1f9fe868b25a04c2d0c623644ceadf55c4c75bda.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://i.pximg.net/img-original/img/2026/09/24/10/13/17/150044197_p0.jpg",
+          "description": "<b>حق تکثیر:</b> touhou<br/> <br/><b>شخصیت(ها):</b> motoori_kosuzu<br/> <br/><b>برچسب‌ها:</b> 2پیش بند دخترانه زنگ قرمز شطرنجی_لباس شطرنجی_کیمونو کامنت_درخواست گلhakama hakama_ دامن hieda_no_akyuu بلند بالا نزدیک_بوسه_ژاپنی_لباس جینگل_زنگ کیمونو لایه بندی شده_کیمونو آستین بلند_متوسط_موهای چندتایی_دخترانه_دهان_باز_نارنجی_مو در خارج از منزل صورتی_چشم بنفش_مو باران قرمز_هاکاما_دامن ما بنفشه دوتایی_یوری آستین گشاد زرد_پیش بند زرد_کیمونو<br/><img src=\"https://safebooru.org/samples/81/sample_7f1f90a2317deb201792f67625e0ec0ad9781f0e.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/7f1f90a2317deb201792f67625e0ec0ad9781f0e.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/MorinoKuniKa/status/2102061197004562927",
+          "description": "<b>حق نسخه‌برداری:</b> mahou_shoujo_madoka_magica mahou_shoujo_madoka_magica_(انیمه)<br/> <br/><b>شخصیت(ها):</b> نمی‌توان حدس زد<br/> <br/><b>برچسب‌ها:</b> 2girls absurdres absurdres akemiflowary_homurfrilled_dress frills frwn highres kaname_madoka_layed_dress_hair_long look_at_a other morinokunika_day_girls pink_hair_pleated_dress_purple_hair red_dress_reseless_less flowerless_dressing straddling very_long_hair white_dress wrist_cuffs<bryukadonimg<br><br><br><br><br><br><br>src=\"https://safebooru.org/samples/81/sample_b8afee9ec3e9369b3188a0257c789136b31e245a.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/b8afee9ec3e9369b3188a0257c789136b31e245a.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/t0mi_1228/status/2101711503275815154",
+          "description": "<b>حق نسخه‌برداری:</b> sayonara_lara<br/> <br/><b>شخصیت(ها):</b> نمی‌توان حدس زد<br/> <br/><b>برچسب‌ها:</b> 2دختر_مشکی_موی_مشکی_ملوانی_پیراهن_مشکی_پیراهن_آبی_پس زمینه_چشم_آبی قیقه_بند_پیراهن_چشم_آبیدست_روی_صورت_دیگری بلند لارا_(سایونارا_لارا) موی بلند_نگاه_به_دختر چندتایی_دیگر اوتسو_ماری_قرمز یقه_مدروان مدرسه_پیراهن سرافوکو یکدست_موی کوتاه_پس زمینه_تک_بافته_گفتار_حباب t0mi_1228 اشک ترجمه_ درخواست white_dressysrc=\"https://safebooru.org/samples/81/sample_ca519ff267c9ed50f5a4c4291e3eea3529a397ac.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/ca519ff267c9ed50f5a4c4291e3eea3529a397ac.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://patchouliknowledge.tumblr.com/post/162519941861/testing-out-new-brushes",
+          "description": "<b>حق نسخه‌برداری:</b> mahou_shoujo_madoka_magica mahou_shoujo_madoka_magica_(انیمه)<br/> <br/><b>شخصیت(ها):</b> نمی‌توان حدس زد<br/> <br/><b>برچسب‌ها:</b> 2girls akemi__homura blackboumblot_مشکی_روبان بلونت_چکمه پاپیون کارتونی دایره_دامن_دهن_بسته_لباس کامنت کنتراست_لباس یقه_لباس_کپیون_انگلیسی_نظر_چشم_تماس مژه_پر_دامن_پر_آستین_دستکش تمام_تنه_پان_مو_پاشیده_لباس بلند_لباس_لباسگرفتن_دست های در هم قفل_انگشت نامرئی_صندلی جازیبات پرش کانام_مادوکا زانوهای روشن_رژلب رژلب_موهای بلند_پاهای بلند_نگاه_به_یکی دیگر آرایش دختر جادویی مری_جین دامن مینی چندتایی_دخترانه یقه_روبان_دهان باز_پوست صورتی_صورتی_لباس صورتی_رنگ_پوست_صورتی_رنگپفی_آستین_کوتاه آستین_پفی پمپ بنفش_دامن_قرمز_کفش_قرمز_کفش_قرمز_کفش روبانی_لباس کوتاه_مو کوتاه_آستین_کوتاه_دوتایی_مرتبه_پس زمینه ساده دامن نشسته دامن_زیر_لباس لبخند جوراب مربعی_یقه راست_موی دندون دم_مدل_بوتلباس سفید_دستکش_سفید_اسکیر...<br/><img src=\"https://safebooru.org/samples/81/sample_d13710a17a28926c8ed0fab29dc43fb9319d8a97.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/d13710a17a28926c8ed0fab29dc43fb9319d8a97.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/yuki173_1010/status/2102590733836546440",
+          "description": "<b>حق نسخه‌برداری:</b> umamusume<br/> <br/><b>شخصیت(ها):</b> dream_journey_(umamusume) stay_gold_(umamusume)<br/> <br/><b>برچسب‌ها:</b> 3 girls animal_ears_hair blush brown_ary_closedخانم_مربی_(umamusume) از_بالا دختر_ساندویچ_پیراهن_خاکستری قلب بلند_گوش_اسب_دختر_مو بلند_دختر چند_دختر_یک_چشم_بست بالش ساندویچی پیراهن خواب مربی_(umamusume) زیر_پوشش_پیراهن_سفید yuki173_1010 yuri<br><br>src=\"https://safebooru.org/samples/81/sample_1413ad0e8d2b2d58083d1cdbfbe2feebf69b81af.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/1413ad0e8d2b2d58083d1cdbfbe2feebf69b81af.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/zoge_maru/status/2102414729323159990",
+          "description": "<b>حق نشر:</b> umamusume<br/> <br/><b>شخصیت(ها):</b> mejiro_ramonu_(umamusume) sirius_symboli_(umamusume) speed_symboli_(umamusume) symboli_rudolf_(umamusume)<br/> <br/> <br/> <br/>عصبانیت_رگ حیوان_گوش_سیاه_دستکش_مشکی رژگونه_قهوه ای_موهای_قهوه ای_رگه_چشمهای بسته نظر_خواهش_مربی_زن_(umamusume) دستکش سبز_پیراهن_خاکستری_چشم خاکستری_موی خاکستری_رگه های قلب بلند بلند اسب_گوش بوسیدن_موهای بلند_چندرنگ_دختر_دارپیراهن مشترک_گفتار_حبابدار ساده_پس زمینه لبخند گفتار_حباب_گفتاری_بیضی_مربی_خط‌دار_(umamusume) translation_درخواست چشمان_بنفش_سفید_زمینه_سفید یوری زوگه_مارو<br/><imgsrc=\"https://safebooru.org/images/81/8a8d559bdddcfd57dac1a29e98f2bf3b87cebe9d.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/8a8d559bdddcfd57dac1a29e98f2bf3b87cebe9d.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/gazelle_jun/status/2102649604525392077",
+          "description": "<b>حق نشر:</b> shuuniichido_classmate_wo_kau_hanashi<br/> <br/><b>شخصیت(ها):</b> نمی توان حدس زد<br/> <br/><b>برچسب ها:</b> 2دختر_مشکی_مو آبی_لباس_آبی_چشم_قهوه ای_موهای_قهوه ای_گل_دهان_تعریفمبارک_تولد بالا دست نگه داشتن_گل گرفتن_دست_موهای بلند_موی_متوسط_میاگی_شیوری چندتایی_دخترونه_بنفش_گل_قرمز_سنتای_هازوکی پیراهن لبخند بنفش_چشمهای سفید_گل_سفید_پیراهن یوری<br/><imgsrc=\"https://safebooru.org/samples/81/sample_70dc38b417ff2618819aca041fa64aa31e2c7860.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/70dc38b417ff2618819aca041fa64aa31e2c7860.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/cronchybaguette/status/2102874286625304863",
+          "description": "<b>حق نسخه‌برداری:</b> sayonara_lara<br/> <br/><b>شخصیت(ها):</b> نمی‌توان حدس زد<br/> <br/><b>برچسب‌ها:</b> 2girls absurdres blush braid collared_commentary dress cronchybaguettethers english_commentary eye_erfa_contacthighres lara_(sayonara_lara) به_دخترهای چندتایی دیگر نگاه می کنم ootsu_mari مدرسه یقه ملوانی_پیراهن سرافوکو یکدست_موهای کوتاه_زمینه_زمینه_پس زمینه_سفید قیطانی یوری<br/><imgsrc=\"https://safebooru.org/samples/81/sample_f4a2e1ec28e4aaa87a4b170f28b88cc206baa33f.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/f4a2e1ec28e4aaa87a4b170f28b88cc206baa33f.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/Blue_Picmi/status/2102653668382380100",
+          "description": "<b>حق نشر:</b> sayonara_lara<br/> <br/><b>شخصیت(ها):</b> نمی توان حدس زد<br/> <br/><b>برچسب ها:</b> 2girls absurdres black_hair black_pants blue_pants blue_picmi blue_sky braid withing_pet_designinglara_(sayonara_lara) بلند_موهای چندگانه_دختر اوتسو_ماری دهان باز در فضای باز شلوار گلبرگ گیاه دم اسبی گلدانی_گیاه پرنسس_حمل نرده_قرمز_موی_کفش_قرمز پیراهن کفش_مو کوتاه_دم اسبی کوتاه_دم_اسبانی تک_باف آسمانی لبخند تانک_بالای درختی_گل سفید_سفید_کفش استهsrc=\"https://safebooru.org/samples/81/sample_6858b948f7409260b3cd3eef36d0f866a188ea42.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/6858b948f7409260b3cd3eef36d0f866a188ea42.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/ria_irst14/status/2102755691689906385",
+          "description": "<b>حق نسخه‌برداری:</b> kamiina_botan_yoeru_sugata_wa_yuri_no_hana<br/> <br/><b>شخصیت(ها):</b> نمی‌توان حدس زد<br/> <br/><b>برچسب‌ها:</b> 2girls absurdres blue_background blue_cardigan blue_irshنظر_درخواست لباس شیب_زمینه_موی خاکستری بند موی سر_روی_شانه_دیگری بلند کامینا_بوتان_چندین_دختر_لب_باز_صورتی_زمینه_صورتی_کاردیگان_صورتی_موی_صورتی_ریا_ایرست۱۴_موی_کوتاه_تک_باف تونامی_ایبوکی_چشم_بنفش_زرد<br_dresssrc=\"https://safebooru.org/samples/81/sample_335c96cc15f312518ebc759f6ac72d35b95cfa69.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/335c96cc15f312518ebc759f6ac72d35b95cfa69.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/shinchora/status/2102882193336893517",
+          "description": "<b>حق نسخه‌برداری:</b> honkai_(سریال) honkai_impact_3rd<br/> <br/><b>شخصیت(ها):</b> kallen_kaslana<br/> <br/><b>برچسب‌ها:</b> 2 girls animal_ears bare_shoulders blue__bow blue_eyدانگو جدا شده_آستین‌ها خوردن انگلیسی_نظر غذا غذا_روی_صورت روباه_گوش روباه_دختر دستکش خاکستری_مو_کمانی قلب بلند نگه داشتن_غذا_آستین_بلند نگاه_به_بیننده دراز کشیده چندتایی_دختران_غیر سنتی_میکو روی_پشت_پشت اونیگیریچشمهای بنفش واگاشی آستین‌های گشاد یاه_ساکورا یوری<br/><img src=\"https://safebooru.org/samples/81/sample_d14814ba123b699fab9075b9abaaeb9ff64cb259.jpg\" /> <br/>href=\"https://safebooru.org/images/81/d14814ba123b699fab9075b9abaaeb9ff64cb259.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://i.pximg.net/img-original/img/2024/02/10/21/12/56/115932445_p0.jpg",
+          "description": "<b>حق نسخه‌برداری:</b> اصلی<br/> <br/><b>شخصیت(ها):</b> نمی‌توان حدس زد<br/> <br/><b>برچسب‌ها:</b> 2 دختر حیوانی سیاه_موی آبی_پیراهن گربه بسته_چشم‌های بستهسر_روی_بالش دراز کشیده_موهای_متوسط_چند_دختران_روی_پیراهن_نارنجی_پیراهن بالشی حیوان خانگی خوابیده_خوابیدن_حیوان_همخوابه_زیر_زیر_یوری<br/><imgsrc=\"https://safebooru.org/images/81/c2d4a815a51691649a48731562325d7d5d32ec62.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/c2d4a815a51691649a48731562325d7d5d32ec62.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://i.pximg.net/img-original/img/2026/02/24/15/47/05/141575796_p0.jpg",
+          "description": "<b>حق نسخه‌برداری:</b> bocchi_the_rock!<br/> <br/><b>شخصیت(ها):</b> نمی‌توان حدس زد<br/> <br/><b>برچسب‌ها:</b> 2girls animal_ear_fluff animal_ears black_tank_top cat_ears cat_tail_request_eyes بسته_چشم هاgotoh_hitori_mode_ornament highres kemonomimi_mode kita_ikuyo_hair_long multiple_girls off-shoulder_shirt off_shoulder صورتی_موی_قرمز پیراهن_قرمز_پس زمینه ساده_پس زمینه_موی راست دم مخزن_بالا سه ربع_آستین_بالاتنه_پیراهن_سفید_پیراهن_سفید_استوونsrc=\"https://safebooru.org/samples/81/sample_d0fc6370e54eefecf1de38a3b0ef018aef460564.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/d0fc6370e54eefecf1de38a3b0ef018aef460564.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://i.pximg.net/img-original/img/2026/08/06/12/45/22/148078910_p0.jpg",
+          "description": "<b>حق نسخه‌برداری:</b> bocchi_the_rock!<br/> <br/><b>شخصیت(ها):</b> نمی‌توان حدس زد<br/> <br/><b>برچسب‌ها:</b> 2girls :d absurdres arms_around_neck black_shirt blue_eyes blush c34_44476مکعب_مو_زیورآلات_گوتو_هیتوری_زیور_موی بلند بغل کسیکو_بند_تی شرت kita_ikuyo_موهای بلند_چند_دختران_متقابل_بغل_یک_رو_بالا_شلوار_دهان_گشاد صورتی_مو صورتی_شلوار چاپ_پیراهن_آستین کوتاه_پیراهن ساده_پس زمینه_پیراهن ساده_پیراهن_پس زمینه ساده_پیراهن_پیراهن_خیلی_مرتب_لبخندیوری<br/><img src=\"https://safebooru.org/samples/81/sample_b8ce12a94088b726bdf34918c8f64e181bc36fe6.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/b8ce12a94088b726bdf34918c8f64e181bc36fe6.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://i.pximg.net/img-original/img/2026/09/13/11/39/02/149610966_p0.jpg",
+          "description": "<b>حق نشر:</b> bocchi_the_rock!<br/> <br/><b>شخصیت(ها):</b> نمی توان حدس زد<br/> <br/><b>برچسب ها:</b> 2دختران ابسوردرس مشکی_دامن_آبی پاپیون پاپیون قهوه ای_پس زمینه قهوه ای_پیراهن_قهوه ای_چشم_قهوه ای_ساc3444767 شخصیت_نام چینی_نظر_دهان_بسته_نظر_درخواست مکعب_مو_زیور_چشم_تماس گل پرواز_قطره_عرق از سمت_گوتو_هیتوری_چشم سبز_مو_زیور قلب بالا نگه داشتن_کت گل kita_ikuyo loafers_loafersروی_یک_زانو شلوار یک طرف_بالا صورتی_موی_صورتی_ژاکت صورتی_شلوار_شلوار چین دار پروفایل قرمز_کمان قرمز_پاپیون قرمز_گل_قرمز_موی_قرمز_رز گل رز ملوان_یقه_مدرسه_یونیفرم سرافوکو پیراهن سایه سایه کفش shuka_high_school_uniform_smile_background<br><br><br><br><br><br>src=\"https://safebooru.org/samples/81/sample_d7ae3018a7f428c6ed3f3b004f40c01fe5ec529b.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/d7ae3018a7f428c6ed3f3b004f40c01fe5ec529b.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/mnr1888/status/1874337422999507105",
+          "description": "<b>حق نسخه‌برداری:</b> نمی‌توان حدس زد<br/> <br/><b>شخصیت(ها):</b> نمی‌توان حدس زد<br/> <br/><b>برچسب‌ها:</b> 2girls aqua_eyes bare_shoudersچشم_تماس گل پوزخند دست_روی_لگن نگه داشتن_دسته_گل کره ای_نظر لیلی_(گل)_موی بلند_نگاه_به_دیگر mnr1888 چند_دختر_خوششانه لبخند بی بند_لباس_عروسی_لباس_سفید_همسر_و_همسر یوری<br/><imgsrc=\"https://safebooru.org/images/81/03773e493aa226e38abb3fd437df41f3c2067395.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/03773e493aa226e38abb3fd437df41f3c2067395.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/poki3ub/status/2102722144082010350",
+          "description": "<b>حق نسخه‌برداری:</b> نمی‌توان حدس زد<br/> <br/><b>شخصیت(ها):</b> نمی‌توان حدس زد<br/> <br/><b>برچسب‌ها:</b> 2 دختر رژگونه شخصیت_درخواست گونه‌به‌گونه اظهار نظر_درخواست حق چاپ_درخواست کپی‌رایت_درخواست خدمه_گردن_گردن_گروه_لغو_متحرک_بالا_به_پشتبغل_از_پشت_خطی_به_یکی_دیگر_چندتا_دختر تک رنگ دیگر_لب_باز_لب_باز_پیکنیکی_پیشرت_پهلو_موی کوتاه تی شرت ژاکت موی کوتاه یوری<br/><imgsrc=\"https://safebooru.org/samples/81/sample_558e396e576fae96f76cc384b8fbcc097d889f8b.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/558e396e576fae96f76cc384b8fbcc097d889f8b.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/fafayu_524/status/2102777365344743672",
+          "description": "<b>کپی رایت:</b> sayonara_lara<br/> <br/><b>شخصیت(ها):</b> نمی توان حدس زد<br/> <br/><b>برچسب ها:</b> 2دختر_مشکی_موی_مشکی_ملوانی_پیراهن_مشکی_پیراهن_آبی_چشم های بافته شده قهوه ای_چشم های بلند بافته شده قهوه ای_چشم های بلند چینی_کامنتاری_نظر بسته_بغل_از_پشت_لارا_(سایونارا_لارا)_موهای_بلند_شلوار_دخترانه_یک_چشم_بسته اوتسو_ماری_موهای_قرمز یقه_مدروانی_مدرسه_پیراهن_یکنواخت_موهای_کوتاه_پس زمینه_تک_بافته_کوچک_قطره_عرق_لبخند ترجمه_درخواستی_موهای_بلند_موهای_بلند_سفید_پس زمینه_سفیدی_مsrc=\"https://safebooru.org/samples/81/sample_824f675b580a26d0c88413349c4a578e66121b0a.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/824f675b580a26d0c88413349c4a578e66121b0a.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/UNRI_2/status/2099124846232064292",
+          "description": "<b>حق نسخه‌برداری:</b> a.i._voice utau<br/> <br/><b>شخصیت(ها):</b> kasane_teto<br/> <br/><b>برچسب‌ها:</b> >_< 2girls adachi_rei blush caught_kissing_doll__ commentsaryhaachlledفومو_(عروسک) خاکستری_پیراهن بلند نگه داشتن_عروسک ایگاسام بوسیدن_اشیاء_چند_دختر_چشم_نارنجی_موی_قرمز_چشم نارنجی_موی_قرمز پیراهن لرزان دوقلو_دریل غیرقابل ترجمه_نظر یوری<br/><imgsrc=\"https://safebooru.org/samples/81/sample_20954a7b28a898370d7345ee20affe4f01861e52.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/20954a7b28a898370d7345ee20affe4f01861e52.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/foruwoaini/status/2102778438147088431",
+          "description": "<b>حق نسخه‌برداری:</b> genshin_impact<br/> <br/><b>شخصیت(ها):</b> columbina_(genshin_impact) sandrone_(genshin_impact)<br/> <br/><b>برچسب‌ها:</b> 2girls alternate_costume bare_halanir blackey_قهوه‌ای_ژاکت_دهان_بسته تفسیر نیمکت زن و شوهر در آغوش گرفتن غذای بی‌ظاهر غذا_روی_صورت بلند نگه داشتن_دست_موهای بلند mj_(foruwoaini) چندتایی_دخترونه بیرون_شانه_پخت پاپ کورن پاپ کورن سطلژاکت بنفش_چشم های تماشای_فیلم_سفید_پیراهن یوری<br/><img src=\"https://safebooru.org/samples/81/sample_7538f21a76f20e81554e38102ab7f9c02e364254.jpg\" />href=\"https://safebooru.org/images/81/7538f21a76f20e81554e38102ab7f9c02e364254.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/nugtski/status/2102829669766869006",
+          "description": "<b>حق نشر:</b> bang_dream!bang_dream!_it's_mygo!!!!!<br/> <br/><b>شخصیت(ها):</b> misumi_uika togawa_sakiko<br/> <br/><b>برچسب‌ها:</b> 2girls amakuma aqua_hair black_ribbon blonde_hair commentary two high-hair looktherther hairsidedrew_neck_Ribbonموی_متوسط_چند_دختر_بینی_لمس_لبهای بازشده_پرتره_پرتره_پیراهن بنفش_پیراهن روبان ساده_زمینه لبخندی_راست_موهای_بنفش_چشمهای_سفید_پس زمینه یوری<br/><imgsrc=\"https://safebooru.org/samples/81/sample_b7bcca732284fff536453414178fc350f2b12f54.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/b7bcca732284fff536453414178fc350f2b12f54.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://i.pximg.net/img-original/img/2026/09/24/06/09/21/150040372_p0.png",
+          "description": "<b>کپی رایت:</b> one-punch_man<br/> <br/><b>شخصیت(ها):</b> نمی توان حدس زد<br/> <br/><b>برچسب ها:</b> 2دختران پوچ سینه های بسته_چشم ها تفسیر English_commentary fubuki_(one-punch_man) عینک kiharesirchs longromsyاکثرا بلوویات چند دختر دستمال گردن روانی_(مرد_یک پانچ) مدرسه_یونیفرم سرافوکو_موهای کوتاه_پس زمینه_سفید پس زمینه یوری<br/><imgsrc=\"https://safebooru.org/samples/81/sample_68d5377a8efd8cfa823f4cc19573a3d6815f904a.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/68d5377a8efd8cfa823f4cc19573a3d6815f904a.png\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/Rxyu1z/status/2102733023364227094",
+          "description": "<b>حق نسخه‌برداری:</b> genshin_impact<br/> <br/><b>شخصیت(ها):</b> columbina_(genshin_impact) sandrone_(genshin_impact)<br/> <br/><b>برچسب‌ها:</b> 2دختر بدون_شانه_لخت_لخت_لخت_لخت_لخت_لخت_لخت_لخت_لخت_لخت_لخت_لخت_لخت_خطانقطه_بینی موی_روی_کلاه_شانه بلند افق آغوش آغوش_از_پشت_موهای بلند_آستین_عاشقانه_هاله_چند_دختران_خارج_شانه_پشلوور بیرون_شانه_دهان_باز در فضای باز بنفش_موی رویو_ایلوس پیراهن آسمان سورپرایز_موهای بلند_آستین_کلاه_بالا شگفت زدهwhite_hat white_shirt yuri<br/><img src=\"https://safebooru.org/images/81/c8204eb640167e91f9b23038b2fe5a9f978e0bce.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/c8204eb640167e91f9b23038b2fe5a9f978e0bce.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/pipiikki/status/2102777772485578947",
+          "description": "<b>حق نسخه‌برداری:</b> umamusume<br/> <br/><b>شخصیت(ها):</b> north_flight_(umamusume) sakura_bakushin_o_(umamusume)<br/> <br/><b>برچسب‌ها:</b> 2دختر حیوان_گوش_دستکش_قهوه‌ای_قهوه‌ای_دستکش بستهلباس گوش_تا_سر_لباس دستکش دستکش طلا_موی_بند_مو_بین_چشم_زیور مو بند مو گیره کلاه قلب بلند_دست_اسب_گوش_اسب_دختر_دم اسب_مو بلند_سینه_سینه_متوسط_موی چندرنگ_موی چندرنگ_دخترهای چندگانه_روسریرگه_صورتی pipiikki دم اسبی sakura_bakushin_o_(شکوفه_در_آموزش)_(umamusume) لبخند بدون آستین سخنرانی_حباب رگه دار_دم موی زرد_دستمال گردن یوری<br/><imgsrc=\"https://safebooru.org/samples/81/sample_58124a8d9ea704afb146a8e010cec49141a550ed.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/58124a8d9ea704afb146a8e010cec49141a550ed.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/yuri__mandu/status/2102793500274332018",
+          "description": "<b>حق نشر:</b> girls_band_cry<br/> <br/><b>شخصیت(ها):</b> نمی توان حدس زد<br/> <br/><b>برچسب ها:</b> 2girls absurdres aqua_necktie awa_subaru backlighting black_hair bloom blue_eyes bluewellaterگاوچران_شات مورب-راه راه_لباس مورب-راه راه_کراوات_چشم_تماس از کنار بلند بالا گرفتن_دست های قفل شده_انگشت_نگاه_ایسری_نینا_موی بلند_نگاه_به_یکی دیگر_دخترهای چندتایی کراوات شطرنجی_لباس چهارخانه_پروفایل دامن_قرمز_پیراهن_پشتی_پشت کوتاه_مو کوتاه_موی کوتاهلباس راه راه ژاکت راه راه ژاکت یوری یوری_ماندو آستین سه ربع بنفش چشمان پس زمینه سفید یوری یوری_ماندو<br/><imgsrc=\"https://safebooru.org/samples/81/sample_f4707e7c366b7629d3a529b3c7a5661dccb0d002.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/f4707e7c366b7629d3a529b3c7a5661dccb0d002.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/ObscureMisty/status/2102787896906539181",
+          "description": "<b>کپی رایت:</b> bocchi_the_rock!<br/> <br/><b>شخصیت(ها):</b> نمی توان حدس زد<br/> <br/><b>برچسب ها:</b> 2girls absurdres blush Chinese_commentary close_eyes commentary_request-windows crying hair girlhi_on_topedowsدست_رژگونه_شاد_اشک بلند بوسه بوسیدن_دست_کیتا_ایکویو_موی_بلند_نگاه_به_دیگر خوابیده چند_دختر_معروف_پشت_لباس_باز_لباس_باز_لباس_باز_صورتی_گل_رز_صورتی_رز_رد_رد_لباس رز رز ساده_پس زمینه اشک سه چهارم_آستین_پشت <br/src=\"https://safebooru.org/samples/81/sample_6876aa9cc185336ed8e6defb07382e267eb8a6ef.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/6876aa9cc185336ed8e6defb07382e267eb8a6ef.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/irahuoa0519/status/2102633660348547163",
+          "description": "<b>حق نسخه‌برداری:</b> kimi_ga_shinu_made_koi_wo_shitai<br/> <br/><b>شخصیت(ها):</b> نمی‌توان حدس زد<br/> <br/><b>برچسب‌ها:</b> 2 دختر دست‌های_در اطراف_پشت_دیگریdigo_0519 لباس سبز_چشم های سرپشت بالا بغل کاگاری_میمی_موهای_بلند_نگاه_بیننده_موهای_متوسط چندتایی_دختران_صورتی_موی_ملوانی_لباس ملوانی_لباس نشسته نشسته_روی_لپ نشستن_رو_آستین_آستین_آستین_آستین_آستین_آستین_آستین_آستین_آستین_آستین_آستین_آستین_آستین_آستین_آستین_آستین_آستین_آستین_آستین_آستین_تسوکی_شینا وایت_کولار_ایsrc=\"https://safebooru.org/samples/81/sample_80b07e803f88504318010137c94babf669f6bdbb.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/80b07e803f88504318010137c94babf669f6bdbb.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/qyuroo/status/2102813825728962630",
+          "description": "<b>کپی رایت:</b> heaven_burns_red<br/> <br/><b>شخصیت(ها):</b> نمی توان حدس زد<br/> <br/><b>برچسب ها:</b> 2girls asakura_karen_(heaven_burns_red) black_hair blazer blonde__whairti_blue_sideeeyمو_روی_شانه_روبان_نیمه_بالا_مقطع کلاه_پایین کلاه_کت_کت_کت بوسه بوسیدن_دست_موهای بلند_آستین_بلند_نگاه_به_یکی دیگر چندتایی_موهای_بلند_کم_بند_دخترونه_لباس_باز_کت_باز_پرتقالی_چشمهای قرمز_پرتقالی_رزونه_پرتقالژاکت با زمینه ساده tojo_tsukasa upper_body v-neck white_background white_ribbon white_wheater yuri<br/><img src=\"https://safebooru.org/images/81/03e4d0e3cc99a84f0aad87a85263c1c> <br/><img src=\"https://safebooru.org/images/81/03e4d0e3cc99a84f0aad87a85263c.href=\"https://safebooru.org/images/81/03e4d0e3cc99a84f0aad87a85263c1c0e0e41f3f.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/romantic_rose4/status/2102757139051958300",
+          "description": "<b>حق نشر:</b> اصلی<br/> <br/><b>شخصیت(ها):</b> نمی توان حدس زد<br/> <br/><b>برچسب ها:</b> 2girls :t :|کیف رژگونه پاپیون پاپیون بسته_دهن بسته_پیراهن یقه_پیراهن_تقاضی_درخواست زن و شوهر تمام_تنه خاکستری مو_روی_شانه بلند بالا نگه داشتن نگه داشتن_کیف_دست_لوفرز بلند_موهای بلند_جوراب گشاد_جوراب کوتاه تک رنگ چندتایی_دخترهای پاره پاره_چانچه_چتری_شاخه_کپیون شطرنجی_اسکیرتپولکی_نقطه_خالی_پس زمینه دم اسبی پوکه_رز4_مدرسه_کیف مدرسه_پیراهن یکنواخت کفش شانه_کیف دامن جوراب قیچی ایستاده_موی راست_ژاکت_جلیقه_آستین سه ربع دم دوقلو یوری<br/><imgsrc=\"https://safebooru.org/samples/81/sample_00acbc3343c4f75f56f6659fb122a171810463e3.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/00acbc3343c4f75f56f6659fb122a171810463e3.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://i.pximg.net/img-original/img/2026/09/24/00/02/00/150032147_p0.jpg",
+          "description": "<b>کپی رایت:</b> اصلی<br/> <br/><b>شخصیت(ها):</b> نمی توان حدس زد<br/> <br/><b>برچسب ها:</b> 2کیف دخترانه ابسوردرس مشکی_موی_سیاه_کفش مشکی_دامن_مشکی_جوراب_بلو_کیف پاپیونی پاپیونی قهوه ای_پانتی_تنبلیجلو به پشت عینک تمام بدن سبز_چشم خاکستری_ژاکت_جلیقه_دست_رو_شانه_دیگری_سر_رو_شانه_دیگری بلند بالا گرفتن_دست گرفتن_تلفن زانو بلند_موهای بلند_نگاه_به_تلفن مینی دامن miyao385_shoulder_shoulderعینک مستطیلی_کمپی قرمز_کمپی قرمز_کفش مدرسه_پیراهن یکنواخت کفش شانه_کیف ساده_پس زمینه دامن جوراب گوشی هوشمند صدا_افکت ژاکت ایستاده_جلیقه ترجمه_درخواست_پس زمینه_سفید_پیراهن_سفید یوری<br/><imgsrc=\"https://safebooru.org/samples/81/sample_12c996aed32e5e5ee9fef083914de35e04ca8e90.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/12c996aed32e5e5ee9fef083914de35e04ca8e90.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/oumi_hrak_npr/status/2098461826124222669",
+          "description": "<b>حق نشر:</b> مدال آور_(مانگا)<br/> <br/><b>شخصیت(ها):</b> نمی توان حدس زد<br/> <br/><b>برچسب ها:</b> 2پیشبند دخترانه بازو_پشتیبانی_مو مشکی_پیراهن_قهوه ای_چشم های قهوه ای_موی یقه یقه_هات_پیراهن_هات_پیراهن_دخترژولیت_آستین_کامیساکی_هیکارو_پیش_بند_بلند_موهای_بلند_میان_چشم_آستین_بلند_به_نگاه_خدمتکار دیگر_پیشبند خدمتکار_سرپوش اوباش_کلاه_چند_دختران oumi_hrak_npr پیراهن آستین پف دار کفش ساده_زمینه_صفحه اسکیت_سفید_پس زمینه_سفید اسکیتyuitsuka_inori یوری<br/><img src=\"https://safebooru.org/samples/81/sample_a5ae9559b1c427ae33992dc805544971471c2e7d.jpg\" /> <br> <ahref=\"https://safebooru.org/images/81/a5ae9559b1c427ae33992dc805544971471c2e7d.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/gommotheworld/status/2102820320801632314",
+          "description": "<b>حق نشر:</b> bang_dream!bang_dream!_it's_mygo!!!!!<br/> <br/><b>شخصیت(ها):</b> wakaba_mutsumi yuutenji_nyamu<br/> <br/><b>برچسب ها:</b> 2دختران بسته_چشم_بسته_دهان_بسته نظر رقص لباس english_commentary gommothewresdo holding long_hairhairیوری_موی_کوتاه_بنفش_دهان_باز_لباس_زرد_چشم یوری<br/><img src=\"https://safebooru.org/samples/4432/sample_5330fae65605d8af15b6cfb90ecd713c3b021221.jpga\"href=\"https://safebooru.org/images/4432/5330fae65605d8af15b6cfb90ecd713c3b021221.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/inutanukawaii/status/2084943222489727072",
+          "description": "<b>حق نسخه‌برداری:</b> danganronpa_(series) danganronpa_v3:_killing_harmony<br/> <br/><b>شخصیت(ها):</b> نمی‌توان حدس زد<br/> <br/><b>برچسب‌ها:</b> 2girls absurdres black_hair black_hat brown_rashikostickerschibi_inset choker یقه_کت یقه_پیراهن کامنت نگین_مو_زیور_چشم سبز_زیور مو_روبان بند مو کلاه_کمربند بلند بغل بغل_از_پالپ لایه لایه_دامن_آستین بلند_آستین بلند خال خال بند_زیر_دهن باز_دختر_دختر_بنکره_دختر_دختر بازمدرسه یقه ملوانی_پیراهن یکنواخت_دامن مو کوتاه لبخند دم دوقلو uto_(inutanukawaii) witch_hat yumeno_himiko yuri<br/><imgsrc=\"https://safebooru.org/samples/4432/sample_c78b82722f4b6507e9c1763ddb280c3badcddc58.jpg\" /> <br> <ahref=\"https://safebooru.org/images/4432/c78b82722f4b6507e9c1763ddb280c3badcddc58.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/anime_kimishinu/status/2102699502347911551",
+          "description": "<b>حق نشر:</b> kimi_ga_shinu_made_koi_wo_shitai<br/> <br/><b>شخصیت(ها):</b> نمی توان حدس زد<br/> <br/><b>برچسب ها:</b> 2دختران پوچ سیاه_چکمه های آبی_لباس آبی_آبی چکمه های قهوه ای_request_hairمو_زیورآلات بلند بغل کاگاری_میمی_موی بلند_نگاه_به_یکی_دختر چندتایی_دختر رسمی_هنر_باز_گلبرگ_صورتی_موی ملوانی_یقه_مدرسه_لباس شنای دوم_منبع_مو کوتاه_پوست_نیش آسمان لبخند مایو takeshima_eku totsuki_shiina white_colarilerey_x_hair_ornament یوری<br/><img src=\"https://safebooru.org/samples/4432/sample_fc935cc6d681991f364422277403318228126b4a.jpg\" /> <br> <ahref=\"https://safebooru.org/images/4432/fc935cc6d681991f364422277403318228126b4a.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/Hcrane_Hrs/status/2102793015102435337",
+          "description": "<b>حق نسخه‌برداری:</b> touhou<br/> <br/><b>شخصیت(ها):</b> fujiwara_no_mokou horaisan_kaguya<br/> <br/><b>برچسب‌ها:</b> 2دختران سیاه_موی رژگونه کمان_دهان_بسته_نظر_درخواست_بی بیان_hairne_whrholding_another's_arm long_hair multicolored_bow multiple_girls red_bow sitting very_long_hair white_bow yuri<br/><img src=\"https://safebooru.org/samples/4432/sample_bc8350c7ced92730bcd403d6/> <br> <a href=\"https://safebooru.org/images/4432/bc8350c7ced92730bcb040c2d438d8d180d658fa.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/anime_kimishinu/status/2097626067033010683",
+          "description": "<b>حق تکثیر:</b> kimi_ga_shinu_made_koi_wo_shitai<br/> <br/><b>شخصیت(ها):</b> نمی توان حدس زد<br/> <br/><b>برچسب ها:</b> 2girls absurdres apron blue_pron brown_hair hairlips hair commentary_name flowerest_artshara_yui قلب قلبی شکل_کوکی به شکل_قلب_غذاهای بالا کاگاری_میمی_موهای بلند_چند_دخترانه_هنر رسمی_دهن_باز_صورتی_پیش بند صورتی_موی دم اسبی_مو کوتاه لبخند totsuki_shiina دم دوقلو بنفش_چشم سفید_گل یوری<br/><imgsrc=\"https://safebooru.org/samples/4432/sample_df47b655c312a6c31d83e5893aeca338d93ba734.jpg\" /> <br> <ahref=\"https://safebooru.org/images/4432/df47b655c312a6c31d83e5893aeca338d93ba734.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/anime_kimishinu/status/2100162785996882135",
+          "description": "<b>حق چاپ:</b> kimi_ga_shinu_made_koi_wo_shitai<br/> <br/><b>شخصیت(ها):</b> نمی توان حدس زد<br/> <br/><b>برچسب ها:</b> 2دختران پوچ هنرمند_درخواستی_لباس_قهوه ای_لباس_قهوه ای_موی_قهوه ای_خوشگل_هنر_چشم های بلندکاگری_میمی_موهای بلند_چند_دختر رسمی_هنر_دهان_باز_صورتی_یقه_ملوانی_لباس ملوانی مدرسه_لباس_لباس_مو کوتاه_لبخند توتسوکی_شینا بنفش_چشمهای_سفید_ملوانی یقه_موی_زیورآلات یوری<br/><imgsrc=\"https://safebooru.org/samples/4432/sample_96b04382f6e700b2d1f1fec15fed3d9e81a21340.jpg\" /> <br> <ahref=\"https://safebooru.org/images/4432/96b04382f6e700b2d1f1fec15fed3d9e81a21340.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/melon_kohashi/status/2101621802682531948",
+          "description": "<b>حق نسخه‌برداری:</b> نمی‌توان حدس زد<br/> <br/><b>شخصیت(ها):</b> نمی‌توان حدس زد<br/> <br/><b>برچسب‌ها:</b> 3دختران آبی_چشم آبی_موهای قهوه‌ای_چشم‌های قهوه‌ای_موهای_بسته_چشم_بسته_نظر_خواهد_تعریف_موارد_تبلیغ_تصویر_تصویر_تصویر_تصویر_تصویر_تصویر_تصویر_تصویر_تصویر_تصویریموی بلند_نگاه_نگاه_بیننده_به_طرف خربزه_کوهاشی_چندک_دختر_دهان_باز oumi_shiori_hair_hair sailor_collar School_پیراهن متحدالشکل ستاره مو کوتاه_(نماد) watashi_wo_tabetai_hitodenashi white_sailor_collar white_shirt yaotose_hinako yashi/yaotose_hinako yashisrc=\"https://safebooru.org/samples/4432/sample_718c3680846386bb361b2dcf3342f7353eb78288.jpg\" /> <br> <ahref=\"https://safebooru.org/images/4432/718c3680846386bb361b2dcf3342f7353eb78288.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/RUgettingsober/status/2102617144601268371",
+          "description": "<b>کپی رایت:</b> girls_und_panzer<br/> <br/><b>شخصیت(ها):</b> نمی توان حدس زد<br/> <br/><b>برچسب ها:</b> 2دختران_مشکی_موی_مشکی ژاکت رژگونه سینه قهوه ای_موهای_بسته_چشمهای بلند بلند در آغوش نیشومی_می_برهopen_mouth rugettingsober خواهر و برادر خواهر و برادر موی کوتاه ژاکت یوری<br/><img src=\"https://safebooru.org/samples/4432/sample_cced637281993694ce3764e900c6a10563c<3br/><img src=\"https://safebooru.org/samples/4432/sample_cced637281993694ce3764e900c6a10563c <3br/a10563c\"href=\"https://safebooru.org/images/4432/cced637281993694ce3764e900c6a10563c810b3.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/underdatv365/status/2102741901015482839",
+          "description": "<b>حق نسخه‌برداری:</b> zenless_zone_zero<br/> <br/><b>شخصیت(ها):</b> نمی‌توان حدس زد<br/> <br/><b>برچسب‌ها:</b> 2دختران با قاب مشکی_چشم‌بند black_hairband blonde_hair chibi chibi_intlyclosed_clareteysپرنده_عرق عینک_موی_سبز_موی_زیورآلات مو_روبان_هیچ_کسی_همیشه_در مقابل_انتظار_بوسه_با_زبان_(میم) قلب_موی بلند میم حرکت_خطوط_چند_دختران_دهان_باز_دهان_گوش_گوش_قرمز_روبان_ریبون_پشت_اینجا_روبان_ریبون_خوشگلtongue tongue_out twintails underdatv white_background yuri<br/><img src=\"https://safebooru.org/samples/4432/sample_e02e2fe7fbd7e8ea86fcb7dbe9ff190a81c80a07.jpg\" />href=\"https://safebooru.org/images/4432/e02e2fe7fbd7e8ea86fcb7dbe9ff190a81c80a07.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://i.pximg.net/img-original/img/2026/09/23/22/02/06/150026244_p0.png",
+          "description": "<b>حق نسخه‌برداری:</b> honkai:_star_rail honkai_(سریال)<br/> <br/><b>شخصیت(ها):</b> stelle_(honkai:_star_rail) trailblazer_(honkai:_star_rail)<br/> <br/><ls carrying2Tحامل_فرد_دهان_بسته_نظر_درخواست_گوشواره_دستکش_دستکش_موهای_خاکستری_کلاه بلند نگهداشتن_حذف_چشم_زیورآلات_موهای_بلند_نگاه_به_دیگر_موهای_متوسط_دخترهای چندتایی nihilux_(honkai:_star_rail) لبهای باز شده_لبهای_قرمز_چشمان_قرمز_لبخند_سفید_ای_ایرyuyu_(oiun461)<br/><img src=\"https://safebooru.org/samples/4432/sample_a541b2b116ede6d87f047888432aa17f3a7b7e35.jpg\" /> <br> <ahref=\"https://safebooru.org/images/4432/a541b2b116ede6d87f047888432aa17f3a7b7e35.png\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/dokusai_0207/status/2102705202415681551",
+          "description": "<b>حق نسخه‌برداری:</b> machikado_mazoku<br/> <br/><b>شخصیت(ها):</b> نمی‌توان حدس زد<br/> <br/><b>برچسب‌ها:</b> 2girls ahoge blue_yees blush brown_yees chiyoda_momo commentary demon_horns 20_hornsبغل_از_پشت_موهای بلند چندتایی_دخترانه یقه_روبان صورتی_موی بنفش_قرمز_قرمز_روبان_قرمز پیراهن روبانی ژاکت_زرد یوشیدا_یوکو یوری<br/><imgsrc=\"https://safebooru.org/samples/4432/sample_b5f1100a1c509970db66694590650cbc696ab1c5.jpg\" /> <br> <ahref=\"https://safebooru.org/images/4432/b5f1100a1c509970db66694590650cbc696ab1c5.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/WheLooloong/status/2102709641709072399",
+          "description": "<b>حق نشر:</b> bang_dream!bang_dream!_it's_mygo!!!!!<br/> <br/><b>شخصیت(ها):</b> misumi_uika togawa_sakiko<br/> <br/><b>برچسب‌ها:</b> 2دختر بلوند_مو آبی_پیراهن آبی_رژگونه_دهان_بسته_دهان_در خواست نوازش کره ای دست_این_ساکیکوبالش چندگانه دخترانه پیراهن بنفش_پیراهن ساده_پس زمینه لبخند twitter_username under_covers_violet_yees wheloo3th_white_background Yellow_yees yuri<br/><imgsrc=\"https://safebooru.org/images/4432/de058b0c282ae19456e7b34fe9d48c63e18101c6.jpg\" /> <br> <ahref=\"https://safebooru.org/images/4432/de058b0c282ae19456e7b34fe9d48c63e18101c6.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/cke65442104/status/2102698888943821067",
+          "description": "<b>حق چاپ:</b> lycoris_recoil<br/> <br/><b>شخصیت(ها):</b> نمی توان حدس زد<br/> <br/><b>برچسب ها:</b> 4girls absurdres تولد سیاه_موی_مشکی_جوراب_بلوند_مو آبی_لباس_قهوه ای_قهوه ای_4_balloushey2لباس مو_روبان بلند_دست_دست_دست_اینو_تاکینا_انگشت_درهم_زانو قد لیکوری_یکنواخت_چند_دختر nishikigi_chisato یک طرف_بالا_لباس قرمز_چشم قرمز_روبان_قرمز کفش روبان_مو کوتاه_پس زمینه ساده جوراب لبخند بنفش_چشم تماشای_تلویزیون سفید<br_backsrc=\"https://safebooru.org/samples/4432/sample_396d7db73db6ab71364791d367bc053744053a3f.jpg\" /> <br> <ahref=\"https://safebooru.org/images/4432/396d7db73db6ab71364791d367bc053744053a3f.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/tissut_0123/status/2102745281414799859",
+          "description": "<b>حق نشر:</b> bang_dream!bang_dream!_it's_mygo!!!!!<br/> <br/><b>شخصیت(ها):</b> chihaya_anon nagasaki_soyo<br/> <br/><b>برچسب‌ها:</b> >_< 2girls blush collared_shirt commentary_ request confession grayscale_greyscale_haneoka_schoolresکراوات عصبی_عرق ریختن_پیراهن فرم مدرسه گفتاری_عرق قلب ژاکت_جلیقه tissut_0123 tsukinomori_school_uniform yuri<br/><imgsrc=\"https://safebooru.org/images/4432/f26a5de01a8de438dee208b5df0bd02db55847c5.jpg\" /> <br> <ahref=\"https://safebooru.org/images/4432/f26a5de01a8de438dee208b5df0bd02db55847c5.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://i.pximg.net/img-original/img/2026/09/22/23/36/10/149988005_p0.png",
+          "description": "<b>حق نشر:</b> shy_(سریال)<br/> <br/><b>شخصیت(ها):</b> نمی توان حدس زد<br/> <br/><b>برچسب ها:</b> 1دختر absurdres دستبند تفسیر جلد elbow_gloves_mask eye_mask gloves hands_on_own_resshietsهود hood_up hooded_leotard jewelry jiguang_haibao leotard look_at_viewer ماسک خودکار قلم کاغذی قرمز_چشم_کوتاه_موهای خجالتی_(شخصیت) لباس ابرقهرمانی_سفید_موی سفید_ترک یوری<br/><imgsrc=\"https://safebooru.org/samples/4432/sample_bd929e04a2e65e1a80fa2e1658be1b03a997ff6d.jpg\" /> <br> <ahref=\"https://safebooru.org/images/4432/bd929e04a2e65e1a80fa2e1658be1b03a997ff6d.png\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/anime_kimishinu/status/2084942490646544841",
+          "description": "<b>حق چاپ:</b> kimi_ga_shinu_made_koi_wo_shitai<br/> <br/><b>شخصیت(ها):</b> نمی توان حدس زد<br/> <br/><b>برچسب ها:</b> 2girls absurdres artist_ request blue_dress blue_dress brown_eyes brown_hair food eshinstaهدر_(کیمیشینو) بلند_موهای بلند خوابیده چند_دختر_هنر_رسمی_هنر_دهان_باز_ملوان_لباس_ملوان_لباس_مدرسه_یونیفرم لبخند خواب سفید_موهای_سفید_یقه_ملوانی یوری<br/><imgsrc=\"https://safebooru.org/samples/4432/sample_7f62ccfd62e8e66b402640a362bb297a66c3d313.jpg\" /> <br> <ahref=\"https://safebooru.org/images/4432/7f62ccfd62e8e66b402640a362bb297a66c3d313.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/kiyo_mariari/status/2102715958515388733",
+          "description": "<b>حق نشر:</b> touhou<br/> <br/><b>شخصیت(ها):</b> alice_margatroid kirisame_marisa<br/> <br/><b>برچسب‌ها:</b> 2پیش بند دخترانه اسکوت مشکی_کلاه مشکی_دامن_جلیقه مشکی_جلیقه مشکی_جلیقه_جلیقه_مشکی_جلیقه مشکی_جلیقه_بلند_موهای_آبی_لباس بستهلباس دانگو چشم_تماس غذا فرلد_لباس فرل شده_هیربند فرلد_دامن ریزه_ماه کامل_مو کمان بند کلاه_کمان بلند نگه داشتن_سیخ کیو_(کیو_ماریاری)_موی بلند نگاه_به_ماهی دیگر_چندتگی_دختران شب روی_پانک_قرمز_اسکوsanshoku_dango ارسی پهلوی_بافته تک_بافته نشسته_روی_پشت دامن سیخی لبخند جلیقه واگاشی کمری_پیش بند کمر_ارسی سفید_پیش بند سفید_کمان سفید_کلاه جادوگر_کلاه_زرد یوری<br/><imgsrc=\"https://safebooru.org/samples/4432/sample_6998bd728d4c0fcf06becfc9ec30f9a4e38c3825.jpg\" /> <br> <ahref=\"https://safebooru.org/images/4432/6998bd728d4c0fcf06becfc9ec30f9a4e38c3825.jpg\">اندازه اصلی</a>"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/anime_kimishinu/status/2077332354993906054",
+          "description": "<b>حق نشر:</b> kimi_ga_shinu_made_koi_wo_shitai<br/> <br/><b>شخصیت(ها):</b> نمی توان حدس زد<br/> <br/><b>برچسب ها:</b> 2دختران پوچ می کنند_دستکش سیاهنظر_موی_قهوه ای_درخواست دستکش گل سبز_چشم_مهمان_هنر_دست_روی_پشت_دیگری_دست_روی_شانه_دیگری_بالا در آغوش کاگری_میمی_موی بلند_نگاه_به_بیننده_به_سمت_درازکش_دختران_دخترهای_دختر رسمی_هنر_صورتی_معرفی_هنر_صورتی_صبوروتا_موهای_کوتاه_ویلوفلورکی_گلوهیوری<br/><img src=\"https://safebooru.org/samples/4432/sample_4e5d4723216c670ce5cd42ad4254f2191dc23b6b.jpg\" /> <br> <ahref=\"https://safebooru.org/images/4432/4e5d4723216c670ce5cd42ad4254f2191dc23b6b.jpg\">اندازه اصلی</a>"
+        }
+      ]
+    }
+  },
+  "_translated_at": "2026-09-24T07:09:27Z"
 }
