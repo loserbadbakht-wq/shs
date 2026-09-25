@@ -1,5 +1,5 @@
 {
-  "error": "Failed to fetch: Invalid character in entity name\nLine: 94\nColumn: 211\nChar: =",
-  "timestamp": "2026-09-25T00:17:44.022Z",
-  "_translated_at": "2026-09-25T00:21:36Z"
+  "error": "Failed to fetch: Invalid character in entity name\nLine: 164\nColumn: 211\nChar: =",
+  "timestamp": "2026-09-25T05:45:32.344Z",
+  "_translated_at": "2026-09-25T05:47:18Z"
 }
