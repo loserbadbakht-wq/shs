@@ -42,33 +42,30 @@ jobs:
             --minify \
             --outfile=player.js
 
-      - name: Patch audio settings menu (side top → bottom)
+      - name: Patch player.js — flip every side="top" to side="bottom"
         run: |
           node - <<'EOF'
           const fs = require('fs');
           let player = fs.readFileSync('player.js', 'utf8');
 
-          // Match any <media-menu> tag that carries the audio-settings-menu-popup class
-          // and currently has side="top". We intentionally do NOT match on the generated
-          // id="vjs-XXXX-popup" because it changes on every rebuild.
-          const TOP    = /(<media-menu\s+side=")top("[^>]*?audio-settings-menu-popup[^>]*?>)/g;
-          const BOTTOM = /<media-menu\s+side="bottom"[^>]*?audio-settings-menu-popup[^>]*?>/;
+          const topMatches = player.match(/side="top"/g) || [];
+          console.log(`side="top" occurrences: ${topMatches.length}`);
 
-          if (BOTTOM.test(player)) {
-            console.log('✓ Audio settings menu already patched (side="bottom")');
+          if (topMatches.length === 0) {
+            console.log('✓ Nothing to patch — no side="top" in bundle');
             process.exit(0);
           }
 
-          const matches = [...player.matchAll(TOP)];
-          if (matches.length === 0) {
-            console.error('✗ Could not find <media-menu side="top" ... audio-settings-menu-popup ...>');
-            console.error('  The upstream @videojs/html template may have changed.');
+          const count = topMatches.length;
+          player = player.replace(/side="top"/g, 'side="bottom"');
+          fs.writeFileSync('player.js', player);
+
+          const remaining = (player.match(/side="top"/g) || []).length;
+          if (remaining !== 0) {
+            console.error(`✗ Post-replace check failed: ${remaining} side="top" still present`);
             process.exit(1);
           }
-
-          player = player.replace(TOP, '$1bottom$2');
-          fs.writeFileSync('player.js', player);
-          console.log(`✓ Patched ${matches.length} audio settings menu instance(s): side="top" → side="bottom"`);
+          console.log(`✓ Replaced ${count} side="top" → side="bottom"`);
           EOF
 
       - name: Inline player.js into index.html
@@ -78,7 +75,6 @@ jobs:
           const player = fs.readFileSync('player.js', 'utf8');
           const html   = fs.readFileSync('index.html', 'utf8');
 
-          // Prevent a literal </script> inside the bundle from closing the block early
           const safe = player.replace(/<\/script/gi, '<\\/script');
 
           const START = '<!-- @videojs-inline:start -->';
@@ -90,10 +86,8 @@ jobs:
 
           let out;
           if (markerRe.test(html)) {
-            // Re-run: swap the block in place
             out = html.replace(markerRe, block);
           } else {
-            // First run: replace the CDN <script> tag
             const cdnRe = /<script\s+type="module"\s+src="https:\/\/cdn\.jsdelivr\.net\/npm\/@videojs\/cdn[^"]*"[^>]*>\s*<\/script>/;
             if (!cdnRe.test(html)) {
               console.error('✗ No Video.js CDN <script> and no inline markers in index.html');
@@ -106,10 +100,51 @@ jobs:
           else { fs.writeFileSync('index.html', out); console.log('✓ Inlined player.js into index.html'); }
           EOF
 
+      - name: Patch index.html — make player follow page theme toggle
+        run: |
+          node - <<'EOF'
+          const fs = require('fs');
+          let html = fs.readFileSync('index.html', 'utf8');
+
+          const MARKER = '<!-- @player-theme-fix -->';
+          if (html.includes(MARKER)) {
+            console.log('✓ Player theme-fix already present — skipping');
+            process.exit(0);
+          }
+
+          if (!html.includes('</head>')) {
+            console.error('✗ Could not find </head> in index.html');
+            process.exit(1);
+          }
+
+          const styleBlock =
+          MARKER + '\n' +
+          '<style>\n' +
+          '  /*\n' +
+          '   * Video.js players follow the page theme toggle.\n' +
+          '   *\n' +
+          '   * The player uses `all: initial`, which resets color-scheme to `normal`\n' +
+          '   * (i.e. light). That breaks inheritance of the page theme, so the\n' +
+          '   * `light-dark()` values inside the skin never react to the toggle.\n' +
+          '   * Forcing color-scheme to match data-theme fixes it, and every\n' +
+          '   * `light-dark()` in the bundle now resolves to the correct palette.\n' +
+          '   */\n' +
+          '  html[data-theme="dark"]  audio-player,\n' +
+          '  html[data-theme="dark"]  video-player { color-scheme: dark  !important; }\n' +
+          '\n' +
+          '  html[data-theme="light"] audio-player,\n' +
+          '  html[data-theme="light"] video-player { color-scheme: light !important; }\n' +
+          '</style>';
+
+          html = html.replace('</head>', styleBlock + '\n</head>');
+          fs.writeFileSync('index.html', html);
+          console.log('✓ Injected player theme-fix before </head>');
+          EOF
+
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "chore: rebuild player.js + inline [skip ci]"
+          commit_message: "chore: rebuild player.js + inline + player theme fix [skip ci]"
           file_pattern: "player.js index.html"
           commit_user_name: github-actions[bot]
           commit_user_email: github-actions[bot]@users.noreply.github.com
