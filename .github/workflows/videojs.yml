@@ -2,8 +2,8 @@ name: Build Video.js HTML Bundle & Deploy
 
 on:
   push:
-    branches: [main]               # adjust to your default branch
-  workflow_dispatch:               # allows manual trigger
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -24,22 +24,30 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22          # LTS version, supports ESM natively
+          node-version: 22
 
       - name: Install dependencies
         run: |
-          npm init -y               # only if you don't have a package.json
+          npm init -y
           npm install @videojs/html esbuild
 
       - name: Create Video.js entry file
         run: |
           cat > player.js <<'EOF'
-          // Default video player + skin
+          // Video player + skin
           import '@videojs/html/video/player';
           import '@videojs/html/video/skin';
 
-          // Optional: add more features / media adapters
-          // import '@videojs/html/media/hlsjs-video';   // HLS support
+          // Audio player + skin (default frosted look)
+          import '@videojs/html/audio/player';
+          import '@videojs/html/audio/skin';
+
+          // Optional: use the neutral audio skin instead of the default
+          // import '@videojs/html/audio/neutral-skin';
+
+          // Optional: media adapters
+          // import '@videojs/html/media/hlsjs-video';
+          // import '@videojs/html/media/hls-audio';   // for HLS audio streams
           EOF
 
       - name: Bundle with esbuild (inline sourcemap)
@@ -57,7 +65,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: public              # the folder that contains player.js + your static files
+          path: public
 
       - name: Deploy to GitHub Pages
         id: deployment
