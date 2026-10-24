@@ -45,7 +45,7 @@ var nf=Object.defineProperty;var L=(e,t,i)=>()=>{if(i)throw i[0];try{return e&&(
 <media-icon name="pause" class="media-button-icon media-play-button-pause-icon">
 </media-icon>
 </media-play-button>
-<media-tooltip trigger="vjs-iSAklLIk-0-trigger" side="top" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-tooltip">
+<media-tooltip trigger="vjs-iSAklLIk-0-trigger" side="bottom" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-tooltip">
 <media-tooltip-label>
 </media-tooltip-label>
 <media-tooltip-shortcut class="media-tooltip-shortcut">
@@ -59,13 +59,13 @@ var nf=Object.defineProperty;var L=(e,t,i)=>()=>{if(i)throw i[0];try{return e&&(
 <media-icon name="volume-high" class="media-button-icon media-mute-button-high-icon">
 </media-icon>
 </media-mute-button>
-<media-tooltip trigger="vjs-iSAklLIk-0-2-trigger" delay="0" disabled sticky side="top" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-tooltip">
+<media-tooltip trigger="vjs-iSAklLIk-0-2-trigger" delay="0" disabled sticky side="bottom" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-tooltip">
 <media-tooltip-label>
 </media-tooltip-label>
 <media-tooltip-shortcut class="media-tooltip-shortcut">
 </media-tooltip-shortcut>
 </media-tooltip>
-<media-volume-popover open-on-hover delay="200" close-delay="100" side="top" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-volume-popover" id="vjs-F3QfBzzz-0-popup">
+<media-volume-popover open-on-hover delay="200" close-delay="100" side="bottom" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-volume-popover" id="vjs-F3QfBzzz-0-popup">
 <media-volume-slider class="media-slider media-volume-slider" thumb-alignment="edge" orientation="vertical">
 <media-slider-track class="media-slider-track">
 <media-slider-fill class="media-slider-fill">
@@ -118,7 +118,7 @@ var nf=Object.defineProperty;var L=(e,t,i)=>()=>{if(i)throw i[0];try{return e&&(
 <media-icon name="captions-on" class="media-button-icon media-captions-button-on-icon">
 </media-icon>
 </media-captions-button>
-<media-tooltip trigger="vjs-iSAklLIk-0-3-trigger" side="top" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-tooltip">
+<media-tooltip trigger="vjs-iSAklLIk-0-3-trigger" side="bottom" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-tooltip">
 <media-tooltip-label>
 </media-tooltip-label>
 <media-tooltip-shortcut class="media-tooltip-shortcut">
@@ -129,10 +129,10 @@ var nf=Object.defineProperty;var L=(e,t,i)=>()=>{if(i)throw i[0];try{return e&&(
 </media-icon>
 <media-text class="media-settings-menu-trigger-label" token="menu.settings">Settings</media-text>
 </button>
-<media-tooltip trigger="vjs-iSAklLIk-0-4-trigger" side="top" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-tooltip">
+<media-tooltip trigger="vjs-iSAklLIk-0-4-trigger" side="bottom" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-tooltip">
 <media-text token="menu.settings">Settings</media-text>
 </media-tooltip>
-<media-menu side="top" align="center" class="media-popup media-popup-surface media-menu-popup media-menu-resizable-popup" id="vjs-28BtKs3v-0-popup">
+<media-menu side="bottom" align="center" class="media-popup media-popup-surface media-menu-popup media-menu-resizable-popup" id="vjs-28BtKs3v-0-popup">
 <media-menu-content class="media-menu-content">
 <media-menu-item commandfor="vjs-ZGpCKm5h-0-content" class="media-menu-trigger-item">
 <media-icon name="switches" class="media-menu-trigger-item-icon">
@@ -278,7 +278,7 @@ var nf=Object.defineProperty;var L=(e,t,i)=>()=>{if(i)throw i[0];try{return e&&(
 <media-icon name="cast-exit" class="media-button-icon media-cast-button-exit-icon">
 </media-icon>
 </media-cast-button>
-<media-tooltip trigger="vjs-iSAklLIk-0-5-trigger" side="top" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-tooltip">
+<media-tooltip trigger="vjs-iSAklLIk-0-5-trigger" side="bottom" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-tooltip">
 <media-tooltip-label>
 </media-tooltip-label>
 <media-tooltip-shortcut class="media-tooltip-shortcut">
@@ -290,7 +290,7 @@ var nf=Object.defineProperty;var L=(e,t,i)=>()=>{if(i)throw i[0];try{return e&&(
 <media-icon name="airplay-exit" class="media-button-icon media-airplay-button-exit-icon">
 </media-icon>
 </media-airplay-button>
-<media-tooltip trigger="vjs-iSAklLIk-0-6-trigger" side="top" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-tooltip">
+<media-tooltip trigger="vjs-iSAklLIk-0-6-trigger" side="bottom" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-tooltip">
 <media-tooltip-label>
 </media-tooltip-label>
 <media-tooltip-shortcut class="media-tooltip-shortcut">
@@ -302,7 +302,7 @@ var nf=Object.defineProperty;var L=(e,t,i)=>()=>{if(i)throw i[0];try{return e&&(
 <media-icon name="pip-exit" class="media-button-icon media-pip-button-exit-icon">
 </media-icon>
 </media-pip-button>
-<media-tooltip trigger="vjs-iSAklLIk-0-7-trigger" side="top" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-tooltip">
+<media-tooltip trigger="vjs-iSAklLIk-0-7-trigger" side="bottom" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-tooltip">
 <media-tooltip-label>
 </media-tooltip-label>
 <media-tooltip-shortcut class="media-tooltip-shortcut">
@@ -314,7 +314,7 @@ var nf=Object.defineProperty;var L=(e,t,i)=>()=>{if(i)throw i[0];try{return e&&(
 <media-icon name="fullscreen-exit" class="media-button-icon media-fullscreen-button-exit-icon">
 </media-icon>
 </media-fullscreen-button>
-<media-tooltip trigger="vjs-iSAklLIk-0-8-trigger" side="top" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-tooltip">
+<media-tooltip trigger="vjs-iSAklLIk-0-8-trigger" side="bottom" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-tooltip">
 <media-tooltip-label>
 </media-tooltip-label>
 <media-tooltip-shortcut class="media-tooltip-shortcut">
@@ -470,7 +470,7 @@ img,
 <media-icon name="pause" class="media-button-icon media-play-button-pause-icon">
 </media-icon>
 </media-play-button>
-<media-tooltip trigger="vjs-YCBr5ls1-0-trigger" boundary="viewport" side="top" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-tooltip">
+<media-tooltip trigger="vjs-YCBr5ls1-0-trigger" boundary="viewport" side="bottom" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-tooltip">
 <media-tooltip-label>
 </media-tooltip-label>
 <media-tooltip-shortcut class="media-tooltip-shortcut">
@@ -484,7 +484,7 @@ img,
 <span class="media-seek-button-label media-seek-button-backward-label">10</span>
 </div>
 </media-seek-button>
-<media-tooltip trigger="vjs-YCBr5ls1-0-2-trigger" boundary="viewport" side="top" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-tooltip">
+<media-tooltip trigger="vjs-YCBr5ls1-0-2-trigger" boundary="viewport" side="bottom" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-tooltip">
 <media-tooltip-label>
 </media-tooltip-label>
 <media-tooltip-shortcut class="media-tooltip-shortcut">
@@ -497,7 +497,7 @@ img,
 <span class="media-seek-button-label media-seek-button-forward-label">10</span>
 </div>
 </media-seek-button>
-<media-tooltip trigger="vjs-YCBr5ls1-0-3-trigger" boundary="viewport" side="top" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-tooltip">
+<media-tooltip trigger="vjs-YCBr5ls1-0-3-trigger" boundary="viewport" side="bottom" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-tooltip">
 <media-tooltip-label>
 </media-tooltip-label>
 <media-tooltip-shortcut class="media-tooltip-shortcut">
@@ -529,7 +529,7 @@ img,
 <media-controls-group class="audio-controls-end">
 <media-playback-rate-button commandfor="vjs-IYqgEwNi-0-popup" class="media-button media-playback-rate-button" id="vjs-YCBr5ls1-0-4-trigger">
 </media-playback-rate-button>
-<media-tooltip trigger="vjs-YCBr5ls1-0-4-trigger" boundary="viewport" side="top" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-tooltip">
+<media-tooltip trigger="vjs-YCBr5ls1-0-4-trigger" boundary="viewport" side="bottom" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-tooltip">
 <media-tooltip-label>
 </media-tooltip-label>
 <media-tooltip-shortcut class="media-tooltip-shortcut">
@@ -559,13 +559,13 @@ img,
 <media-icon name="volume-high" class="media-button-icon media-mute-button-high-icon">
 </media-icon>
 </media-mute-button>
-<media-tooltip trigger="vjs-YCBr5ls1-0-5-trigger" delay="0" disabled sticky side="top" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-tooltip">
+<media-tooltip trigger="vjs-YCBr5ls1-0-5-trigger" delay="0" disabled sticky side="bottom" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-tooltip">
 <media-tooltip-label>
 </media-tooltip-label>
 <media-tooltip-shortcut class="media-tooltip-shortcut">
 </media-tooltip-shortcut>
 </media-tooltip>
-<media-volume-popover open-on-hover delay="200" close-delay="100" side="top" boundary="viewport" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-volume-popover" id="vjs-vz1xrwnK-0-popup">
+<media-volume-popover open-on-hover delay="200" close-delay="100" side="bottom" boundary="viewport" class="media-popup media-popup-safe-area media-popup-transition media-popup-surface media-volume-popover" id="vjs-vz1xrwnK-0-popup">
 <media-volume-slider class="media-slider media-volume-slider" thumb-alignment="edge" orientation="vertical">
 <media-slider-track class="media-slider-track">
 <media-slider-fill class="media-slider-fill">
