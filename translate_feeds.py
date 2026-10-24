@@ -23,6 +23,9 @@ def translate_feed(data, translator):
         if 'description' in channel:
             channel['description'] = translate_text(channel['description'], translator)
         items = channel.get('item', [])
+        if isinstance(items, dict):
+            items = [items]
+            channel['item'] = items
         for idx, item in enumerate(items):
             if 'title' in item:
                 item['title'] = translate_text(item['title'], translator)
@@ -34,7 +37,7 @@ def main():
     if not os.path.isdir(SOURCE_DIR):
         print(f"Source folder '{SOURCE_DIR}' does not exist.")
         return
-    json_files = glob.glob(os.path.join(SOURCE_DIR, '*.json'))
+    json_files = sorted(glob.glob(os.path.join(SOURCE_DIR, '*.json')))
     if not json_files:
         print(f"No JSON files found in '{SOURCE_DIR}'.")
         return
