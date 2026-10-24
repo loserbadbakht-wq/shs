@@ -93,7 +93,7 @@ jobs:
           console.log('✓ Injected player theme fix');
           EOF
 
-      - name: Patch index.html — glass chrome (buttons, dropdown, overlay)
+      - name: Patch index.html — glass chrome (header, buttons, dropdown, overlay)
         run: |
           node - <<'EOF'
           const fs = require('fs');
@@ -106,17 +106,75 @@ jobs:
           MARKER + '\n' +
           '<style>\n' +
           '  /*\n' +
-          '   * Glass chrome — one material system across the whole UI:\n' +
+          '   * Glass chrome — one material system across the whole UI.\n' +
           '   *\n' +
-          '   *   neutral glass = utility  (buttons at rest, player bar, dropdown menu)\n' +
+          '   *   neutral glass = utility  (header bar, buttons, player, dropdown menu)\n' +
           '   *   blue glass    = active   (TTS while playing, selected language)\n' +
           '   *\n' +
           '   * Tokens mirror the player bundle:\n' +
-          '   *   dark  →  oklch(0% 0 0 / .4)   + blur(16px) saturate(110%)\n' +
-          '   *   light →  oklch(100% 0 0 / .5) + blur(16px) saturate(110%)\n' +
-          '   * The overlay uses a stronger blur + tuned opacity so the whole\n' +
-          '   * screen reads as frosted, not merely dimmed.\n' +
+          '   *   dark  →  oklch(0% 0 0 / .4–.55)  + blur(16px) saturate(110%)\n' +
+          '   *   light →  oklch(100% 0 0 / .5–.65) + blur(16px) saturate(110%)\n' +
+          '   * Larger surfaces (header, overlay) use a slightly denser alpha than\n' +
+          '   * small pill-shaped controls so text stays legible when content\n' +
+          '   * scrolls or floats behind.\n' +
           '   */\n' +
+          '\n' +
+          '  /* ─────────── Header bar — glass ─────────── */\n' +
+          '  .header {\n' +
+          '    background: oklch(0% 0 0 / .5) !important;\n' +
+          '    border-bottom: none !important;\n' +
+          '    backdrop-filter: blur(16px) saturate(110%) !important;\n' +
+          '    -webkit-backdrop-filter: blur(16px) saturate(110%) !important;\n' +
+          '    box-shadow:\n' +
+          '      0 1px 0 0 oklch(0% 0 0 / .1),\n' +
+          '      0 4px 20px 0 oklch(0% 0 0 / .08) !important;\n' +
+          '  }\n' +
+          '  html[data-theme="light"] .header {\n' +
+          '    background: oklch(100% 0 0 / .65) !important;\n' +
+          '    box-shadow:\n' +
+          '      0 1px 0 0 oklch(0% 0 0 / .05),\n' +
+          '      0 4px 20px 0 oklch(0% 0 0 / .06) !important;\n' +
+          '  }\n' +
+          '\n' +
+          '  /* ─────────── Header icon buttons — glass ─────────── */\n' +
+          '  .header-actions .btn-icon {\n' +
+          '    background: oklch(0% 0 0 / .4) !important;\n' +
+          '    color: oklch(100% 0 0) !important;\n' +
+          '    border: none !important;\n' +
+          '    backdrop-filter: blur(16px) saturate(110%) !important;\n' +
+          '    -webkit-backdrop-filter: blur(16px) saturate(110%) !important;\n' +
+          '    box-shadow:\n' +
+          '      0 0 0 1px oklch(0% 0 0 / .1),\n' +
+          '      0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
+          '      0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
+          '  }\n' +
+          '  html[data-theme="light"] .header-actions .btn-icon {\n' +
+          '    background: oklch(100% 0 0 / .5) !important;\n' +
+          '    color: oklch(0% 0 0) !important;\n' +
+          '    box-shadow:\n' +
+          '      0 0 0 1px oklch(0% 0 0 / .05),\n' +
+          '      0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
+          '      0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
+          '  }\n' +
+          '  @media (hover: hover) {\n' +
+          '    .header-actions .btn-icon:hover {\n' +
+          '      background: oklch(0% 0 0 / .5) !important;\n' +
+          '      color: oklch(100% 0 0) !important;\n' +
+          '    }\n' +
+          '    html[data-theme="light"] .header-actions .btn-icon:hover {\n' +
+          '      background: oklch(100% 0 0 / .6) !important;\n' +
+          '      color: oklch(0% 0 0) !important;\n' +
+          '    }\n' +
+          '  }\n' +
+          '  /* active state — blue glass, same recipe as the dropdown active item */\n' +
+          '  .header-actions .btn-icon.active {\n' +
+          '    background: color-mix(in oklab, var(--primary) 28%, transparent) !important;\n' +
+          '    color: var(--primary) !important;\n' +
+          '    box-shadow:\n' +
+          '      0 0 0 1px color-mix(in oklab, var(--primary) 40%, transparent),\n' +
+          '      0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
+          '      0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
+          '  }\n' +
           '\n' +
           '  /* ─────────── Translate button — neutral glass ─────────── */\n' +
           '  #fullscreenButtons .translate-btn-wrapper .translate-btn {\n' +
@@ -175,8 +233,6 @@ jobs:
           '      background: oklch(100% 0 0 / .6) !important;\n' +
           '    }\n' +
           '  }\n' +
-          '\n' +
-          '  /* TTS playing — blue glass, keeps the original blue identity */\n' +
           '  #fullscreenButtons .tts-btn-wrapper .tts-btn.playing {\n' +
           '    background: color-mix(in oklab, var(--primary) 82%, transparent) !important;\n' +
           '    color: oklch(100% 0 0) !important;\n' +
@@ -242,9 +298,6 @@ jobs:
           '  html[data-theme="light"] .fullscreen-overlay {\n' +
           '    background: oklch(100% 0 0 / .6) !important;\n' +
           '  }\n' +
-          '\n' +
-          '  /* Fallback: browsers without backdrop-filter get a denser tint so\n' +
-          '     text stays legible over the dimmed page. */\n' +
           '  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {\n' +
           '    .fullscreen-overlay { background: oklch(0% 0 0 / .92) !important; }\n' +
           '    html[data-theme="light"] .fullscreen-overlay { background: oklch(100% 0 0 / .95) !important; }\n' +
@@ -265,7 +318,7 @@ jobs:
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "chore: glass overlay + active dropdown stays glass [skip ci]"
+          commit_message: "chore: glass header bar + glass header buttons [skip ci]"
           file_pattern: "player.js index.html"
           commit_user_name: github-actions[bot]
           commit_user_email: github-actions[bot]@users.noreply.github.com
