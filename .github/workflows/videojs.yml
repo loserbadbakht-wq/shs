@@ -1,0 +1,64 @@
+name: Build Video.js HTML Bundle & Deploy
+
+on:
+  push:
+    branches: [main]               # adjust to your default branch
+  workflow_dispatch:               # allows manual trigger
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22          # LTS version, supports ESM natively
+
+      - name: Install dependencies
+        run: |
+          npm init -y               # only if you don't have a package.json
+          npm install @videojs/html esbuild
+
+      - name: Create Video.js entry file
+        run: |
+          cat > player.js <<'EOF'
+          // Default video player + skin
+          import '@videojs/html/video/player';
+          import '@videojs/html/video/skin';
+
+          // Optional: add more features / media adapters
+          // import '@videojs/html/media/hlsjs-video';   // HLS support
+          EOF
+
+      - name: Bundle with esbuild (inline sourcemap)
+        run: |
+          npx esbuild player.js \
+            --bundle \
+            --format=esm \
+            --minify \
+            --sourcemap=inline \
+            --outfile=public/player.js
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public              # the folder that contains player.js + your static files
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
