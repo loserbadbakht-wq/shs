@@ -1,4 +1,364 @@
 {
-  "error": "Failed to fetch: Invalid character in entity name\nLine: 49\nColumn: 107\nChar: =",
-  "timestamp": "2026-10-24T14:14:45.580Z"
+  "rss": {
+    "$": {
+      "version": "2.0"
+    },
+    "channel": {
+      "title": "Safebooru Yuri - RSS Feed",
+      "link": "https://github.com",
+      "description": "Latest yuri images from safebooru",
+      "item": [
+        {
+          "title": "",
+          "link": "https://x.com/UnfamousRadish/status/2112912948637433917",
+          "image": "https://safebooru.org/samples/598/sample_e849a9b7b79558fa47d6a41b20f313d57e3c5caa.jpg",
+          "description": "<b>Copyright:</b> genshin_impact<br/> <br/><b>Character(s):</b> hu_tao_(genshin_impact)<br/> <br/><b>Tags:</b> 2girls black_eyes black_hat blue_hair blush brown_hair closed_mouth commentary detached_sleeves english_commentary gradient_hair hat highres holding_hands long_hair long_sleeves multicolored_hair multiple_girls pointy_ears purple_tail red_hair sitting smile sweat tail tapir_tail unfamousradish violet_eyes yumemizuki_mizuki yuri<br/> <br> <a href=\"https://safebooru.org/images/598/e849a9b7b79558fa47d6a41b20f313d57e3c5caa.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/mame_umai_ooo/status/1880618590522741080",
+          "image": "https://safebooru.org/samples/598/sample_b0eda81bd2cb311b1848cb142cf920c29f60577b.jpg",
+          "description": "<b>Copyright:</b> ranma_1/2<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls ^_^ bare_shoulders blue_hair blush bow braid chinese_clothes closed_eyes commentary_request dress hair_bow hands_on_another's_shoulder highres hug long_hair mame_umai_ooo multiple_girls open_mouth pink_background pink_dress pink_eyes pink_hair saotome_ranma saotome_ranma_(female) single_braid smile tangzhuang tendou_akane yellow_bow yuri<br/> <br> <a href=\"https://safebooru.org/images/598/b0eda81bd2cb311b1848cb142cf920c29f60577b.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_1.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/moriya_eriChish/status/2108580379980648774",
+          "image": "https://safebooru.org/samples/598/sample_d432c5402141c8bc846d8f0bc639ef38a4a4e51f.jpg",
+          "description": "<b>Copyright:</b> ranma_1/2<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls blue_dress blue_pants braid brown_eyes carrying closed_mouth commentary_request dress fuurinkan_high_school_uniform highres long_hair moriya_erichish multiple_girls pants piggyback purple_hair saotome_ranma saotome_ranma_(female) school_uniform short_hair single_braid smile split_mouth tendou_akane yuri<br/> <br> <a href=\"https://safebooru.org/images/598/d432c5402141c8bc846d8f0bc639ef38a4a4e51f.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_2.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/sukusuto5koharu/status/2112515100066418782",
+          "image": "https://safebooru.org/samples/598/sample_3212a83268ccbaeeaa4d9a12e82c3e8d52fbac9b.jpg",
+          "description": "<b>Copyright:</b> girls_und_panzer<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls ? andou_(girls_und_panzer) bc_freedom_school_uniform belt black_hair blonde_hair blue_eyes blue_jacket blush dark-skinned_female dark_skin heart highres holding_hands jacket long_sleeves looking_at_another looking_to_the_side multiple_girls oshida_(girls_und_panzer) school_uniform shirt skirt smile sukusuto5koharu sweater_around_neck white_background white_shirt yuri<br/> <br> <a href=\"https://safebooru.org/images/598/3212a83268ccbaeeaa4d9a12e82c3e8d52fbac9b.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_3.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/zaphizaphizaphi/status/2113922962198085759",
+          "image": "https://safebooru.org/samples/598/sample_d43bacb7dc0a0375895787fec5745e7c31f0e76a.jpg",
+          "description": "<b>Copyright:</b> wuthering_waves<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls bird blush cape closed_eyes closed_mouth commentary dress earrings flying_sweatdrops gloves greyscale hand_on_another's_chin highres horns imagining imminent_kiss jewelry key_earrings long_hair monochrome multiple_girls phoebe_(wuthering_waves) shirt yuri zani_(wuthering_waves) zaphizaphizaphi<br/> <br> <a href=\"https://safebooru.org/images/598/d43bacb7dc0a0375895787fec5745e7c31f0e76a.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_4.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/siyeyeyeyer/status/2113564312862130472",
+          "image": "https://safebooru.org/samples/598/sample_220b799626909c9551a8b1776b16917dd52023cf.jpg",
+          "description": "<b>Copyright:</b> ranma_1/2<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls apron black_hair bow braid bread closed_eyes croissant dress enmaided food food-themed_background fork frilled_apron frills full_body hair_bow highres holding_hands juliet_sleeves long_sleeves maid maid_apron maid_headdress multiple_girls official_alternate_costume open_mouth pasta princess puffy_sleeves red_dress red_hair salad saotome_ranma saotome_ranma_(female) short_hair single_braid siyer smile spoon steak tendou_akane white_apron yuri<br/> <br> <a href=\"https://safebooru.org/images/598/220b799626909c9551a8b1776b16917dd52023cf.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_5.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/Sangdingting/status/2113905299153453492",
+          "image": "https://safebooru.org/samples/598/sample_bc3161ac74256ba131bf00b339f31fade0e8392e.jpg",
+          "description": "<b>Copyright:</b> bang_dream!<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls bang_dream!_our_notes blush commentary face-to-face feeding from_side grey_eyes hand_on_another's_chest hand_on_another's_face heart heart_in_eye highres holding holding_spoon imminent_kiss izumi_houka long_hair long_sleeves multiple_girls open_mouth pink_hair sangdingting shiomi_hotaru simple_background spoon symbol_in_eye tongue tongue_out untranslatable_commentary upper_body white_background white_hair yuri<br/> <br> <a href=\"https://safebooru.org/images/598/bc3161ac74256ba131bf00b339f31fade0e8392e.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_6.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/shizuy1y7/status/2056973393581502627",
+          "image": "https://safebooru.org/samples/598/sample_aa08706e85e05c41929de9861061b5b39349346c.jpg",
+          "description": "<b>Copyright:</b> Can not guees<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls :t adidas black_hair black_jacket blush brown_eyes brown_hair cheek_pinching commentary commission drawn_ears eye_contact grey_eyes guiltyskullu hand_up heart highres jacket long_hair long_sleeves looking_at_another medium_hair mihuashi_commission multiple_girls naoi_(zenbu_kowashite_jigoku_de_aishite) open_mouth pinching second-party_source sleeves_past_wrists star_(symbol) sweatdrop track_jacket triangle_mouth untranslatable_commentary upper_body watermark wavy_mouth white_jacket yoshizawa_kurumi yuri zenbu_kowashite_jigoku_de_aishite<br/> <br> <a href=\"https://safebooru.org/images/598/aa08706e85e05c41929de9861061b5b39349346c.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_7.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/uwagiru/status/2113831974779625543",
+          "image": "https://safebooru.org/samples/598/sample_7ef60810744d0a3ce64ef0ba1fb684d6e60e2eb4.jpg",
+          "description": "<b>Copyright:</b> hololive hololive_english<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 3girls absurdres ahoge blue_hair box breasts brown_hair cecilia_immergreen cecilia_immergreen_(casual) earrings gift gift_box gigi_murin gigi_murin_(casual) grem_(gigi_murin) grey_hair highres holding holding_gift jewelry large_breasts multiple_girls ouro_kronii ouro_kronii_(casual) pink_eyes tail uwagiru virtual_youtuber winding_key yuri<br/> <br> <a href=\"https://safebooru.org/images/598/7ef60810744d0a3ce64ef0ba1fb684d6e60e2eb4.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_8.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://www.weibo.com/6107061109/PtMB6vEMB",
+          "image": "https://safebooru.org/samples/598/sample_ccb5d6902d96f5fb26420ffa203fd4fe7d0f50d4.jpg",
+          "description": "<b>Copyright:</b> original<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls black_jacket blonde_hair braid choker closed_eyes cup disposable_cup drinking_straw earrings flower grey_hair hair_between_eyes hair_flower hair_ornament holding holding_cup jacket jewelry lanjinli long_hair multiple_girls open_mouth smile yuri<br/> <br> <a href=\"https://safebooru.org/images/598/ccb5d6902d96f5fb26420ffa203fd4fe7d0f50d4.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_9.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/yingyeoMNSB/status/2113604190761337223",
+          "image": "https://safebooru.org/samples/598/sample_280ed5c9a17cc2c03f8813e5b8da200de765b91b.jpg",
+          "description": "<b>Copyright:</b> mahou_shoujo_no_majo_saiban<br/> <br/><b>Character(s):</b> sakuraba_ema shito_alisa<br/> <br/><b>Tags:</b> 2girls animate_(company) black_vest commentary_request fire fur-trimmed_hood fur_trim grey_hair hair_ornament hand_up heart highres hood hood_up hug index_finger_raised korean_commentary korean_text looking_at_another multicolored_hair multiple_girls official_alternate_costume pink_eyes pleated_skirt pyrokinesis red_eyes shirt short_hair skirt smile translation_request vest white_background white_hair white_shirt x_hair_ornament yingyeomnsb yuri<br/> <br> <a href=\"https://safebooru.org/images/598/280ed5c9a17cc2c03f8813e5b8da200de765b91b.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_10.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://www.rednote.com/discovery/item/6a586fd60000000014005f1d?xsec_token=ABCFQItG0VhoztuqvfOe-jb6nqYZTu60f8HDBfBwF_jcA=",
+          "image": "https://safebooru.org/samples/598/sample_ec2210332f4b7c0f48f3eaaa54298328968b081f.jpg",
+          "description": "<b>Copyright:</b> Can not guees<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls artist_request babouo black_hair black_sweater blush brown_eyes brown_hair check_artist closed_eyes collared_shirt commission covering_another's_mouth face-to-face facing_another from_side grey_necktie grey_sweater_vest hand_over_another's_mouth hand_up highres kiss kissing_hand long_hair long_sleeves looking_at_another medium_hair multiple_girls naoi_(zenbu_kowashite_jigoku_de_aishite) necktie plaid_clothes plaid_necktie second-party_source shirt sidelocks simple_background sweater sweater_vest white_background white_shirt yoshizawa_kurumi yuri zenbu_kowashite_jigoku_de_aishite<br/> <br> <a href=\"https://safebooru.org/images/598/ec2210332f4b7c0f48f3eaaa54298328968b081f.png\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_11.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/vna7e/status/2113641622995120371",
+          "image": "https://safebooru.org/samples/598/sample_665f11e5bc5dd741c1963771a70afa59feca6469.jpg",
+          "description": "<b>Copyright:</b> bang_dream!<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls bang_dream!_our_notes blue_eyes blue_hair brown_hair candy closed_mouth commentary_request eye_contact face-to-face food green_eyes hamasaki_mahoro holding holding_candy holding_food holding_lollipop korean_commentary kotohira_nagi lollipop long_hair looking_at_another multiple_girls open_mouth profile short_hair simple_background vna7e white_background yuri<br/> <br> <a href=\"https://safebooru.org/images/598/665f11e5bc5dd741c1963771a70afa59feca6469.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_12.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/shi__zumu/status/2113282578061107513",
+          "image": "https://safebooru.org/samples/598/sample_8eecea5c1aad02a242b44a95d53bcd822c4b466f.jpg",
+          "description": "<b>Copyright:</b> Can not guees<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls black_dress black_eyes black_hair black_thighhighs blush bow closed_mouth commentary demon_girl demon_horns demon_tail demon_wings dress earrings flower frenemy-chan_(irasutoya) hair_bow hair_flower hair_ornament highres horns irasutoya jacket jewelry long_hair long_sleeves looking_at_another multiple_girls pink_flower pink_jacket polearm red_bow red_wings shizumu_(shi_zumu) short_hair simple_background smile sparkle tail thigh-highs trident weapon white_background white_dress wings yuri<br/> <br> <a href=\"https://safebooru.org/images/598/8eecea5c1aad02a242b44a95d53bcd822c4b466f.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_13.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/aiSur_028600/status/1511101812270858242",
+          "image": "https://safebooru.org/samples/598/sample_f6c8e4b78c01490a0260519f8acd2c3eeacc7837.jpg",
+          "description": "<b>Copyright:</b> yagate_kimi_ni_naru<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls ahoge aisur_028600 black_hair blue_jacket blush brown_jacket closed_eyes closed_mouth commentary_request dated english_text grey_eyes highres jacket koito_yuu long_hair looking_at_another multiple_girls nanami_touko on_shoulder orange_hair parted_lips shirt short_hair sitting sleeping sleeping_on_person smile white_shirt yuri<br/> <br> <a href=\"https://safebooru.org/images/598/f6c8e4b78c01490a0260519f8acd2c3eeacc7837.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_14.mp3"
+        },
+        {
+          "title": "",
+          "link": "file://1.jpg",
+          "image": "https://safebooru.org/images/598/c84c314a05f3276d6d82e6902a3ab1101609a859.jpg",
+          "description": "<b>Copyright:</b> shingeki_no_kyojin<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> black_hair blonde_hair brown_hair kiss krista_lenz mikasa_ackerman non-web_source okonomiyaky_art short_hair very_short_hair ymir_(shingeki_no_kyojin) yuri<br/> <br> <a href=\"https://safebooru.org/images/598/c84c314a05f3276d6d82e6902a3ab1101609a859.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_15.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://www.xiaohongshu.com/discovery/item/6a2c3fd900000000070295a6?app_platform=ios&app_version=9.51&share_from_user_hidden=true&xsec_source=app_share&type=normal&xsec_token=CBLYE36prwJOQIynI4PSHLPW6PxLSVAILMgvoXYOrWvtU=&author_share=1&xhsshare=CopyLink&shareRedId=ODwyODtGNUs2NzUyOTgwNjZFOTdKPks5&apptime=1792824246&share_id=e0d878405c894cd2973ad38cab55ecd9",
+          "image": "https://safebooru.org/samples/342/sample_105ae02935a67b30b8f8b168e81f9aa96d51306a.jpg",
+          "description": "<b>Copyright:</b> miraculous_ladybug<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls @_@ absurdres blonde_hair chinese_commentary commentary_request dated dress green_nails heart heart_in_mouth highres juleka_couffaine multiple_girls paper_background pink_dress pink_skirt purple_lips reflekta_(miraculous_ladybug) rose_lavillant shirt short_hair skirt striped_clothes striped_shirt very_short_hair wo_si_gu_mochi yuri<br/> <br> <a href=\"https://safebooru.org/images/342/105ae02935a67b30b8f8b168e81f9aa96d51306a.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_16.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/ni77aaa/status/2113757356576088133",
+          "image": "https://safebooru.org/samples/342/sample_8ba48175339f198ac81a864abefb9ed9d8797d95.jpg",
+          "description": "<b>Copyright:</b> mahou_shoujo_no_majo_saiban<br/> <br/><b>Character(s):</b> hasumi_leia nikaido_hiro<br/> <br/><b>Tags:</b> 2girls absurdres black_hair black_shirt blonde_hair collared_shirt commentary_request crown epaulettes flower hair_flower hair_ornament heart heart-shaped_pupils highres long_hair long_sleeves looking_at_viewer multiple_girls necktie nitta_(ni77aaa) open_mouth outline red_eyes red_flower red_necktie shirt short_hair simple_background smile solo_focus speech_bubble symbol-shaped_pupils translation_request upper_body white_background yellow_eyes yuri<br/> <br> <a href=\"https://safebooru.org/images/342/8ba48175339f198ac81a864abefb9ed9d8797d95.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_17.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://www.xiaohongshu.com/discovery/item/69f79cb8000000001a037a87?app_platform=ios&app_version=9.51&share_from_user_hidden=true&xsec_source=app_share&type=normal&xsec_token=CB0iSkTnNZhVGenPH8FVY2UwDSvrTle_EV34HqhGepl3I=&author_share=1&xhsshare=CopyLink&shareRedId=ODwyODtGNUs2NzUyOTgwNjZFOTdKPks5&apptime=1792822901&share_id=1348da4472d34810a6f9cac1a159d647",
+          "image": "https://safebooru.org/samples/342/sample_882a7f93e5f8405ac29c41dd058e55d00e01612e.jpg",
+          "description": "<b>Copyright:</b> miraculous_ladybug<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls absurdres aqua_eyes aqua_lips asymmetrical_hair black_dress black_hair blonde_hair chinese_commentary closed_eyes commentary_request dress french_text hairband heart highres hug jacket juleka_couffaine kiss kissing_cheek long_hair multicolored_hair multiple_girls one_eye_closed paper_background pink_hairband pink_jacket pink_skirt purple_hair rose_lavillant short_hair sidecut skirt translation_request two-tone_hair undercut very_short_hair wo_si_gu_mochi yuri<br/> <br> <a href=\"https://safebooru.org/images/342/882a7f93e5f8405ac29c41dd058e55d00e01612e.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_18.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://i.pximg.net/img-original/img/2022/03/01/04/28/02/96598021_p26.png",
+          "image": "https://safebooru.org/samples/342/sample_9ce18982b530ec39a3afee9914dfe6be744fd332.jpg",
+          "description": "<b>Copyright:</b> mahou_shoujo_ikusei_keikaku<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls collared_shirt commentary_request fang hug long_hair mahou_shoujo_ikusei_keikaku_restart multiple_girls open_mouth pants pleated_skirt ruri_yoneda shinobu_hioka shirt short_hair skirt white_background yuri zzz_neruko<br/> <br> <a href=\"https://safebooru.org/images/342/9ce18982b530ec39a3afee9914dfe6be744fd332.png\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_19.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/Icepotatoooo/status/2113253048126672898",
+          "image": "https://safebooru.org/samples/342/sample_5a758692d5d646219a4ad75573f13162554dbd1d.jpg",
+          "description": "<b>Copyright:</b> Can not guees<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls absurdres arms_around_neck between_legs black_eyes black_hair black_skirt brown_hair commentary english_commentary highres icepotatoooo in_bathtub long_hair multiple_girls naoi_(zenbu_kowashite_jigoku_de_aishite) parted_lips pleated_skirt purple_sweater_vest school_uniform sentimental_girl's shirt short_hair skirt sweater_vest white_shirt yoshizawa_kurumi yuri zenbu_kowashite_jigoku_de_aishite<br/> <br> <a href=\"https://safebooru.org/images/342/5a758692d5d646219a4ad75573f13162554dbd1d.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_20.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/JAEJAESSING/status/2113240854634930630",
+          "image": "https://safebooru.org/samples/342/sample_5e8f172ae8ae94827744084625a3c2205a3d2724.jpg",
+          "description": "<b>Copyright:</b> bang_dream!<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> ... 3girls anger_vein bang_dream!_our_notes black_boots black_necktie black_skirt black_socks blue_cardigan book boots brown_hair cardigan collared_shirt commentary_request grey_eyes hairband half_updo hamasaki_mahoro hands_on_another's_face heart high_heel_boots high_heels highres holding holding_book hood hoodie izumi_houka jacket jaejaessing kiss korean_commentary kotohira_nagi long_hair mary_janes minase_school_uniform multiple_girls necktie pink_hair pleated_skirt purple_hair school_uniform shirt shoes short_hair simple_background skirt socks spoken_ellipsis spoken_heart white_background white_hairband white_hoodie white_jacket white_shirt white_shoes yuri<br/> <br> <a href=\"https://safebooru.org/images/342/5e8f172ae8ae94827744084625a3c2205a3d2724.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_21.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/su_yun81037/status/2113828548943515891",
+          "image": "https://safebooru.org/samples/342/sample_8a9abe70960c49dbda2dc5da88c25d31ad2d73b3.jpg",
+          "description": "<b>Copyright:</b> girls_band_cry<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls birthday_cake blue_eyes brown_skirt brown_sweater cake chinese_commentary commentary_request food grey_eyes grey_shirt highres hina_(girls_band_cry) iseri_nina low_twintails multiple_girls red_skirt shirt short_sleeves short_twintails skirt sweater twintails yun_cao_bing yuri<br/> <br> <a href=\"https://safebooru.org/images/342/8a9abe70960c49dbda2dc5da88c25d31ad2d73b3.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_22.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://i.pximg.net/img-original/img/2022/03/01/04/28/02/96598021_p16.png",
+          "image": "https://safebooru.org/samples/342/sample_d630415e4560fd1129a848b6735dd068e1c46b8f.jpg",
+          "description": "<b>Copyright:</b> mahou_shoujo_ikusei_keikaku<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls commentary_request grey_background hair_ornament highres looking_at_another lying mahou_shoujo_ikusei_keikaku_restart monochrome multiple_girls pants ruri_yoneda shinobu_hioka short_hair shorts socks sweat x_hair_ornament yuri zzz_neruko<br/> <br> <a href=\"https://safebooru.org/images/342/d630415e4560fd1129a848b6735dd068e1c46b8f.png\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_23.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://ferricsailor.tumblr.com/post/815572680964194304",
+          "image": "https://safebooru.org/samples/342/sample_6123202d32291b69d2c2b6e187877f969e049fb9.jpg",
+          "description": "<b>Copyright:</b> umamusume<br/> <br/><b>Character(s):</b> air_shakur_(umamusume) fine_motion_(umamusume)<br/> <br/><b>Tags:</b> 2girls commentary couple english_commentary ferricsailor greyscale highres hug leg_wrap monochrome multiple_girls pleated_skirt skirt yuri<br/> <br> <a href=\"https://safebooru.org/images/342/6123202d32291b69d2c2b6e187877f969e049fb9.png\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_24.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://i.pximg.net/img-original/img/2018/07/11/22/58/29/69645624_p5.jpg",
+          "image": "https://safebooru.org/images/342/4d6a26245ab3777b7605d278f8eaf5cb8ddab298.jpg",
+          "description": "<b>Copyright:</b> fate/grand_order fate_(series)<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls ahoge armored_leotard bare_shoulders belt black_belt black_gloves black_leotard chaldea_master_uniform chest_belt collared_jacket commentary_request crying crying_with_eyes_open elbow_gloves eye_contact face-to-face from_side fujimaru_ritsuka_(female) gloves hair_between_eyes hair_ornament hair_over_one_eye hair_scrunchie hand_up jacket kuhu1212 leotard long_sleeves looking_at_another mash_kyrielight mash_kyrielight_(demi-servant) multiple_girls one_side_up open_mouth orange_hair parted_lips partially_colored pink_hair profile scrunchie short_hair simple_background smile tears upper_body violet_eyes white_background white_jacket yellow_eyes yellow_scrunchie yuri<br/> <br> <a href=\"https://safebooru.org/images/342/4d6a26245ab3777b7605d278f8eaf5cb8ddab298.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_25.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://ferricsailor.tumblr.com/post/821722031802515456",
+          "image": "https://safebooru.org/samples/342/sample_d57894b4ab71adc0be8337de70a3e923511e1013.jpg",
+          "description": "<b>Copyright:</b> umamusume<br/> <br/><b>Character(s):</b> air_shakur_(umamusume) fine_motion_(umamusume)<br/> <br/><b>Tags:</b> 2girls commentary english_commentary ferricsailor hand_on_another's_head highres multiple_girls pants petting sitting tail torn_clothes torn_pants tree very_long_ears yuri<br/> <br> <a href=\"https://safebooru.org/images/342/d57894b4ab71adc0be8337de70a3e923511e1013.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_26.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://ferricsailor.tumblr.com/post/830500571540865024",
+          "image": "https://safebooru.org/samples/342/sample_de5f19ab80760b3a345b6f1297504320f8013731.jpg",
+          "description": "<b>Copyright:</b> umamusume<br/> <br/><b>Character(s):</b> air_shakur_(umamusume) fine_motion_(umamusume)<br/> <br/><b>Tags:</b> 2girls couple ferricsailor hand_on_another's_back height_difference highres jacket leather leather_jacket multiple_girls pants skirt sweater torn_clothes torn_pants yuri<br/> <br> <a href=\"https://safebooru.org/images/342/de5f19ab80760b3a345b6f1297504320f8013731.png\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_27.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://ferricsailor.tumblr.com/post/830669806651965440",
+          "image": "https://safebooru.org/samples/342/sample_4bf662985e3cf1659422e6d857dade3e93fad31e.jpg",
+          "description": "<b>Copyright:</b> umamusume<br/> <br/><b>Character(s):</b> air_shakur_(umamusume) fine_motion_(umamusume)<br/> <br/><b>Tags:</b> 2girls biting commentary couple english_commentary ferricsailor hand_on_another's_back highres hug multiple_girls sitting sitting_on_lap sitting_on_person yuri<br/> <br> <a href=\"https://safebooru.org/images/342/4bf662985e3cf1659422e6d857dade3e93fad31e.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_28.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/kase_194/status/2113786751332528465",
+          "image": "https://safebooru.org/images/342/ddcf7528801da5ce44d2800500e66836c30ac077.jpg",
+          "description": "<b>Copyright:</b> bang_dream!<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls bang_dream!_our_notes black_hairband blue_eyes blue_hair blush commentary grey_eyes hairband hamasaki_mahoro hand_on_own_cheek hand_on_own_face heart highres holding_hands izumi_houka kase_194 long_sleeves multiple_girls open_mouth pink_hair short_hair smile speech_bubble thought_bubble translation_request yuri<br/> <br> <a href=\"https://safebooru.org/images/342/ddcf7528801da5ce44d2800500e66836c30ac077.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_29.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://ferricsailor.tumblr.com/post/811577226271358976",
+          "image": "https://safebooru.org/samples/342/sample_350d02d325def2227205b199767044bdfd0e74d1.jpg",
+          "description": "<b>Copyright:</b> umamusume<br/> <br/><b>Character(s):</b> air_shakur_(umamusume) fine_motion_(umamusume)<br/> <br/><b>Tags:</b> absurdres accident blood blush couple ferricsailor highres kiss multiple_girls tattoo yuri<br/> <br> <a href=\"https://safebooru.org/images/342/350d02d325def2227205b199767044bdfd0e74d1.png\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_30.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/misamxsa08/status/2113805242278330522",
+          "image": "https://safebooru.org/samples/342/sample_b5d055eb57790343a19d0c182db0064328e77527.jpg",
+          "description": "<b>Copyright:</b> utau vocaloid<br/> <br/><b>Character(s):</b> hatsune_miku sukone_tei<br/> <br/><b>Tags:</b> >_< 2girls aqua_hair aqua_necktie aqua_trim arm_tattoo bare_shoulders black_boots black_sailor_collar black_skirt black_sleeves blush_stickers boots chibi chibi_only collared_shirt detached_sleeves grey_shirt hair_between_eyes headphones highres leg_up long_hair multiple_girls necktie number_tattoo open_mouth pleated_skirt purple_shirt red_eyes red_skirt red_trim sailor_collar shirt simple_background skirt sleeves_past_fingers sleeves_past_wrists smile standing tattoo twintails white_hair yuri zero_(misamxsa08)<br/> <br> <a href=\"https://safebooru.org/images/342/b5d055eb57790343a19d0c182db0064328e77527.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_31.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://ferricsailor.tumblr.com/post/814395911327350784",
+          "image": "https://safebooru.org/samples/342/sample_6fe8775e883a8857125579c0f15a907bfec61c19.jpg",
+          "description": "<b>Copyright:</b> umamusume<br/> <br/><b>Character(s):</b> air_shakur_(umamusume) fine_motion_(umamusume)<br/> <br/><b>Tags:</b> 2girls black_jacket couple ferricsailor height_difference highres jacket kiss leaning multiple_girls pleated_skirt skirt yuri<br/> <br> <a href=\"https://safebooru.org/images/342/6fe8775e883a8857125579c0f15a907bfec61c19.png\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_32.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/imceileen/status/2113553183314473241",
+          "image": "https://safebooru.org/images/342/729361ebb34735595c208ceff415c683d4d94316.jpg",
+          "description": "<b>Copyright:</b> sayonara_lara<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls :d belt black_hair blue_background blue_eyes blue_serafuku blue_shirt blue_skirt blush boxing_gloves braid brown_shoes carrying carrying_person commentary couple dress english_commentary eye_contact from_side gloves grin hand_on_another's_ass hand_on_another's_head happy highres imceileen lara_(sayonara_lara) long_dress long_hair long_sleeves looking_at_another multiple_girls neckerchief ootsu_mari open_mouth pleated_skirt profile red_belt red_eyes red_neckerchief school_uniform serafuku shirt shoes short_hair single_braid skirt smile socks straight_hair unworn_gloves very_long_hair white_dress white_socks yuri<br/> <br> <a href=\"https://safebooru.org/images/342/729361ebb34735595c208ceff415c683d4d94316.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_33.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://i.pximg.net/img-original/img/2026/10/24/12/22/23/151210955_p0.jpg",
+          "image": "https://safebooru.org/samples/342/sample_c3d1c71a395626e2ff4c77d92414b382b7b31599.jpg",
+          "description": "<b>Copyright:</b> touhou<br/> <br/><b>Character(s):</b> hakurei_reimu kirisame_marisa<br/> <br/><b>Tags:</b> 2girls apron ascot blonde_hair blush bow braid brown_hair carrying carrying_person commentary_request detached_sleeves flying_sweatdrops frilled_bow frilled_hair_tubes frilled_skirt frills hair_bow hair_tubes hat hat_bow heart highres long_hair multiple_girls pointy_ears princess_carry purple_hat purple_vest red_bow red_eyes red_skirt ribbon-trimmed_skirt ribbon-trimmed_sleeves ribbon_trim ru_reimari516 side_braid single_braid skirt skirt_set socks spoken_flying_sweatdrops spoken_heart twitter_username vest waist_apron white_apron white_bow white_socks witch_hat yellow_ascot yellow_eyes yuri<br/> <br> <a href=\"https://safebooru.org/images/342/c3d1c71a395626e2ff4c77d92414b382b7b31599.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_34.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/WIRELSS_____/status/2113698308611027201",
+          "image": "https://safebooru.org/samples/342/sample_d13efade36096df14ab7a00e411a77caf9224520.jpg",
+          "description": "<b>Copyright:</b> bang_dream!<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls absurdres bang_dream!_our_notes barefoot blush commentary dress green_hair green_shirt grey_pants highres izawa_natsume jewelry long_hair medium_hair multiple_girls necklace open_mouth pants shiomi_hotaru shirt simple_background sitting sitting_on_lap sitting_on_person toes undressing violet_eyes wcc233 white_background white_dress white_hair white_shirt yuri<br/> <br> <a href=\"https://safebooru.org/images/342/d13efade36096df14ab7a00e411a77caf9224520.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_35.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://i.pximg.net/img-original/img/2026/10/24/00/06/00/151194614_p0.jpg",
+          "image": "https://safebooru.org/samples/342/sample_cc7a53d3c36fd3f44a4ef2de4748f13490ea9089.jpg",
+          "description": "<b>Copyright:</b> shuuniichido_classmate_wo_kau_hanashi<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls akqseniq black_eyes black_hair black_necktie braid brown_hair collared_shirt commentary_request grey_jacket half_up_braid hand_on_another's_face highres jacket long_hair miyagi_shiori multiple_girls necktie school_uniform sendai_hazuki shirt short_hair translation_request violet_eyes white_shirt yuri<br/> <br> <a href=\"https://safebooru.org/images/342/cc7a53d3c36fd3f44a4ef2de4748f13490ea9089.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_36.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://i.pximg.net/img-original/img/2026/10/24/08/00/13/151204738_p0.png",
+          "image": "https://safebooru.org/samples/342/sample_e82f9298dad015e20abbb3c36a83e3a34169ea88.jpg",
+          "description": "<b>Copyright:</b> cho_kaguya-hime!<br/> <br/><b>Character(s):</b> kaguya_(cho_kaguya-hime!) runami_yachiyo sakayori_iroha<br/> <br/><b>Tags:</b> 3girls absurdres ahoge black_shirt blonde_hair blush closed_mouth colored_inner_hair commentary_request controller cup game_controller green_shirt grey_hair highres holding holding_controller holding_cup holding_game_controller hug long_hair multicolored_hair multiple_girls one_eye_closed open_mouth pink_hair playing_games purple_hair rabbit_ears_antenna red_eyes shirt smile star_(symbol) t0nys tears television thick_eyebrows violet_eyes yuri<br/> <br> <a href=\"https://safebooru.org/images/342/e82f9298dad015e20abbb3c36a83e3a34169ea88.png\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_37.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/tsuki_dango/status/2069262056407093714",
+          "image": "https://safebooru.org/samples/342/sample_57a4ae2cf08b9437761813d7f1a470dc71293de5.jpg",
+          "description": "<b>Copyright:</b> kimi_ga_shinu_made_koi_wo_shitai<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls blue_flower bound_together brown_hair collar commentary couple dango_(tsuki_dango) dress flower green_eyes hair_intakes heads_together highres kagari_mimi leaning_on_person light_blush long_hair looking_at_another medium_hair multiple_girls open_mouth pink_hair purple_dress red_ribbon ribbon sailor_collar sailor_dress shoulder-to-shoulder side-by-side sleeve_cuffs smile string string_of_fate totsuki_shiina untranslatable_commentary violet_eyes white_collar white_sailor_collar yuri<br/> <br> <a href=\"https://safebooru.org/images/342/57a4ae2cf08b9437761813d7f1a470dc71293de5.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_38.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/nyan_shiki/status/2113647936068288560",
+          "image": "https://safebooru.org/samples/342/sample_593cc9f1a48965534b5532fdf871faf985ae4f51.jpg",
+          "description": "<b>Copyright:</b> girls_band_cry<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls black_boots black_choker black_hat black_shirt blue_eyes blush boots carrying carrying_person choker closed_mouth commentary commission dated drunk english_commentary fishnet_pantyhose fishnets green_jacket grey_eyes grey_hair grey_pants happy_birthday hat highres iseri_nina jacket kawaragi_momoka long_hair multicolored_hair multiple_girls night outdoors pants pantyhose red_choker red_hair roots_(hair) second-party_source shirt short_twintails squeans twintails unworn_hat unworn_headwear yuri zy_(zyyyyyyy9)<br/> <br> <a href=\"https://safebooru.org/images/342/593cc9f1a48965534b5532fdf871faf985ae4f51.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_39.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://www.pinterest.com/pin/677017756531718718/",
+          "image": "https://safebooru.org/samples/342/sample_8ecbb8b9343e56e7482f5063de9d8db7e5417af8.jpg",
+          "description": "<b>Copyright:</b> Can not guees<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> can't_be_this_cute child collarbone cute_&_girly_(idolmaster) dark-skinned_male dark_skin fem hair_ornament highres kiss kissing_cheek pov yuri<br/> <br> <a href=\"https://safebooru.org/images/342/8ecbb8b9343e56e7482f5063de9d8db7e5417af8.png\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_40.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/kumo98138410/status/2113638731764900169",
+          "image": "https://safebooru.org/samples/342/sample_87d83a1c55754aa6e3de081b47a59fbbc368fd0a.jpg",
+          "description": "<b>Copyright:</b> mahou_shoujo_madoka_magica mahou_shoujo_madoka_magica_(anime)<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls animal_ears black_skirt blue_collar blue_eyes blue_hair blue_shorts blush bow bowtie closed_eyes collar commentary dog_ears dog_girl dog_tail green_hoodie highres holding holding_leash hood hoodie jewelry kemonomimi_mode kiss kumo_(kumo98138410) leash long_hair miki_sayaka mitakihara_school_uniform multiple_girls pleated_skirt ponytail red_bow red_bowtie red_hair ring sakura_kyoko school_uniform shirt short_hair shorts simple_background skirt tail white_background yellow_shirt yuri<br/> <br> <a href=\"https://safebooru.org/images/342/87d83a1c55754aa6e3de081b47a59fbbc368fd0a.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_41.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://i.pximg.net/img-original/img/2026/09/21/12/18/17/149921922_p0.png",
+          "image": "https://safebooru.org/samples/342/sample_0d042a1bb459f62e051d68ca2ca9aa3cb31a7199.jpg",
+          "description": "<b>Copyright:</b> axis_powers_hetalia<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> anayerpapayer bad_anatomy heart highres holding_hands hungarian_flag hungary_(hetalia) ukraine_(hetalia) ukrainian_flag yuri<br/> <br> <a href=\"https://safebooru.org/images/342/0d042a1bb459f62e051d68ca2ca9aa3cb31a7199.png\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_42.mp3"
+        },
+        {
+          "title": "",
+          "link": "file://Untitled110_20261023090027.png",
+          "image": "https://safebooru.org/samples/342/sample_cfd5c8cfa6c65e75a73c30ca7b0b3ea231107a76.jpg",
+          "description": "<b>Copyright:</b> Can not guees<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> child collarbone cute_&_girly_(idolmaster) dark-skinned_female dark_skin non-web_source yuri<br/> <br> <a href=\"https://safebooru.org/images/342/cfd5c8cfa6c65e75a73c30ca7b0b3ea231107a76.png\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_43.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://i.pximg.net/img-original/img/2026/10/13/11/32/48/150798827_p0.png",
+          "image": "https://safebooru.org/samples/342/sample_203714da7635e32f48f26f7aec9cdf6bcb2fb04a.jpg",
+          "description": "<b>Copyright:</b> axis_powers_hetalia<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> anayerpapayer blonde_hair brown_hair commentary_request flower hair_flower hair_ornament hairclip headband highres hungarian_text hungary_(hetalia) kiss ukraine_(hetalia) ukrainian_text yuri<br/> <br> <a href=\"https://safebooru.org/images/342/203714da7635e32f48f26f7aec9cdf6bcb2fb04a.png\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_44.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://sunlaurel.lofter.com/post/30ac80f9_2bf9fdabe",
+          "image": "https://safebooru.org/samples/342/sample_29a9238ccbfebfe76697f9788ec62020801a2100.jpg",
+          "description": "<b>Copyright:</b> umamusume<br/> <br/><b>Character(s):</b> mejiro_mcqueen_(umamusume) tokai_teio_(umamusume)<br/> <br/><b>Tags:</b> 2girls :d ascot bow bowtie capelet chinese_commentary coat commentary dutch_angle epaulettes eyes_out_of_frame feng_juzhu_de_jiedao greyscale head_out_of_frame highres horse_girl horse_tail hug long_hair long_sleeves mejiro_mcqueen_(frontline_elegance)_(umamusume) monochrome multiple_girls pleated_skirt shirt single_epaulette skirt smile tail tokai_teio_(peak_joy)_(umamusume) yuri<br/> <br> <a href=\"https://safebooru.org/images/342/29a9238ccbfebfe76697f9788ec62020801a2100.png\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_45.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://i.pximg.net/img-original/img/2024/10/26/00/19/38/123673436_p7.png",
+          "image": "https://safebooru.org/samples/342/sample_a1454cb96c0452f56056c83d037dcd653b80f49a.jpg",
+          "description": "<b>Copyright:</b> atelier_(series)<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls :d alternate_costume atelier_firis blonde_hair blue_eyes blue_flower blunt_bangs blush bow braid breasts bridal_veil commentary_request dress embarrassed falling_petals firis_mistlud flower flower_wreath forehead_jewel frilled_dress frills green_eyes grey_hair hair_bow ilmeria_von_leinweber large_bow light_particles long_hair looking_at_another looking_at_viewer looking_to_the_side medium_breasts multiple_girls off-shoulder_dress off_shoulder open_mouth petals sanpo shoulder_blush side_braid small_breasts smile teeth upper_body upper_teeth_only veil very_long_hair wedding_dress white_background white_bow white_dress yuri<br/> <br> <a href=\"https://safebooru.org/images/342/a1454cb96c0452f56056c83d037dcd653b80f49a.png\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_46.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/shinpashi/status/2113422899445186735",
+          "image": "https://safebooru.org/samples/342/sample_ea3baedfbf09e4a044033ace915ec46cd14d42a7.jpg",
+          "description": "<b>Copyright:</b> blue_archive touhou<br/> <br/><b>Character(s):</b> kazami_yuuka momoi_(blue_archive)<br/> <br/><b>Tags:</b> 2girls animal_ear_headphones animal_ears black_coat black_gloves black_halo black_skirt blonde_hair blue_jacket blue_necktie blush bow cat_ear_headphones cat_ears cat_tail closed_eyes coat collared_shirt commentary_request controller facing_to_the_side facing_viewer fake_animal_ears game_controller gloves hair_bow hair_ornament halo hand_on_another's_shoulder headphones holding holding_controller holding_game_controller imminent_kiss jacket leaning_forward long_hair long_sleeves looking_at_viewer mechanical_halo medium_hair multicolored_jacket multiple_girls narrowed_eyes necktie pink_bow pink_eyes pink_halo pink_jacket purple_hair red_bow shinbashi_seiji shirt skirt tail traditional_media triangle_hair_ornament twintails two-tone_jacket white_jacket white_shirt yuri<br/> <br> <a href=\"https://safebooru.org/images/342/ea3baedfbf09e4a044033ace915ec46cd14d42a7.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_47.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/naporitan01c/status/2113558780915130491",
+          "image": "https://safebooru.org/images/342/1f53863eaff08b2fff28f8d681505050828c5065.jpg",
+          "description": "<b>Copyright:</b> bang_dream! bang_dream!_it's_mygo!!!!!<br/> <br/><b>Character(s):</b> chihaya_anon nagasaki_soyo<br/> <br/><b>Tags:</b> 2girls blush brown_hair collarbone commentary grey_eyes haneoka_school_uniform highres hug hug_from_behind long_hair looking_at_another mesugakisaikou multiple_girls open_mouth pink_hair sailor_collar school_uniform simple_background smile sweatdrop tsukinomori_school_uniform upper_body white_background white_sailor_collar yuri<br/> <br> <a href=\"https://safebooru.org/images/342/1f53863eaff08b2fff28f8d681505050828c5065.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_48.mp3"
+        },
+        {
+          "title": "",
+          "link": "https://x.com/_Kirihara_/status/2113651466980516267",
+          "image": "https://safebooru.org/samples/342/sample_b087d80845bacc40b12cb11aa5e7c9de2ffb8efd.jpg",
+          "description": "<b>Copyright:</b> valorant<br/> <br/><b>Character(s):</b> Can not guess<br/> <br/><b>Tags:</b> 2girls arm_around_another's_back arm_around_neck black_hair black_pants black_shirt breasts chinese_commentary commentary_request dark-skinned_female dark_skin earrings eye_contact hand_on_another's_back hand_on_another's_thigh heart high_ponytail highres hoop_earrings jacket jewelry kirihara_(kiri) large_breasts long_hair looking_at_another multiple_girls open_clothes open_jacket pants pearl_earrings pink_lips ponytail profile purple_hair red_lips reyna_(valorant) ring sage_(valorant) shirt simple_background sleeveless sleeveless_shirt straight_hair white_background white_jacket yuri<br/> <br> <a href=\"https://safebooru.org/images/342/b087d80845bacc40b12cb11aa5e7c9de2ffb8efd.jpg\">original size</a>",
+          "tts": "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/untitled_49.mp3"
+        }
+      ]
+    }
+  }
 }

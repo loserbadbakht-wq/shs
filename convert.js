@@ -8,18 +8,25 @@ const feeds = [
   { url: 'https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/notif/new2.xml', filename: 'new2.json' }
 ];
 
-// Move <img src="..."> out of description into a dedicated `image` field
+function escapeBareAmpersands(xml) {
+  const parts = xml.split(/(<!\[CDATA\[[\s\S]*?\]\]>)/);
+  return parts.map((part, i) => {
+    if (i % 2 === 1) return part;
+    return part.replace(
+      /&(?!(?:amp|lt|gt|quot|apos|#\d+|#x[0-9a-fA-F]+);)/g,
+      '&amp;'
+    );
+  }).join('');
+}
+
 function extractImageFromDescription(item) {
   if (!item || typeof item.description !== 'string') return item;
-
   const imgRegex = /<img\b[^>]*\bsrc="([^"]+)"[^>]*\/?>/i;
   const match = item.description.match(imgRegex);
   if (!match) return item;
-
   const imageUrl = match[1];
   let newDesc = item.description.replace(imgRegex, '');
   newDesc = newDesc.replace(/^(?:\s|<br\s*\/?>)+/i, '').trim();
-
   const newItem = {};
   if (item.title !== undefined) newItem.title = item.title;
   if (item.link  !== undefined) newItem.link  = item.link;
@@ -47,7 +54,8 @@ async function fetchAndConvert(feed) {
   try {
     console.log(`Fetching: ${feed.url}`);
     const response = await axios.get(feed.url);
-    let result = await parser.parseStringPromise(response.data);
+    const cleanedXml = escapeBareAmpersands(response.data);
+    let result = await parser.parseStringPromise(cleanedXml);
     result = normalizeAndProcess(result);
     fs.writeFileSync(jsonPath, JSON.stringify(result, null, 2));
     console.log(`✅ Saved: ${jsonPath}`);

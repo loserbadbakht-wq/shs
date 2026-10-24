@@ -1,9 +1,11 @@
 import json, os, glob, time
 from googletrans import Translator
+
 SOURCE_DIR = 'json'
 OUTPUT_DIR = 'json/translated'
 TARGET_LANG = os.getenv('TARGET_LANG', 'es')
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+
 def translate_text(text, translator, retries=3):
     if not text or not isinstance(text, str):
         return text
@@ -15,6 +17,7 @@ def translate_text(text, translator, retries=3):
             print(f"  Translation error (attempt {attempt+1}): {e}")
             time.sleep(2 ** attempt)
     return text
+
 def translate_feed(data, translator):
     channel = data.get('rss', {}).get('channel', {})
     if channel:
@@ -33,6 +36,7 @@ def translate_feed(data, translator):
                 item['description'] = translate_text(item['description'], translator)
             time.sleep(0.3)
     return data
+
 def main():
     if not os.path.isdir(SOURCE_DIR):
         print(f"Source folder '{SOURCE_DIR}' does not exist.")
@@ -54,5 +58,6 @@ def main():
             json.dump(translated_data, f, indent=2, ensure_ascii=False)
         print(f"  ✅ Saved to: {output_path}")
     print("\nAll feeds translated successfully.")
+
 if __name__ == "__main__":
     main()
