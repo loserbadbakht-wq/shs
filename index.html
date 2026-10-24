@@ -1001,14 +1001,17 @@ img,
 <!-- @player-buttons-glass -->
 <style>
   /*
-   * TTS and Translate buttons use the *exact* glass treatment of the
-   * Video.js audio player controls:
+   * Rules of engagement:
+   *   • TTS *default* and *hover* = neutral glass (same as player bar)
+   *   • TTS *.playing* = blue glass, keeps the original “TTS = blue”
+   *   • Translate button = neutral glass
+   *   • Translate dropdown menu = neutral glass (items inherit blur)
+   * Glass recipe matches player tokens:
    *   dark  →  oklch(0% 0 0 / .4)   + blur(16px) saturate(110%)
    *   light →  oklch(100% 0 0 / .5) + blur(16px) saturate(110%)
-   * Same alphas, same backdrop-filter, same 3-layer box-shadow as
-   * the player’s --media-controls / --media-shadow-surface tokens.
    */
-  #fullscreenButtons .tts-btn-wrapper .tts-btn,
+
+  /* ─────────── Translate button — neutral glass ─────────── */
   #fullscreenButtons .translate-btn-wrapper .translate-btn {
     background: oklch(0% 0 0 / .4) !important;
     color: oklch(100% 0 0) !important;
@@ -1021,8 +1024,6 @@ img,
       0 1px 2px -1px oklch(0% 0 0 / .15) !important;
     text-shadow: 0 1px 0 oklch(0% 0 0 / .15);
   }
-
-  html[data-theme="light"] #fullscreenButtons .tts-btn-wrapper .tts-btn,
   html[data-theme="light"] #fullscreenButtons .translate-btn-wrapper .translate-btn {
     background: oklch(100% 0 0 / .5) !important;
     color: oklch(0% 0 0) !important;
@@ -1032,33 +1033,113 @@ img,
       0 1px 2px -1px oklch(0% 0 0 / .15) !important;
     text-shadow: 0 1px 0 oklch(100% 0 0 / .4);
   }
-
   @media (hover: hover) {
-    #fullscreenButtons .tts-btn-wrapper .tts-btn:hover,
     #fullscreenButtons .translate-btn-wrapper .translate-btn:hover {
       background: oklch(0% 0 0 / .5) !important;
       transform: scale(1.03);
     }
-    html[data-theme="light"] #fullscreenButtons .tts-btn-wrapper .tts-btn:hover,
     html[data-theme="light"] #fullscreenButtons .translate-btn-wrapper .translate-btn:hover {
       background: oklch(100% 0 0 / .6) !important;
     }
   }
 
-  /* Playing — same glass material, just less transparent */
-  #fullscreenButtons .tts-btn-wrapper .tts-btn.playing {
-    background: oklch(0% 0 0 / .55) !important;
+  /* ─────────── TTS button — default & hover = neutral glass ─────────── */
+  #fullscreenButtons .tts-btn-wrapper .tts-btn {
+    background: oklch(0% 0 0 / .4) !important;
     color: oklch(100% 0 0) !important;
+    border: none !important;
+    backdrop-filter: blur(16px) saturate(110%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(110%) !important;
+    box-shadow:
+      0 0 0 1px oklch(0% 0 0 / .1),
+      0 1px 3px 0 oklch(0% 0 0 / .15),
+      0 1px 2px -1px oklch(0% 0 0 / .15) !important;
+    text-shadow: 0 1px 0 oklch(0% 0 0 / .15);
   }
-  #fullscreenButtons .tts-btn-wrapper .tts-btn.playing:hover {
-    background: oklch(0% 0 0 / .65) !important;
+  html[data-theme="light"] #fullscreenButtons .tts-btn-wrapper .tts-btn {
+    background: oklch(100% 0 0 / .5) !important;
+    color: oklch(0% 0 0) !important;
+    box-shadow:
+      0 0 0 1px oklch(0% 0 0 / .05),
+      0 1px 3px 0 oklch(0% 0 0 / .15),
+      0 1px 2px -1px oklch(0% 0 0 / .15) !important;
+    text-shadow: 0 1px 0 oklch(100% 0 0 / .4);
+  }
+  @media (hover: hover) {
+    #fullscreenButtons .tts-btn-wrapper .tts-btn:hover {
+      background: oklch(0% 0 0 / .5) !important;
+      transform: scale(1.03);
+    }
+    html[data-theme="light"] #fullscreenButtons .tts-btn-wrapper .tts-btn:hover {
+      background: oklch(100% 0 0 / .6) !important;
+    }
+  }
+
+  /* ─────────── TTS *.playing* — blue glass (the original blue, glassy) ─────────── */
+  #fullscreenButtons .tts-btn-wrapper .tts-btn.playing {
+    background: color-mix(in oklab, var(--primary) 82%, transparent) !important;
+    color: oklch(100% 0 0) !important;
+    backdrop-filter: blur(16px) saturate(110%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(110%) !important;
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--primary) 55%, transparent),
+      0 1px 3px 0 oklch(0% 0 0 / .2),
+      0 1px 2px -1px oklch(0% 0 0 / .2) !important;
+    text-shadow: 0 1px 0 oklch(0% 0 0 / .25);
   }
   html[data-theme="light"] #fullscreenButtons .tts-btn-wrapper .tts-btn.playing {
-    background: oklch(100% 0 0 / .7) !important;
+    /* --primary in light mode is #0088cc; white text still contrasts */
+    color: oklch(100% 0 0) !important;
+  }
+  @media (hover: hover) {
+    #fullscreenButtons .tts-btn-wrapper .tts-btn.playing:hover {
+      background: color-mix(in oklab, var(--primary) 92%, transparent) !important;
+      transform: none;
+    }
+  }
+
+  /* ─────────── Translate dropdown — glass menu ─────────── */
+  #fullscreenButtons .translate-dropdown {
+    background: oklch(0% 0 0 / .4) !important;
+    border: none !important;
+    border-radius: var(--radius-sm) !important;
+    backdrop-filter: blur(16px) saturate(110%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(110%) !important;
+    box-shadow:
+      0 0 0 1px oklch(0% 0 0 / .1),
+      0 1px 3px 0 oklch(0% 0 0 / .15),
+      0 1px 2px -1px oklch(0% 0 0 / .15) !important;
+    overflow: hidden !important;
+  }
+  html[data-theme="light"] #fullscreenButtons .translate-dropdown {
+    background: oklch(100% 0 0 / .5) !important;
+    box-shadow:
+      0 0 0 1px oklch(0% 0 0 / .05),
+      0 1px 3px 0 oklch(0% 0 0 / .15),
+      0 1px 2px -1px oklch(0% 0 0 / .15) !important;
+  }
+
+  #fullscreenButtons .translate-dropdown .dropdown-item {
+    background: transparent !important;
+    color: oklch(100% 0 0) !important;
+  }
+  html[data-theme="light"] #fullscreenButtons .translate-dropdown .dropdown-item {
     color: oklch(0% 0 0) !important;
   }
-  html[data-theme="light"] #fullscreenButtons .tts-btn-wrapper .tts-btn.playing:hover {
-    background: oklch(100% 0 0 / .8) !important;
+
+  @media (hover: hover) {
+    #fullscreenButtons .translate-dropdown .dropdown-item:hover {
+      background: oklch(0% 0 0 / .15) !important;
+    }
+    html[data-theme="light"] #fullscreenButtons .translate-dropdown .dropdown-item:hover {
+      background: oklch(0% 0 0 / .08) !important;
+    }
+  }
+
+  #fullscreenButtons .translate-dropdown .dropdown-item.active {
+    background: color-mix(in oklab, var(--primary) 28%, transparent) !important;
+    color: var(--primary) !important;
+    font-weight: 600;
   }
 </style>
 </head>
