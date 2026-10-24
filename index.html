@@ -1001,17 +1001,75 @@ img,
 <!-- @player-buttons-glass -->
 <style>
   /*
-   * Glass chrome — one material system across the whole UI:
+   * Glass chrome — one material system across the whole UI.
    *
-   *   neutral glass = utility  (buttons at rest, player bar, dropdown menu)
+   *   neutral glass = utility  (header bar, buttons, player, dropdown menu)
    *   blue glass    = active   (TTS while playing, selected language)
    *
    * Tokens mirror the player bundle:
-   *   dark  →  oklch(0% 0 0 / .4)   + blur(16px) saturate(110%)
-   *   light →  oklch(100% 0 0 / .5) + blur(16px) saturate(110%)
-   * The overlay uses a stronger blur + tuned opacity so the whole
-   * screen reads as frosted, not merely dimmed.
+   *   dark  →  oklch(0% 0 0 / .4–.55)  + blur(16px) saturate(110%)
+   *   light →  oklch(100% 0 0 / .5–.65) + blur(16px) saturate(110%)
+   * Larger surfaces (header, overlay) use a slightly denser alpha than
+   * small pill-shaped controls so text stays legible when content
+   * scrolls or floats behind.
    */
+
+  /* ─────────── Header bar — glass ─────────── */
+  .header {
+    background: oklch(0% 0 0 / .5) !important;
+    border-bottom: none !important;
+    backdrop-filter: blur(16px) saturate(110%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(110%) !important;
+    box-shadow:
+      0 1px 0 0 oklch(0% 0 0 / .1),
+      0 4px 20px 0 oklch(0% 0 0 / .08) !important;
+  }
+  html[data-theme="light"] .header {
+    background: oklch(100% 0 0 / .65) !important;
+    box-shadow:
+      0 1px 0 0 oklch(0% 0 0 / .05),
+      0 4px 20px 0 oklch(0% 0 0 / .06) !important;
+  }
+
+  /* ─────────── Header icon buttons — glass ─────────── */
+  .header-actions .btn-icon {
+    background: oklch(0% 0 0 / .4) !important;
+    color: oklch(100% 0 0) !important;
+    border: none !important;
+    backdrop-filter: blur(16px) saturate(110%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(110%) !important;
+    box-shadow:
+      0 0 0 1px oklch(0% 0 0 / .1),
+      0 1px 3px 0 oklch(0% 0 0 / .15),
+      0 1px 2px -1px oklch(0% 0 0 / .15) !important;
+  }
+  html[data-theme="light"] .header-actions .btn-icon {
+    background: oklch(100% 0 0 / .5) !important;
+    color: oklch(0% 0 0) !important;
+    box-shadow:
+      0 0 0 1px oklch(0% 0 0 / .05),
+      0 1px 3px 0 oklch(0% 0 0 / .15),
+      0 1px 2px -1px oklch(0% 0 0 / .15) !important;
+  }
+  @media (hover: hover) {
+    .header-actions .btn-icon:hover {
+      background: oklch(0% 0 0 / .5) !important;
+      color: oklch(100% 0 0) !important;
+    }
+    html[data-theme="light"] .header-actions .btn-icon:hover {
+      background: oklch(100% 0 0 / .6) !important;
+      color: oklch(0% 0 0) !important;
+    }
+  }
+  /* active state — blue glass, same recipe as the dropdown active item */
+  .header-actions .btn-icon.active {
+    background: color-mix(in oklab, var(--primary) 28%, transparent) !important;
+    color: var(--primary) !important;
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--primary) 40%, transparent),
+      0 1px 3px 0 oklch(0% 0 0 / .15),
+      0 1px 2px -1px oklch(0% 0 0 / .15) !important;
+  }
 
   /* ─────────── Translate button — neutral glass ─────────── */
   #fullscreenButtons .translate-btn-wrapper .translate-btn {
@@ -1070,8 +1128,6 @@ img,
       background: oklch(100% 0 0 / .6) !important;
     }
   }
-
-  /* TTS playing — blue glass, keeps the original blue identity */
   #fullscreenButtons .tts-btn-wrapper .tts-btn.playing {
     background: color-mix(in oklab, var(--primary) 82%, transparent) !important;
     color: oklch(100% 0 0) !important;
@@ -1137,9 +1193,6 @@ img,
   html[data-theme="light"] .fullscreen-overlay {
     background: oklch(100% 0 0 / .6) !important;
   }
-
-  /* Fallback: browsers without backdrop-filter get a denser tint so
-     text stays legible over the dimmed page. */
   @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
     .fullscreen-overlay { background: oklch(0% 0 0 / .92) !important; }
     html[data-theme="light"] .fullscreen-overlay { background: oklch(100% 0 0 / .95) !important; }
