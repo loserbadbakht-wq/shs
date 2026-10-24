@@ -37,6 +37,19 @@ jobs:
             { url: 'https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/notif/new2.xml', filename: 'new2.json' }
           ];
 
+          // Escape bare '&' to '&amp;' so strict XML parsers don't choke on
+          // URLs like "...?a=1&b=2". CDATA sections are left untouched.
+          function escapeBareAmpersands(xml) {
+            const parts = xml.split(/(<!\[CDATA\[[\s\S]*?\]\]>)/);
+            return parts.map((part, i) => {
+              if (i % 2 === 1) return part;   // CDATA section – leave as-is
+              return part.replace(
+                /&(?!(?:amp|lt|gt|quot|apos|#\d+|#x[0-9a-fA-F]+);)/g,
+                '&amp;'
+              );
+            }).join('');
+          }
+
           // Move <img src="..."> out of description into a dedicated `image` field
           function extractImageFromDescription(item) {
             if (!item || typeof item.description !== 'string') return item;
@@ -49,6 +62,7 @@ jobs:
             let newDesc = item.description.replace(imgRegex, '');
             newDesc = newDesc.replace(/^(?:\s|<br\s*\/?>)+/i, '').trim();
 
+            // Rebuild with key order: title → link → image → …other… → description
             const newItem = {};
             if (item.title !== undefined) newItem.title = item.title;
             if (item.link  !== undefined) newItem.link  = item.link;
@@ -76,7 +90,8 @@ jobs:
             try {
               console.log(`Fetching: ${feed.url}`);
               const response = await axios.get(feed.url);
-              let result = await parser.parseStringPromise(response.data);
+              const cleanedXml = escapeBareAmpersands(response.data);
+              let result = await parser.parseStringPromise(cleanedXml);
               result = normalizeAndProcess(result);
               fs.writeFileSync(jsonPath, JSON.stringify(result, null, 2));
               console.log(`✅ Saved: ${jsonPath}`);
@@ -213,10 +228,12 @@ jobs:
           cat > translate_feeds.py << 'EOF'
           import json, os, glob, time
           from googletrans import Translator
+
           SOURCE_DIR = 'json'
           OUTPUT_DIR = 'json/translated'
           TARGET_LANG = os.getenv('TARGET_LANG', 'es')
           os.makedirs(OUTPUT_DIR, exist_ok=True)
+
           def translate_text(text, translator, retries=3):
               if not text or not isinstance(text, str):
                   return text
@@ -228,6 +245,7 @@ jobs:
                       print(f"  Translation error (attempt {attempt+1}): {e}")
                       time.sleep(2 ** attempt)
               return text
+
           def translate_feed(data, translator):
               channel = data.get('rss', {}).get('channel', {})
               if channel:
@@ -246,6 +264,7 @@ jobs:
                           item['description'] = translate_text(item['description'], translator)
                       time.sleep(0.3)
               return data
+
           def main():
               if not os.path.isdir(SOURCE_DIR):
                   print(f"Source folder '{SOURCE_DIR}' does not exist.")
@@ -267,6 +286,7 @@ jobs:
                       json.dump(translated_data, f, indent=2, ensure_ascii=False)
                   print(f"  ✅ Saved to: {output_path}")
               print("\nAll feeds translated successfully.")
+
           if __name__ == "__main__":
               main()
           EOF
