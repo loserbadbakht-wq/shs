@@ -1,10 +1,7 @@
 name: Build Video.js Bundle
 
 on:
-  push:
-    branches: [main]
-    paths-ignore:
-      - 'public/player.js'        # don't trigger on the built artifact
+  
   workflow_dispatch:
 
 permissions:
