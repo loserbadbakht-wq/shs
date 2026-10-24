@@ -998,6 +998,69 @@ img,
   html[data-theme="light"] audio-player,
   html[data-theme="light"] video-player { color-scheme: light !important; }
 </style>
+<!-- @player-buttons-glass -->
+<style>
+  /*
+   * TTS and Translate buttons use the *exact* glass treatment of the
+   * Video.js audio player controls:
+   *   dark  →  oklch(0% 0 0 / .4)   + blur(16px) saturate(110%)
+   *   light →  oklch(100% 0 0 / .5) + blur(16px) saturate(110%)
+   * Same alphas, same backdrop-filter, same 3-layer box-shadow as
+   * the player’s --media-controls / --media-shadow-surface tokens.
+   */
+  #fullscreenButtons .tts-btn-wrapper .tts-btn,
+  #fullscreenButtons .translate-btn-wrapper .translate-btn {
+    background: oklch(0% 0 0 / .4) !important;
+    color: oklch(100% 0 0) !important;
+    border: none !important;
+    backdrop-filter: blur(16px) saturate(110%) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(110%) !important;
+    box-shadow:
+      0 0 0 1px oklch(0% 0 0 / .1),
+      0 1px 3px 0 oklch(0% 0 0 / .15),
+      0 1px 2px -1px oklch(0% 0 0 / .15) !important;
+    text-shadow: 0 1px 0 oklch(0% 0 0 / .15);
+  }
+
+  html[data-theme="light"] #fullscreenButtons .tts-btn-wrapper .tts-btn,
+  html[data-theme="light"] #fullscreenButtons .translate-btn-wrapper .translate-btn {
+    background: oklch(100% 0 0 / .5) !important;
+    color: oklch(0% 0 0) !important;
+    box-shadow:
+      0 0 0 1px oklch(0% 0 0 / .05),
+      0 1px 3px 0 oklch(0% 0 0 / .15),
+      0 1px 2px -1px oklch(0% 0 0 / .15) !important;
+    text-shadow: 0 1px 0 oklch(100% 0 0 / .4);
+  }
+
+  @media (hover: hover) {
+    #fullscreenButtons .tts-btn-wrapper .tts-btn:hover,
+    #fullscreenButtons .translate-btn-wrapper .translate-btn:hover {
+      background: oklch(0% 0 0 / .5) !important;
+      transform: scale(1.03);
+    }
+    html[data-theme="light"] #fullscreenButtons .tts-btn-wrapper .tts-btn:hover,
+    html[data-theme="light"] #fullscreenButtons .translate-btn-wrapper .translate-btn:hover {
+      background: oklch(100% 0 0 / .6) !important;
+    }
+  }
+
+  /* Playing — same glass material, just less transparent */
+  #fullscreenButtons .tts-btn-wrapper .tts-btn.playing {
+    background: oklch(0% 0 0 / .55) !important;
+    color: oklch(100% 0 0) !important;
+  }
+  #fullscreenButtons .tts-btn-wrapper .tts-btn.playing:hover {
+    background: oklch(0% 0 0 / .65) !important;
+  }
+  html[data-theme="light"] #fullscreenButtons .tts-btn-wrapper .tts-btn.playing {
+    background: oklch(100% 0 0 / .7) !important;
+    color: oklch(0% 0 0) !important;
+  }
+  html[data-theme="light"] #fullscreenButtons .tts-btn-wrapper .tts-btn.playing:hover {
+    background: oklch(100% 0 0 / .8) !important;
+  }
+</style>
 </head>
 <body>
     <header class="header">
