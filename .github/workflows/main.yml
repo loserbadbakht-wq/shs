@@ -5,6 +5,10 @@ on:
     - cron: '0 * * * *'
   workflow_dispatch:
 
+concurrency:
+  group: fetch-rss-convert
+  cancel-in-progress: false
+
 jobs:
   convert:
     runs-on: ubuntu-latest
@@ -37,12 +41,10 @@ jobs:
             { url: 'https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/notif/new2.xml', filename: 'new2.json' }
           ];
 
-          // Escape bare '&' to '&amp;' so strict XML parsers don't choke on
-          // URLs like "...?a=1&b=2". CDATA sections are left untouched.
           function escapeBareAmpersands(xml) {
             const parts = xml.split(/(<!\[CDATA\[[\s\S]*?\]\]>)/);
             return parts.map((part, i) => {
-              if (i % 2 === 1) return part;   // CDATA section – leave as-is
+              if (i % 2 === 1) return part;
               return part.replace(
                 /&(?!(?:amp|lt|gt|quot|apos|#\d+|#x[0-9a-fA-F]+);)/g,
                 '&amp;'
@@ -50,19 +52,14 @@ jobs:
             }).join('');
           }
 
-          // Move <img src="..."> out of description into a dedicated `image` field
           function extractImageFromDescription(item) {
             if (!item || typeof item.description !== 'string') return item;
-
             const imgRegex = /<img\b[^>]*\bsrc="([^"]+)"[^>]*\/?>/i;
             const match = item.description.match(imgRegex);
             if (!match) return item;
-
             const imageUrl = match[1];
             let newDesc = item.description.replace(imgRegex, '');
             newDesc = newDesc.replace(/^(?:\s|<br\s*\/?>)+/i, '').trim();
-
-            // Rebuild with key order: title → link → image → …other… → description
             const newItem = {};
             if (item.title !== undefined) newItem.title = item.title;
             if (item.link  !== undefined) newItem.link  = item.link;
@@ -148,9 +145,8 @@ jobs:
               return title or "untitled"
 
           used_names = set()
-          mappings = {}   # (json_path, idx) -> mp3 filename
+          mappings = {}
 
-          # ── Pass 1: generate audio, record filename per item ──────────────
           for json_path in json_files:
               print(f"\nProcessing {json_path}")
               with open(json_path, 'r', encoding='utf-8') as f:
@@ -198,7 +194,6 @@ jobs:
                       print(f"  ❌ Error for item {idx}: {e.stderr}")
                       continue
 
-          # ── Pass 2: stamp `tts` URL back into every JSON item ─────────────
           print("\n--- Writing tts URLs into JSON ---")
           for json_path in json_files:
               with open(json_path, 'r', encoding='utf-8') as f:
@@ -305,3 +300,4 @@ jobs:
           commit_message: "Update RSS, translations and TTS [skip ci]"
           commit_user_name: "github-actions[bot]"
           commit_user_email: "github-actions[bot]@users.noreply.github.com"
+          push_options: '--force'
