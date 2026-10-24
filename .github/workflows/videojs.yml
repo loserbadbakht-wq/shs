@@ -1,25 +1,23 @@
-name: Build Video.js HTML Bundle & Deploy
+name: Build Video.js Bundle
 
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - 'public/player.js'        # don't trigger on the built artifact
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+  contents: write                 # needed to push player.js back
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          persist-credentials: true
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -33,40 +31,33 @@ jobs:
 
       - name: Create Video.js entry file
         run: |
-          cat > player.js <<'EOF'
+          cat > entry.js <<'EOF'
           // Video player + skin
           import '@videojs/html/video/player';
           import '@videojs/html/video/skin';
 
-          // Audio player + skin (default frosted look)
+          // Audio player + skin
           import '@videojs/html/audio/player';
           import '@videojs/html/audio/skin';
 
-          // Optional: use the neutral audio skin instead of the default
-          // import '@videojs/html/audio/neutral-skin';
-
-          // Optional: media adapters
+          // Optional adapters
           // import '@videojs/html/media/hlsjs-video';
-          // import '@videojs/html/media/hls-audio';   // for HLS audio streams
+          // import '@videojs/html/media/hls-audio';
           EOF
 
       - name: Bundle with esbuild (inline sourcemap)
         run: |
-          npx esbuild player.js \
+          npx esbuild entry.js \
             --bundle \
             --format=esm \
             --minify \
             --sourcemap=inline \
             --outfile=public/player.js
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Commit built player.js back to repo
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          path: public
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          commit_message: "chore: build player.js [skip ci]"
+          file_pattern: public/player.js
+          commit_user_name: github-actions[bot]
+          commit_user_email: github-actions[bot]@users.noreply.github.com
