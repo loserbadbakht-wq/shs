@@ -49,18 +49,12 @@ jobs:
           let player = fs.readFileSync('player.js', 'utf8');
           const topMatches = player.match(/side="top"/g) || [];
           console.log(`side="top" occurrences: ${topMatches.length}`);
-          if (topMatches.length === 0) {
-            console.log('✓ Nothing to patch — no side="top" in bundle');
-            process.exit(0);
-          }
+          if (topMatches.length === 0) { console.log('✓ Nothing to patch'); process.exit(0); }
           const count = topMatches.length;
           player = player.replace(/side="top"/g, 'side="bottom"');
           fs.writeFileSync('player.js', player);
           const remaining = (player.match(/side="top"/g) || []).length;
-          if (remaining !== 0) {
-            console.error(`✗ Post-replace check failed: ${remaining} side="top" still present`);
-            process.exit(1);
-          }
+          if (remaining !== 0) { console.error(`✗ ${remaining} side="top" remain`); process.exit(1); }
           console.log(`✓ Replaced ${count} side="top" → side="bottom"`);
           EOF
 
@@ -109,7 +103,7 @@ jobs:
           console.log('✓ Injected player theme-fix');
           EOF
 
-      - name: Patch index.html — glass TTS & Translate buttons
+      - name: Patch index.html — glass buttons + glass translate menu
         run: |
           node - <<'EOF'
           const fs = require('fs');
@@ -122,14 +116,17 @@ jobs:
           MARKER + '\n' +
           '<style>\n' +
           '  /*\n' +
-          '   * TTS and Translate buttons use the *exact* glass treatment of the\n' +
-          '   * Video.js audio player controls:\n' +
+          '   * Rules of engagement:\n' +
+          '   *   • TTS *default* and *hover* = neutral glass (same as player bar)\n' +
+          '   *   • TTS *.playing* = blue glass, keeps the original “TTS = blue”\n' +
+          '   *   • Translate button = neutral glass\n' +
+          '   *   • Translate dropdown menu = neutral glass (items inherit blur)\n' +
+          '   * Glass recipe matches player tokens:\n' +
           '   *   dark  →  oklch(0% 0 0 / .4)   + blur(16px) saturate(110%)\n' +
           '   *   light →  oklch(100% 0 0 / .5) + blur(16px) saturate(110%)\n' +
-          '   * Same alphas, same backdrop-filter, same 3-layer box-shadow as\n' +
-          '   * the player’s --media-controls / --media-shadow-surface tokens.\n' +
           '   */\n' +
-          '  #fullscreenButtons .tts-btn-wrapper .tts-btn,\n' +
+          '\n' +
+          '  /* ─────────── Translate button — neutral glass ─────────── */\n' +
           '  #fullscreenButtons .translate-btn-wrapper .translate-btn {\n' +
           '    background: oklch(0% 0 0 / .4) !important;\n' +
           '    color: oklch(100% 0 0) !important;\n' +
@@ -142,8 +139,6 @@ jobs:
           '      0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
           '    text-shadow: 0 1px 0 oklch(0% 0 0 / .15);\n' +
           '  }\n' +
-          '\n' +
-          '  html[data-theme="light"] #fullscreenButtons .tts-btn-wrapper .tts-btn,\n' +
           '  html[data-theme="light"] #fullscreenButtons .translate-btn-wrapper .translate-btn {\n' +
           '    background: oklch(100% 0 0 / .5) !important;\n' +
           '    color: oklch(0% 0 0) !important;\n' +
@@ -153,38 +148,116 @@ jobs:
           '      0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
           '    text-shadow: 0 1px 0 oklch(100% 0 0 / .4);\n' +
           '  }\n' +
-          '\n' +
           '  @media (hover: hover) {\n' +
-          '    #fullscreenButtons .tts-btn-wrapper .tts-btn:hover,\n' +
           '    #fullscreenButtons .translate-btn-wrapper .translate-btn:hover {\n' +
           '      background: oklch(0% 0 0 / .5) !important;\n' +
           '      transform: scale(1.03);\n' +
           '    }\n' +
-          '    html[data-theme="light"] #fullscreenButtons .tts-btn-wrapper .tts-btn:hover,\n' +
           '    html[data-theme="light"] #fullscreenButtons .translate-btn-wrapper .translate-btn:hover {\n' +
           '      background: oklch(100% 0 0 / .6) !important;\n' +
           '    }\n' +
           '  }\n' +
           '\n' +
-          '  /* Playing — same glass material, just less transparent */\n' +
-          '  #fullscreenButtons .tts-btn-wrapper .tts-btn.playing {\n' +
-          '    background: oklch(0% 0 0 / .55) !important;\n' +
+          '  /* ─────────── TTS button — default & hover = neutral glass ─────────── */\n' +
+          '  #fullscreenButtons .tts-btn-wrapper .tts-btn {\n' +
+          '    background: oklch(0% 0 0 / .4) !important;\n' +
           '    color: oklch(100% 0 0) !important;\n' +
+          '    border: none !important;\n' +
+          '    backdrop-filter: blur(16px) saturate(110%) !important;\n' +
+          '    -webkit-backdrop-filter: blur(16px) saturate(110%) !important;\n' +
+          '    box-shadow:\n' +
+          '      0 0 0 1px oklch(0% 0 0 / .1),\n' +
+          '      0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
+          '      0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
+          '    text-shadow: 0 1px 0 oklch(0% 0 0 / .15);\n' +
           '  }\n' +
-          '  #fullscreenButtons .tts-btn-wrapper .tts-btn.playing:hover {\n' +
-          '    background: oklch(0% 0 0 / .65) !important;\n' +
+          '  html[data-theme="light"] #fullscreenButtons .tts-btn-wrapper .tts-btn {\n' +
+          '    background: oklch(100% 0 0 / .5) !important;\n' +
+          '    color: oklch(0% 0 0) !important;\n' +
+          '    box-shadow:\n' +
+          '      0 0 0 1px oklch(0% 0 0 / .05),\n' +
+          '      0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
+          '      0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
+          '    text-shadow: 0 1px 0 oklch(100% 0 0 / .4);\n' +
+          '  }\n' +
+          '  @media (hover: hover) {\n' +
+          '    #fullscreenButtons .tts-btn-wrapper .tts-btn:hover {\n' +
+          '      background: oklch(0% 0 0 / .5) !important;\n' +
+          '      transform: scale(1.03);\n' +
+          '    }\n' +
+          '    html[data-theme="light"] #fullscreenButtons .tts-btn-wrapper .tts-btn:hover {\n' +
+          '      background: oklch(100% 0 0 / .6) !important;\n' +
+          '    }\n' +
+          '  }\n' +
+          '\n' +
+          '  /* ─────────── TTS *.playing* — blue glass (the original blue, glassy) ─────────── */\n' +
+          '  #fullscreenButtons .tts-btn-wrapper .tts-btn.playing {\n' +
+          '    background: color-mix(in oklab, var(--primary) 82%, transparent) !important;\n' +
+          '    color: oklch(100% 0 0) !important;\n' +
+          '    backdrop-filter: blur(16px) saturate(110%) !important;\n' +
+          '    -webkit-backdrop-filter: blur(16px) saturate(110%) !important;\n' +
+          '    box-shadow:\n' +
+          '      0 0 0 1px color-mix(in oklab, var(--primary) 55%, transparent),\n' +
+          '      0 1px 3px 0 oklch(0% 0 0 / .2),\n' +
+          '      0 1px 2px -1px oklch(0% 0 0 / .2) !important;\n' +
+          '    text-shadow: 0 1px 0 oklch(0% 0 0 / .25);\n' +
           '  }\n' +
           '  html[data-theme="light"] #fullscreenButtons .tts-btn-wrapper .tts-btn.playing {\n' +
-          '    background: oklch(100% 0 0 / .7) !important;\n' +
+          '    /* --primary in light mode is #0088cc; white text still contrasts */\n' +
+          '    color: oklch(100% 0 0) !important;\n' +
+          '  }\n' +
+          '  @media (hover: hover) {\n' +
+          '    #fullscreenButtons .tts-btn-wrapper .tts-btn.playing:hover {\n' +
+          '      background: color-mix(in oklab, var(--primary) 92%, transparent) !important;\n' +
+          '      transform: none;\n' +
+          '    }\n' +
+          '  }\n' +
+          '\n' +
+          '  /* ─────────── Translate dropdown — glass menu ─────────── */\n' +
+          '  #fullscreenButtons .translate-dropdown {\n' +
+          '    background: oklch(0% 0 0 / .4) !important;\n' +
+          '    border: none !important;\n' +
+          '    border-radius: var(--radius-sm) !important;\n' +
+          '    backdrop-filter: blur(16px) saturate(110%) !important;\n' +
+          '    -webkit-backdrop-filter: blur(16px) saturate(110%) !important;\n' +
+          '    box-shadow:\n' +
+          '      0 0 0 1px oklch(0% 0 0 / .1),\n' +
+          '      0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
+          '      0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
+          '    overflow: hidden !important;\n' +
+          '  }\n' +
+          '  html[data-theme="light"] #fullscreenButtons .translate-dropdown {\n' +
+          '    background: oklch(100% 0 0 / .5) !important;\n' +
+          '    box-shadow:\n' +
+          '      0 0 0 1px oklch(0% 0 0 / .05),\n' +
+          '      0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
+          '      0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
+          '  }\n' +
+          '\n' +
+          '  #fullscreenButtons .translate-dropdown .dropdown-item {\n' +
+          '    background: transparent !important;\n' +
+          '    color: oklch(100% 0 0) !important;\n' +
+          '  }\n' +
+          '  html[data-theme="light"] #fullscreenButtons .translate-dropdown .dropdown-item {\n' +
           '    color: oklch(0% 0 0) !important;\n' +
           '  }\n' +
-          '  html[data-theme="light"] #fullscreenButtons .tts-btn-wrapper .tts-btn.playing:hover {\n' +
-          '    background: oklch(100% 0 0 / .8) !important;\n' +
+          '\n' +
+          '  @media (hover: hover) {\n' +
+          '    #fullscreenButtons .translate-dropdown .dropdown-item:hover {\n' +
+          '      background: oklch(0% 0 0 / .15) !important;\n' +
+          '    }\n' +
+          '    html[data-theme="light"] #fullscreenButtons .translate-dropdown .dropdown-item:hover {\n' +
+          '      background: oklch(0% 0 0 / .08) !important;\n' +
+          '    }\n' +
+          '  }\n' +
+          '\n' +
+          '  #fullscreenButtons .translate-dropdown .dropdown-item.active {\n' +
+          '    background: color-mix(in oklab, var(--primary) 28%, transparent) !important;\n' +
+          '    color: var(--primary) !important;\n' +
+          '    font-weight: 600;\n' +
           '  }\n' +
           '</style>';
 
-          // Replace-if-exists: lets us iterate on the glass recipe without
-          // editing index.html by hand between runs.
           const blockRe = new RegExp(esc(MARKER) + '[\\s\\S]*?</style>');
           if (blockRe.test(html)) {
             html = html.replace(blockRe, styleBlock);
@@ -200,7 +273,7 @@ jobs:
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "chore: rebuild player.js + inline + theme fix + glass buttons [skip ci]"
+          commit_message: "chore: glass buttons — neutral by default, blue only when playing [skip ci]"
           file_pattern: "player.js index.html"
           commit_user_name: github-actions[bot]
           commit_user_email: github-actions[bot]@users.noreply.github.com
