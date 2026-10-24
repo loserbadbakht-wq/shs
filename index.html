@@ -1003,18 +1003,19 @@ img,
   /*
    * Glass chrome — one material system across the whole UI.
    *
-   *   neutral glass = utility  (header bar, buttons, player, dropdown menu)
-   *   blue glass    = active   (TTS while playing, selected language)
+   *   neutral glass = utility  (header bar, content-header strip,
+   *                             utility buttons, player, dropdown menu)
+   *   blue glass    = primary / active
+   *                   (TTS while playing, Refresh, selected language)
    *
    * Tokens mirror the player bundle:
-   *   dark  →  oklch(0% 0 0 / .4–.55)  + blur(16px) saturate(110%)
-   *   light →  oklch(100% 0 0 / .5–.65) + blur(16px) saturate(110%)
-   * Larger surfaces (header, overlay) use a slightly denser alpha than
-   * small pill-shaped controls so text stays legible when content
-   * scrolls or floats behind.
+   *   dark  →  oklch(0% 0 0 / .3–.55) + blur(16–28px) saturate(110–130%)
+   *   light →  oklch(100% 0 0 / .5–.65) + blur(16–28px) saturate(110–130%)
+   * Larger surfaces get a denser alpha so text stays legible even
+   * when content moves behind them.
    */
 
-  /* ─────────── Header bar — glass ─────────── */
+  /* ─────────── Page header bar — glass ─────────── */
   .header {
     background: oklch(0% 0 0 / .5) !important;
     border-bottom: none !important;
@@ -1031,7 +1032,7 @@ img,
       0 4px 20px 0 oklch(0% 0 0 / .06) !important;
   }
 
-  /* ─────────── Header icon buttons — glass ─────────── */
+  /* ─────────── Page header icon buttons — glass ─────────── */
   .header-actions .btn-icon {
     background: oklch(0% 0 0 / .4) !important;
     color: oklch(100% 0 0) !important;
@@ -1061,7 +1062,6 @@ img,
       color: oklch(0% 0 0) !important;
     }
   }
-  /* active state — blue glass, same recipe as the dropdown active item */
   .header-actions .btn-icon.active {
     background: color-mix(in oklab, var(--primary) 28%, transparent) !important;
     color: var(--primary) !important;
@@ -1069,6 +1069,78 @@ img,
       0 0 0 1px color-mix(in oklab, var(--primary) 40%, transparent),
       0 1px 3px 0 oklch(0% 0 0 / .15),
       0 1px 2px -1px oklch(0% 0 0 / .15) !important;
+  }
+
+  /* ─────────── Content-header bar (feed title strip) — glass ─────────── */
+  .content-header {
+    background: oklch(0% 0 0 / .35) !important;
+    border-bottom: none !important;
+    box-shadow: 0 1px 0 0 oklch(0% 0 0 / .08) !important;
+  }
+  html[data-theme="light"] .content-header {
+    background: oklch(100% 0 0 / .5) !important;
+    box-shadow: 0 1px 0 0 oklch(0% 0 0 / .05) !important;
+  }
+
+  /* Small feed icon inside the content-header */
+  .content-header .feed-title-large .feed-icon-large {
+    background: oklch(0% 0 0 / .35) !important;
+    box-shadow:
+      0 0 0 1px oklch(0% 0 0 / .1),
+      0 1px 2px 0 oklch(0% 0 0 / .12) !important;
+  }
+  html[data-theme="light"] .content-header .feed-title-large .feed-icon-large {
+    background: oklch(100% 0 0 / .45) !important;
+    box-shadow:
+      0 0 0 1px oklch(0% 0 0 / .05),
+      0 1px 2px 0 oklch(0% 0 0 / .08) !important;
+  }
+
+  /* ─────────── Content-header action buttons — glass ─────────── */
+  .content-header .feed-actions button {
+    background: oklch(0% 0 0 / .4) !important;
+    color: oklch(100% 0 0) !important;
+    border: none !important;
+    backdrop-filter: blur(12px) saturate(110%) !important;
+    -webkit-backdrop-filter: blur(12px) saturate(110%) !important;
+    box-shadow:
+      0 0 0 1px oklch(0% 0 0 / .1),
+      0 1px 3px 0 oklch(0% 0 0 / .15),
+      0 1px 2px -1px oklch(0% 0 0 / .15) !important;
+    text-shadow: 0 1px 0 oklch(0% 0 0 / .15);
+  }
+  html[data-theme="light"] .content-header .feed-actions button {
+    background: oklch(100% 0 0 / .5) !important;
+    color: oklch(0% 0 0) !important;
+    box-shadow:
+      0 0 0 1px oklch(0% 0 0 / .05),
+      0 1px 3px 0 oklch(0% 0 0 / .15),
+      0 1px 2px -1px oklch(0% 0 0 / .15) !important;
+    text-shadow: 0 1px 0 oklch(100% 0 0 / .4);
+  }
+  @media (hover: hover) {
+    .content-header .feed-actions button:hover {
+      background: oklch(0% 0 0 / .5) !important;
+    }
+    html[data-theme="light"] .content-header .feed-actions button:hover {
+      background: oklch(100% 0 0 / .6) !important;
+    }
+  }
+
+  /* Refresh (primary) — blue glass, matches TTS playing + dropdown active */
+  .content-header .feed-actions button.primary {
+    background: color-mix(in oklab, var(--primary) 28%, transparent) !important;
+    color: var(--primary) !important;
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--primary) 40%, transparent),
+      0 1px 3px 0 oklch(0% 0 0 / .15),
+      0 1px 2px -1px oklch(0% 0 0 / .15) !important;
+  }
+  @media (hover: hover) {
+    .content-header .feed-actions button.primary:hover {
+      background: color-mix(in oklab, var(--primary) 40%, transparent) !important;
+      color: var(--primary) !important;
+    }
   }
 
   /* ─────────── Translate button — neutral glass ─────────── */
