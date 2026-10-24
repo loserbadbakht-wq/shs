@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   build:
-    if: github.actor != 'github-actions[bot]'   # loop guard
+    if: github.actor != 'github-actions[bot]'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -47,19 +47,15 @@ jobs:
           node - <<'EOF'
           const fs = require('fs');
           let player = fs.readFileSync('player.js', 'utf8');
-
           const topMatches = player.match(/side="top"/g) || [];
           console.log(`side="top" occurrences: ${topMatches.length}`);
-
           if (topMatches.length === 0) {
             console.log('✓ Nothing to patch — no side="top" in bundle');
             process.exit(0);
           }
-
           const count = topMatches.length;
           player = player.replace(/side="top"/g, 'side="bottom"');
           fs.writeFileSync('player.js', player);
-
           const remaining = (player.match(/side="top"/g) || []).length;
           if (remaining !== 0) {
             console.error(`✗ Post-replace check failed: ${remaining} side="top" still present`);
@@ -74,77 +70,137 @@ jobs:
           const fs = require('fs');
           const player = fs.readFileSync('player.js', 'utf8');
           const html   = fs.readFileSync('index.html', 'utf8');
-
           const safe = player.replace(/<\/script/gi, '<\\/script');
-
           const START = '<!-- @videojs-inline:start -->';
           const END   = '<!-- @videojs-inline:end -->';
           const block = `${START}\n<script type="module">\n${safe}\n</script>\n${END}`;
-
           const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
           const markerRe = new RegExp(esc(START) + '[\\s\\S]*?' + esc(END));
-
           let out;
           if (markerRe.test(html)) {
             out = html.replace(markerRe, block);
           } else {
             const cdnRe = /<script\s+type="module"\s+src="https:\/\/cdn\.jsdelivr\.net\/npm\/@videojs\/cdn[^"]*"[^>]*>\s*<\/script>/;
-            if (!cdnRe.test(html)) {
-              console.error('✗ No Video.js CDN <script> and no inline markers in index.html');
-              process.exit(1);
-            }
+            if (!cdnRe.test(html)) { console.error('✗ No CDN <script> and no inline markers'); process.exit(1); }
             out = html.replace(cdnRe, block);
           }
-
           if (out === html) console.log('✓ index.html already up to date');
           else { fs.writeFileSync('index.html', out); console.log('✓ Inlined player.js into index.html'); }
           EOF
 
-      - name: Patch index.html — make player follow page theme toggle
+      - name: Patch index.html — player follows page theme toggle
+        run: |
+          node - <<'EOF'
+          const fs = require('fs');
+          let html = fs.readFileSync('index.html', 'utf8');
+          const MARKER = '<!-- @player-theme-fix -->';
+          if (html.includes(MARKER)) { console.log('✓ Theme-fix already present'); process.exit(0); }
+          if (!html.includes('</head>')) { console.error('✗ No </head>'); process.exit(1); }
+          const styleBlock =
+          MARKER + '\n' +
+          '<style>\n' +
+          '  html[data-theme="dark"]  audio-player,\n' +
+          '  html[data-theme="dark"]  video-player { color-scheme: dark  !important; }\n' +
+          '  html[data-theme="light"] audio-player,\n' +
+          '  html[data-theme="light"] video-player { color-scheme: light !important; }\n' +
+          '</style>';
+          html = html.replace('</head>', styleBlock + '\n</head>');
+          fs.writeFileSync('index.html', html);
+          console.log('✓ Injected player theme-fix');
+          EOF
+
+      - name: Patch index.html — glass TTS & Translate buttons
         run: |
           node - <<'EOF'
           const fs = require('fs');
           let html = fs.readFileSync('index.html', 'utf8');
 
-          const MARKER = '<!-- @player-theme-fix -->';
-          if (html.includes(MARKER)) {
-            console.log('✓ Player theme-fix already present — skipping');
-            process.exit(0);
-          }
-
-          if (!html.includes('</head>')) {
-            console.error('✗ Could not find </head> in index.html');
-            process.exit(1);
-          }
+          const MARKER = '<!-- @player-buttons-glass -->';
+          const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
           const styleBlock =
           MARKER + '\n' +
           '<style>\n' +
           '  /*\n' +
-          '   * Video.js players follow the page theme toggle.\n' +
-          '   *\n' +
-          '   * The player uses `all: initial`, which resets color-scheme to `normal`\n' +
-          '   * (i.e. light). That breaks inheritance of the page theme, so the\n' +
-          '   * `light-dark()` values inside the skin never react to the toggle.\n' +
-          '   * Forcing color-scheme to match data-theme fixes it, and every\n' +
-          '   * `light-dark()` in the bundle now resolves to the correct palette.\n' +
+          '   * TTS and Translate buttons use the *exact* glass treatment of the\n' +
+          '   * Video.js audio player controls:\n' +
+          '   *   dark  →  oklch(0% 0 0 / .4)   + blur(16px) saturate(110%)\n' +
+          '   *   light →  oklch(100% 0 0 / .5) + blur(16px) saturate(110%)\n' +
+          '   * Same alphas, same backdrop-filter, same 3-layer box-shadow as\n' +
+          '   * the player’s --media-controls / --media-shadow-surface tokens.\n' +
           '   */\n' +
-          '  html[data-theme="dark"]  audio-player,\n' +
-          '  html[data-theme="dark"]  video-player { color-scheme: dark  !important; }\n' +
+          '  #fullscreenButtons .tts-btn-wrapper .tts-btn,\n' +
+          '  #fullscreenButtons .translate-btn-wrapper .translate-btn {\n' +
+          '    background: oklch(0% 0 0 / .4) !important;\n' +
+          '    color: oklch(100% 0 0) !important;\n' +
+          '    border: none !important;\n' +
+          '    backdrop-filter: blur(16px) saturate(110%) !important;\n' +
+          '    -webkit-backdrop-filter: blur(16px) saturate(110%) !important;\n' +
+          '    box-shadow:\n' +
+          '      0 0 0 1px oklch(0% 0 0 / .1),\n' +
+          '      0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
+          '      0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
+          '    text-shadow: 0 1px 0 oklch(0% 0 0 / .15);\n' +
+          '  }\n' +
           '\n' +
-          '  html[data-theme="light"] audio-player,\n' +
-          '  html[data-theme="light"] video-player { color-scheme: light !important; }\n' +
+          '  html[data-theme="light"] #fullscreenButtons .tts-btn-wrapper .tts-btn,\n' +
+          '  html[data-theme="light"] #fullscreenButtons .translate-btn-wrapper .translate-btn {\n' +
+          '    background: oklch(100% 0 0 / .5) !important;\n' +
+          '    color: oklch(0% 0 0) !important;\n' +
+          '    box-shadow:\n' +
+          '      0 0 0 1px oklch(0% 0 0 / .05),\n' +
+          '      0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
+          '      0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
+          '    text-shadow: 0 1px 0 oklch(100% 0 0 / .4);\n' +
+          '  }\n' +
+          '\n' +
+          '  @media (hover: hover) {\n' +
+          '    #fullscreenButtons .tts-btn-wrapper .tts-btn:hover,\n' +
+          '    #fullscreenButtons .translate-btn-wrapper .translate-btn:hover {\n' +
+          '      background: oklch(0% 0 0 / .5) !important;\n' +
+          '      transform: scale(1.03);\n' +
+          '    }\n' +
+          '    html[data-theme="light"] #fullscreenButtons .tts-btn-wrapper .tts-btn:hover,\n' +
+          '    html[data-theme="light"] #fullscreenButtons .translate-btn-wrapper .translate-btn:hover {\n' +
+          '      background: oklch(100% 0 0 / .6) !important;\n' +
+          '    }\n' +
+          '  }\n' +
+          '\n' +
+          '  /* Playing — same glass material, just less transparent */\n' +
+          '  #fullscreenButtons .tts-btn-wrapper .tts-btn.playing {\n' +
+          '    background: oklch(0% 0 0 / .55) !important;\n' +
+          '    color: oklch(100% 0 0) !important;\n' +
+          '  }\n' +
+          '  #fullscreenButtons .tts-btn-wrapper .tts-btn.playing:hover {\n' +
+          '    background: oklch(0% 0 0 / .65) !important;\n' +
+          '  }\n' +
+          '  html[data-theme="light"] #fullscreenButtons .tts-btn-wrapper .tts-btn.playing {\n' +
+          '    background: oklch(100% 0 0 / .7) !important;\n' +
+          '    color: oklch(0% 0 0) !important;\n' +
+          '  }\n' +
+          '  html[data-theme="light"] #fullscreenButtons .tts-btn-wrapper .tts-btn.playing:hover {\n' +
+          '    background: oklch(100% 0 0 / .8) !important;\n' +
+          '  }\n' +
           '</style>';
 
-          html = html.replace('</head>', styleBlock + '\n</head>');
+          // Replace-if-exists: lets us iterate on the glass recipe without
+          // editing index.html by hand between runs.
+          const blockRe = new RegExp(esc(MARKER) + '[\\s\\S]*?</style>');
+          if (blockRe.test(html)) {
+            html = html.replace(blockRe, styleBlock);
+            console.log('✓ Updated glass-button style');
+          } else {
+            if (!html.includes('</head>')) { console.error('✗ No </head>'); process.exit(1); }
+            html = html.replace('</head>', styleBlock + '\n</head>');
+            console.log('✓ Injected glass-button style before </head>');
+          }
           fs.writeFileSync('index.html', html);
-          console.log('✓ Injected player theme-fix before </head>');
           EOF
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "chore: rebuild player.js + inline + player theme fix [skip ci]"
+          commit_message: "chore: rebuild player.js + inline + theme fix + glass buttons [skip ci]"
           file_pattern: "player.js index.html"
           commit_user_name: github-actions[bot]
           commit_user_email: github-actions[bot]@users.noreply.github.com
