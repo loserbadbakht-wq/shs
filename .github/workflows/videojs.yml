@@ -1,4 +1,4 @@
-name: Inline Video.js into index.html
+name: Build, Patch & Inline Video.js
 
 on:
   push:
@@ -8,13 +8,9 @@ on:
 permissions:
   contents: write
 
-concurrency:
-  group: inline-videojs
-  cancel-in-progress: true
-
 jobs:
-  inline:
-    if: github.actor != 'github-actions[bot]'   # loop guard #1
+  build:
+    if: github.actor != 'github-actions[bot]'   # loop guard
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -46,51 +42,74 @@ jobs:
             --minify \
             --outfile=player.js
 
+      - name: Patch audio settings menu (side top → bottom)
+        run: |
+          node - <<'EOF'
+          const fs = require('fs');
+          let player = fs.readFileSync('player.js', 'utf8');
+
+          // Match any <media-menu> tag that carries the audio-settings-menu-popup class
+          // and currently has side="top". We intentionally do NOT match on the generated
+          // id="vjs-XXXX-popup" because it changes on every rebuild.
+          const TOP    = /(<media-menu\s+side=")top("[^>]*?audio-settings-menu-popup[^>]*?>)/g;
+          const BOTTOM = /<media-menu\s+side="bottom"[^>]*?audio-settings-menu-popup[^>]*?>/;
+
+          if (BOTTOM.test(player)) {
+            console.log('✓ Audio settings menu already patched (side="bottom")');
+            process.exit(0);
+          }
+
+          const matches = [...player.matchAll(TOP)];
+          if (matches.length === 0) {
+            console.error('✗ Could not find <media-menu side="top" ... audio-settings-menu-popup ...>');
+            console.error('  The upstream @videojs/html template may have changed.');
+            process.exit(1);
+          }
+
+          player = player.replace(TOP, '$1bottom$2');
+          fs.writeFileSync('player.js', player);
+          console.log(`✓ Patched ${matches.length} audio settings menu instance(s): side="top" → side="bottom"`);
+          EOF
+
       - name: Inline player.js into index.html
         run: |
-          cat > inline.js <<'EOF'
+          node - <<'EOF'
           const fs = require('fs');
-
           const player = fs.readFileSync('player.js', 'utf8');
           const html   = fs.readFileSync('index.html', 'utf8');
 
-          // Prevent a literal </script> in the bundle from closing our block
+          // Prevent a literal </script> inside the bundle from closing the block early
           const safe = player.replace(/<\/script/gi, '<\\/script');
 
           const START = '<!-- @videojs-inline:start -->';
           const END   = '<!-- @videojs-inline:end -->';
           const block = `${START}\n<script type="module">\n${safe}\n</script>\n${END}`;
 
-          const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
           const markerRe = new RegExp(esc(START) + '[\\s\\S]*?' + esc(END));
 
           let out;
           if (markerRe.test(html)) {
-            // Re-run: swap the existing inline block in place
+            // Re-run: swap the block in place
             out = html.replace(markerRe, block);
           } else {
             // First run: replace the CDN <script> tag
             const cdnRe = /<script\s+type="module"\s+src="https:\/\/cdn\.jsdelivr\.net\/npm\/@videojs\/cdn[^"]*"[^>]*>\s*<\/script>/;
             if (!cdnRe.test(html)) {
-              console.error('✗ No Video.js CDN <script> tag and no inline markers found in index.html');
+              console.error('✗ No Video.js CDN <script> and no inline markers in index.html');
               process.exit(1);
             }
             out = html.replace(cdnRe, block);
           }
 
-          if (out === html) {
-            console.log('✓ index.html already up to date');
-          } else {
-            fs.writeFileSync('index.html', out);
-            console.log('✓ Inlined player.js into index.html');
-          }
+          if (out === html) console.log('✓ index.html already up to date');
+          else { fs.writeFileSync('index.html', out); console.log('✓ Inlined player.js into index.html'); }
           EOF
-          node inline.js
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "chore: inline videojs player into index.html [skip ci]"
+          commit_message: "chore: rebuild player.js + inline [skip ci]"
           file_pattern: "player.js index.html"
           commit_user_name: github-actions[bot]
           commit_user_email: github-actions[bot]@users.noreply.github.com
