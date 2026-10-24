@@ -36,12 +36,48 @@ jobs:
             { url: 'https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/notif/new1.xml', filename: 'new1.json' },
             { url: 'https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/notif/new2.xml', filename: 'new2.json' }
           ];
+
+          // Move <img src="..."> out of description into a dedicated `image` field
+          function extractImageFromDescription(item) {
+            if (!item || typeof item.description !== 'string') return item;
+
+            const imgRegex = /<img\b[^>]*\bsrc="([^"]+)"[^>]*\/?>/i;
+            const match = item.description.match(imgRegex);
+            if (!match) return item;
+
+            const imageUrl = match[1];
+            let newDesc = item.description.replace(imgRegex, '');
+            newDesc = newDesc.replace(/^(?:\s|<br\s*\/?>)+/i, '').trim();
+
+            const newItem = {};
+            if (item.title !== undefined) newItem.title = item.title;
+            if (item.link  !== undefined) newItem.link  = item.link;
+            newItem.image = imageUrl;
+            for (const key of Object.keys(item)) {
+              if (['title', 'link', 'description'].includes(key)) continue;
+              newItem[key] = item[key];
+            }
+            newItem.description = newDesc;
+            return newItem;
+          }
+
+          function normalizeAndProcess(result) {
+            const channel = result?.rss?.channel;
+            if (!channel || !channel.item) return result;
+            if (!Array.isArray(channel.item)) {
+              channel.item = [channel.item];
+            }
+            channel.item = channel.item.map(extractImageFromDescription);
+            return result;
+          }
+
           async function fetchAndConvert(feed) {
             const jsonPath = `json/${feed.filename}`;
             try {
               console.log(`Fetching: ${feed.url}`);
               const response = await axios.get(feed.url);
-              const result = await parser.parseStringPromise(response.data);
+              let result = await parser.parseStringPromise(response.data);
+              result = normalizeAndProcess(result);
               fs.writeFileSync(jsonPath, JSON.stringify(result, null, 2));
               console.log(`✅ Saved: ${jsonPath}`);
             } catch (error) {
@@ -63,6 +99,111 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
+
+      - name: Install edge-tts
+        run: pip install edge-tts requests
+
+      - name: Clean old TTS files (to force regeneration)
+        run: rm -rf json/tts/
+
+      - name: Generate TTS + write tts URL into each JSON item
+        run: |
+          python - <<'EOF'
+          import os, json, re, subprocess, glob
+          from urllib.parse import quote
+
+          out_dir = "json/tts"
+          os.makedirs(out_dir, exist_ok=True)
+          json_files = sorted(glob.glob("json/*.json"))
+          base_url = "https://raw.githubusercontent.com/loserbadbakht-wq/shs/refs/heads/main/json/tts/"
+
+          if not json_files:
+              print("No JSON files found in json/")
+              exit(0)
+
+          def clean_text(text):
+              return re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', text)).strip()
+
+          def sanitize_filename(title):
+              title = re.sub(r'[\\/*?:"<>|]', '', title)
+              title = re.sub(r'[-\s]+', '_', title)
+              title = title.strip('_.')
+              if len(title) > 50:
+                  title = title[:50]
+              return title or "untitled"
+
+          used_names = set()
+          mappings = {}   # (json_path, idx) -> mp3 filename
+
+          # ── Pass 1: generate audio, record filename per item ──────────────
+          for json_path in json_files:
+              print(f"\nProcessing {json_path}")
+              with open(json_path, 'r', encoding='utf-8') as f:
+                  data = json.load(f)
+
+              items = data.get('rss', {}).get('channel', {}).get('item', [])
+              if isinstance(items, dict):
+                  items = [items]
+              if not items:
+                  print(f"  No items in {json_path}, skipping.")
+                  continue
+
+              for idx, item in enumerate(items):
+                  desc = item.get('description', '')
+                  if not desc:
+                      print(f"  Item {idx}: no description, skipping")
+                      continue
+
+                  title = item.get('title', f'item_{idx:03d}')
+                  base_name = sanitize_filename(title)
+
+                  if base_name in used_names:
+                      counter = 1
+                      while f"{base_name}_{counter}" in used_names:
+                          counter += 1
+                      final_name = f"{base_name}_{counter}"
+                  else:
+                      final_name = base_name
+                  used_names.add(final_name)
+
+                  mp3_filename = f"{final_name}.mp3"
+                  filepath = os.path.join(out_dir, mp3_filename)
+                  print(f"  Generating: {filepath} (description length: {len(desc)})")
+                  clean_desc = clean_text(desc)[:5000] + ("..." if len(desc) > 5000 else "")
+
+                  try:
+                      subprocess.run([
+                          "edge-tts", "--text", clean_desc,
+                          "--write-media", filepath,
+                          "--voice", "en-US-JennyNeural"
+                      ], check=True, capture_output=True, text=True)
+                      print(f"  ✅ Generated: {filepath}")
+                      mappings[(json_path, idx)] = mp3_filename
+                  except subprocess.CalledProcessError as e:
+                      print(f"  ❌ Error for item {idx}: {e.stderr}")
+                      continue
+
+          # ── Pass 2: stamp `tts` URL back into every JSON item ─────────────
+          print("\n--- Writing tts URLs into JSON ---")
+          for json_path in json_files:
+              with open(json_path, 'r', encoding='utf-8') as f:
+                  data = json.load(f)
+
+              items = data.get('rss', {}).get('channel', {}).get('item', [])
+              if isinstance(items, dict):
+                  items = [items]
+              if not items:
+                  continue
+
+              for idx, item in enumerate(items):
+                  mp3 = mappings.get((json_path, idx))
+                  if mp3:
+                      item['tts'] = base_url + quote(mp3, safe='')
+
+              with open(json_path, 'w', encoding='utf-8') as f:
+                  json.dump(data, f, indent=2, ensure_ascii=False)
+              print(f"  ✅ Updated: {json_path}")
+          EOF
 
       - name: Install googletrans
         run: pip install googletrans==4.0.0-rc1
@@ -95,6 +236,9 @@ jobs:
                   if 'description' in channel:
                       channel['description'] = translate_text(channel['description'], translator)
                   items = channel.get('item', [])
+                  if isinstance(items, dict):
+                      items = [items]
+                      channel['item'] = items
                   for idx, item in enumerate(items):
                       if 'title' in item:
                           item['title'] = translate_text(item['title'], translator)
@@ -106,7 +250,7 @@ jobs:
               if not os.path.isdir(SOURCE_DIR):
                   print(f"Source folder '{SOURCE_DIR}' does not exist.")
                   return
-              json_files = glob.glob(os.path.join(SOURCE_DIR, '*.json'))
+              json_files = sorted(glob.glob(os.path.join(SOURCE_DIR, '*.json')))
               if not json_files:
                   print(f"No JSON files found in '{SOURCE_DIR}'.")
                   return
@@ -132,84 +276,6 @@ jobs:
           TARGET_LANG: 'fa'
         run: python translate_feeds.py
 
-      - name: Clean old TTS files (to force regeneration)
-        run: rm -rf json/tts/
-
-      - name: Install dependencies
-        run: pip install edge-tts requests
-
-      - name: Generate TTS from all JSON files (50‑char filenames)
-        run: |
-          python - <<'EOF'
-          import os, json, re, subprocess, glob
-
-          out_dir = "json/tts"
-          os.makedirs(out_dir, exist_ok=True)
-          json_files = glob.glob("json/*.json")
-          if not json_files:
-              print("No JSON files found in json/")
-              exit(0)
-
-          def clean_text(text):
-              return re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', text)).strip()
-
-          def sanitize_filename(title):
-              # Remove invalid filesystem chars, replace spaces with underscores
-              title = re.sub(r'[\\/*?:"<>|]', '', title)
-              title = re.sub(r'[-\s]+', '_', title)
-              title = title.strip('_.')
-              # Keep only the first 50 characters (user request)
-              if len(title) > 50:
-                  title = title[:50]
-              return title or "untitled"
-
-          used_names = set()   # track filenames (without .mp3) to avoid duplicates
-
-          for json_path in json_files:
-              print(f"\nProcessing {json_path}")
-              with open(json_path, 'r', encoding='utf-8') as f:
-                  data = json.load(f)
-
-              items = data.get('rss', {}).get('channel', {}).get('item', [])
-              if not items:
-                  print(f"  No items in {json_path}, skipping.")
-                  continue
-
-              for idx, item in enumerate(items):
-                  desc = item.get('description', '')
-                  if not desc:
-                      print(f"  Item {idx}: no description, skipping")
-                      continue
-
-                  title = item.get('title', f'item_{idx:03d}')
-                  base_name = sanitize_filename(title)
-
-                  # Ensure uniqueness within this run
-                  if base_name in used_names:
-                      counter = 1
-                      while f"{base_name}_{counter}" in used_names:
-                          counter += 1
-                      final_name = f"{base_name}_{counter}"
-                  else:
-                      final_name = base_name
-                  used_names.add(final_name)
-
-                  filename = os.path.join(out_dir, f"{final_name}.mp3")
-                  print(f"  Generating: {filename} (description length: {len(desc)})")
-                  clean_desc = clean_text(desc)[:5000] + ("..." if len(desc) > 5000 else "")
-
-                  try:
-                      subprocess.run([
-                          "edge-tts", "--text", clean_desc,
-                          "--write-media", filename,
-                          "--voice", "en-US-JennyNeural"
-                      ], check=True, capture_output=True, text=True)
-                      print(f"  ✅ Generated: {filename}")
-                  except subprocess.CalledProcessError as e:
-                      print(f"  ❌ Error for item {idx}: {e.stderr}")
-                      continue
-          EOF
-
       - name: Show git status (debug)
         run: git status --porcelain
 
@@ -219,4 +285,3 @@ jobs:
           commit_message: "Update RSS, translations and TTS [skip ci]"
           commit_user_name: "github-actions[bot]"
           commit_user_email: "github-actions[bot]@users.noreply.github.com"
-          # No file_pattern – stages everything (additions, modifications, deletions)
