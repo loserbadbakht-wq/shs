@@ -48,7 +48,6 @@ jobs:
             --bundle \
             --format=esm \
             --minify \
-            --sourcemap=inline \
             --outfile=public/player.js
 
       - name: Commit built player.js back to repo
