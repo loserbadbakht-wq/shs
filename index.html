@@ -1001,17 +1001,15 @@ img,
 <!-- @player-buttons-glass -->
 <style>
   /*
-   * Full glass UI — one material system, everywhere.
+   * Glass chrome — one material system, top to bottom.
    *
-   *   neutral glass = utility  (header bar, sidebar, content card,
-   *                             content-header strip, utility buttons,
-   *                             player, dropdown menu)
-   *   blue glass    = primary / active
-   *                   (TTS while playing, Refresh, selected language)
+   *   neutral glass = utility / chrome
+   *   blue glass    = primary / active / hover-accent
    *
-   * Surfaces nest — page header, sidebar, content, entry cards, and
-   * the content-header strip are all translucent, so a single
-   * slow-drifting cyan blob (body::before) glows through every layer.
+   * .content is now a real backdrop-filter pane (not an opaque card),
+   * so its children (including .content-header) can show the page
+   * background through them. Cyan accents stay exactly where they
+   * were: card hover, fullscreen button, mark-read button.
    */
 
   /* ─────────── Page header bar — glass ─────────── */
@@ -1020,36 +1018,31 @@ img,
     border-bottom: none !important;
     backdrop-filter: blur(16px) saturate(110%) !important;
     -webkit-backdrop-filter: blur(16px) saturate(110%) !important;
-    box-shadow:
-      0 1px 0 0 oklch(0% 0 0 / .1),
-      0 4px 20px 0 oklch(0% 0 0 / .08) !important;
+    box-shadow: 0 1px 0 0 oklch(0% 0 0 / .1),
+                0 4px 20px 0 oklch(0% 0 0 / .08) !important;
   }
   html[data-theme="light"] .header {
     background: oklch(100% 0 0 / .65) !important;
-    box-shadow:
-      0 1px 0 0 oklch(0% 0 0 / .05),
-      0 4px 20px 0 oklch(0% 0 0 / .06) !important;
+    box-shadow: 0 1px 0 0 oklch(0% 0 0 / .05),
+                0 4px 20px 0 oklch(0% 0 0 / .06) !important;
   }
 
-  /* ─────────── Page header icon buttons — glass ─────────── */
   .header-actions .btn-icon {
     background: oklch(0% 0 0 / .4) !important;
     color: oklch(100% 0 0) !important;
     border: none !important;
     backdrop-filter: blur(16px) saturate(110%) !important;
     -webkit-backdrop-filter: blur(16px) saturate(110%) !important;
-    box-shadow:
-      0 0 0 1px oklch(0% 0 0 / .1),
-      0 1px 3px 0 oklch(0% 0 0 / .15),
-      0 1px 2px -1px oklch(0% 0 0 / .15) !important;
+    box-shadow: 0 0 0 1px oklch(0% 0 0 / .1),
+                0 1px 3px 0 oklch(0% 0 0 / .15),
+                0 1px 2px -1px oklch(0% 0 0 / .15) !important;
   }
   html[data-theme="light"] .header-actions .btn-icon {
     background: oklch(100% 0 0 / .5) !important;
     color: oklch(0% 0 0) !important;
-    box-shadow:
-      0 0 0 1px oklch(0% 0 0 / .05),
-      0 1px 3px 0 oklch(0% 0 0 / .15),
-      0 1px 2px -1px oklch(0% 0 0 / .15) !important;
+    box-shadow: 0 0 0 1px oklch(0% 0 0 / .05),
+                0 1px 3px 0 oklch(0% 0 0 / .15),
+                0 1px 2px -1px oklch(0% 0 0 / .15) !important;
   }
   @media (hover: hover) {
     .header-actions .btn-icon:hover {
@@ -1064,81 +1057,75 @@ img,
   .header-actions .btn-icon.active {
     background: color-mix(in oklab, var(--primary) 28%, transparent) !important;
     color: var(--primary) !important;
-    box-shadow:
-      0 0 0 1px color-mix(in oklab, var(--primary) 40%, transparent),
-      0 1px 3px 0 oklch(0% 0 0 / .15),
-      0 1px 2px -1px oklch(0% 0 0 / .15) !important;
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--primary) 40%, transparent),
+                0 1px 3px 0 oklch(0% 0 0 / .15),
+                0 1px 2px -1px oklch(0% 0 0 / .15) !important;
   }
 
   /* ═══════════════════════════════════════════════════════════════
-   *   CONTENT CARD — glass
+   *   Content pane — glass (the big change)
    *
-   *   The outer `.content` shell is translucent. Every strip inside
-   *   (content-header, entry cards, data-notice) sits on this glass
-   *   and is itself slightly denser, so the entire column reads as
-   *   one sculpted glass surface with subtle internal layering.
+   *   Previously .content was var(--bg-card) (opaque). Its children,
+   *   including .content-header, could not show backdrop-filter.
+   *   Now .content itself is a backdrop-filter pane, so the cyan
+   *   glow (and the page behind) reads through the whole main view.
    * ═══════════════════════════════════════════════════════════════ */
   .content {
-    background: oklch(0% 0 0 / .42) !important;
+    background: oklch(0% 0 0 / .45) !important;
     border: none !important;
-    backdrop-filter: blur(24px) saturate(120%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(120%) !important;
-    box-shadow:
-      0 0 0 1px oklch(0% 0 0 / .08),
-      0 8px 32px 0 oklch(0% 0 0 / .35),
-      inset 0 1px 0 0 oklch(100% 0 0 / .04) !important;
+    backdrop-filter: blur(20px) saturate(120%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(120%) !important;
+    box-shadow: 0 0 0 1px oklch(0% 0 0 / .1),
+                0 8px 32px 0 oklch(0% 0 0 / .2) !important;
   }
   html[data-theme="light"] .content {
     background: oklch(100% 0 0 / .55) !important;
-    box-shadow:
-      0 0 0 1px oklch(0% 0 0 / .05),
-      0 8px 32px 0 oklch(0% 0 0 / .1),
-      inset 0 1px 0 0 oklch(100% 0 0 / .55) !important;
+    box-shadow: 0 0 0 1px oklch(0% 0 0 / .05),
+                0 8px 32px 0 oklch(0% 0 0 / .08) !important;
   }
 
-  /* Content-header strip — lighter layer on the content glass */
+  /* ─────────── Content-header — the “pc headbar” — glass ─────────── */
+  /* No own backdrop-filter: parent .content already blurs; a tint is
+     enough to make it read as a slightly denser strip at the top. */
   .content-header {
-    background: oklch(0% 0 0 / .28) !important;
+    background: oklch(0% 0 0 / .55) !important;
     border-bottom: none !important;
-    box-shadow: 0 1px 0 0 oklch(0% 0 0 / .08) !important;
+    box-shadow: 0 1px 0 0 oklch(0% 0 0 / .1) !important;
   }
   html[data-theme="light"] .content-header {
-    background: oklch(100% 0 0 / .4) !important;
+    background: oklch(100% 0 0 / .65) !important;
     box-shadow: 0 1px 0 0 oklch(0% 0 0 / .05) !important;
   }
+
   .content-header .feed-title-large .feed-icon-large {
     background: oklch(0% 0 0 / .35) !important;
-    box-shadow:
-      0 0 0 1px oklch(0% 0 0 / .1),
-      0 1px 2px 0 oklch(0% 0 0 / .12) !important;
+    box-shadow: 0 0 0 1px oklch(0% 0 0 / .1),
+                0 1px 2px 0 oklch(0% 0 0 / .12) !important;
   }
   html[data-theme="light"] .content-header .feed-title-large .feed-icon-large {
     background: oklch(100% 0 0 / .45) !important;
-    box-shadow:
-      0 0 0 1px oklch(0% 0 0 / .05),
-      0 1px 2px 0 oklch(0% 0 0 / .08) !important;
+    box-shadow: 0 0 0 1px oklch(0% 0 0 / .05),
+                0 1px 2px 0 oklch(0% 0 0 / .08) !important;
   }
 
-  /* Content-header action buttons (Mark all read / Refresh) — glass */
+  /* ─────────── Content-header action buttons — glass ─────────── */
   .content-header .feed-actions button {
     background: oklch(0% 0 0 / .4) !important;
     color: oklch(100% 0 0) !important;
     border: none !important;
     backdrop-filter: blur(12px) saturate(110%) !important;
     -webkit-backdrop-filter: blur(12px) saturate(110%) !important;
-    box-shadow:
-      0 0 0 1px oklch(0% 0 0 / .1),
-      0 1px 3px 0 oklch(0% 0 0 / .15),
-      0 1px 2px -1px oklch(0% 0 0 / .15) !important;
+    box-shadow: 0 0 0 1px oklch(0% 0 0 / .1),
+                0 1px 3px 0 oklch(0% 0 0 / .15),
+                0 1px 2px -1px oklch(0% 0 0 / .15) !important;
     text-shadow: 0 1px 0 oklch(0% 0 0 / .15);
   }
   html[data-theme="light"] .content-header .feed-actions button {
     background: oklch(100% 0 0 / .5) !important;
     color: oklch(0% 0 0) !important;
-    box-shadow:
-      0 0 0 1px oklch(0% 0 0 / .05),
-      0 1px 3px 0 oklch(0% 0 0 / .15),
-      0 1px 2px -1px oklch(0% 0 0 / .15) !important;
+    box-shadow: 0 0 0 1px oklch(0% 0 0 / .05),
+                0 1px 3px 0 oklch(0% 0 0 / .15),
+                0 1px 2px -1px oklch(0% 0 0 / .15) !important;
     text-shadow: 0 1px 0 oklch(100% 0 0 / .4);
   }
   @media (hover: hover) {
@@ -1149,13 +1136,14 @@ img,
       background: oklch(100% 0 0 / .6) !important;
     }
   }
+
+  /* Refresh (primary) — stays cyan, now as cyan glass */
   .content-header .feed-actions button.primary {
     background: color-mix(in oklab, var(--primary) 28%, transparent) !important;
     color: var(--primary) !important;
-    box-shadow:
-      0 0 0 1px color-mix(in oklab, var(--primary) 40%, transparent),
-      0 1px 3px 0 oklch(0% 0 0 / .15),
-      0 1px 2px -1px oklch(0% 0 0 / .15) !important;
+    box-shadow: 0 0 0 1px color-mix(in oklab, var(--primary) 40%, transparent),
+                0 1px 3px 0 oklch(0% 0 0 / .15),
+                0 1px 2px -1px oklch(0% 0 0 / .15) !important;
   }
   @media (hover: hover) {
     .content-header .feed-actions button.primary:hover {
@@ -1163,116 +1151,71 @@ img,
     }
   }
 
-  /* Entry cards — glass on glass */
+  /* ═══════════════════════════════════════════════════════════════
+   *   Entry cards — glass layers on the glass content pane
+   *
+   *   Translucent tint only — NO own backdrop-filter. The parent
+   *   .content already blurs the page; cards just add a tint so
+   *   they read as distinct elevated layers without double-blur.
+   * ═══════════════════════════════════════════════════════════════ */
   .entry-card {
-    background: oklch(0% 0 0 / .22) !important;
-    border: none !important;
-    box-shadow:
-      0 0 0 1px oklch(0% 0 0 / .08),
-      0 1px 3px 0 oklch(0% 0 0 / .1) !important;
-  }
-  html[data-theme="light"] .entry-card {
-    background: oklch(100% 0 0 / .45) !important;
-    box-shadow:
-      0 0 0 1px oklch(0% 0 0 / .05),
-      0 1px 3px 0 oklch(0% 0 0 / .08) !important;
-  }
-  @media (hover: hover) {
-    .entry-card:hover {
-      background: oklch(0% 0 0 / .3) !important;
-      box-shadow:
-        0 0 0 1px var(--primary),
-        0 4px 20px 0 color-mix(in oklab, var(--primary) 12%, transparent) !important;
-    }
-    html[data-theme="light"] .entry-card:hover {
-      background: oklch(100% 0 0 / .55) !important;
-    }
-  }
-  .entry-card .entry-image {
-    background: oklch(0% 0 0 / .2) !important;
-  }
-  html[data-theme="light"] .entry-card .entry-image {
-    background: oklch(100% 0 0 / .3) !important;
-  }
-  .entry-card .entry-actions button {
-    background: oklch(0% 0 0 / .3) !important;
+    background: oklch(0% 0 0 / .4) !important;
     border: none !important;
     box-shadow: 0 0 0 1px oklch(0% 0 0 / .1) !important;
-    color: oklch(100% 0 0 / .8) !important;
   }
-  html[data-theme="light"] .entry-card .entry-actions button {
-    background: oklch(100% 0 0 / .5) !important;
+  html[data-theme="light"] .entry-card {
+    background: oklch(100% 0 0 / .55) !important;
     box-shadow: 0 0 0 1px oklch(0% 0 0 / .05) !important;
-    color: oklch(0% 0 0 / .8) !important;
   }
 
-  /* data-notice footer strip — glass */
-  .data-notice {
-    background: oklch(0% 0 0 / .28) !important;
-    border-top: none !important;
-    box-shadow: 0 -1px 0 0 oklch(0% 0 0 / .08) !important;
+  /* CYAN card hover — kept exactly cyan, now as cyan ring + glow */
+  .entry-card:hover {
+    box-shadow: 0 0 0 1px var(--primary),
+                0 4px 20px color-mix(in oklab, var(--primary) 22%, transparent) !important;
   }
-  html[data-theme="light"] .data-notice {
-    background: oklch(100% 0 0 / .4) !important;
-    box-shadow: 0 -1px 0 0 oklch(0% 0 0 / .05) !important;
+
+  /* Dimmed cards keep reading as glass, just softer */
+  .entry-card.read {
+    opacity: .55 !important;
   }
 
   /* ═══════════════════════════════════════════════════════════════
-   *   SIDEBAR — glass (matched so both columns speak one language)
+   *   CYAN buttons inside cards — fullscreen + mark-read
+   *   Kept cyan; given a light cyan glassy fill so they still pop
+   *   against the translucent card.
    * ═══════════════════════════════════════════════════════════════ */
-  .sidebar {
-    background: oklch(0% 0 0 / .42) !important;
-    border: none !important;
-    backdrop-filter: blur(24px) saturate(120%) !important;
-    -webkit-backdrop-filter: blur(24px) saturate(120%) !important;
-    box-shadow:
-      0 0 0 1px oklch(0% 0 0 / .08),
-      0 8px 32px 0 oklch(0% 0 0 / .35),
-      inset 0 1px 0 0 oklch(100% 0 0 / .04) !important;
+  .entry-card .entry-actions button.fullscreen-btn,
+  .entry-card .entry-actions button.mark-read {
+    color: var(--primary) !important;
+    border: 1px solid var(--primary) !important;
+    background: color-mix(in oklab, var(--primary) 10%, transparent) !important;
+    box-shadow: none !important;
   }
-  html[data-theme="light"] .sidebar {
-    background: oklch(100% 0 0 / .55) !important;
-    box-shadow:
-      0 0 0 1px oklch(0% 0 0 / .05),
-      0 8px 32px 0 oklch(0% 0 0 / .1),
-      inset 0 1px 0 0 oklch(100% 0 0 / .55) !important;
+  @media (hover: hover) {
+    .entry-card .entry-actions button.fullscreen-btn:hover,
+    .entry-card .entry-actions button.mark-read:hover {
+      background: color-mix(in oklab, var(--primary) 22%, transparent) !important;
+    }
   }
-  .sidebar-header, .sidebar-add {
-    border-bottom: none !important;
-    box-shadow: 0 1px 0 0 oklch(0% 0 0 / .08) !important;
-  }
-  html[data-theme="light"] .sidebar-header,
-  html[data-theme="light"] .sidebar-add {
-    box-shadow: 0 1px 0 0 oklch(0% 0 0 / .05) !important;
-  }
-  .sidebar-header .badge,
-  .feed-item .feed-icon,
-  .feed-item .feed-count {
-    background: oklch(0% 0 0 / .3) !important;
-  }
-  html[data-theme="light"] .sidebar-header .badge,
-  html[data-theme="light"] .feed-item .feed-icon,
-  html[data-theme="light"] .feed-item .feed-count {
-    background: oklch(100% 0 0 / .4) !important;
-  }
-  .sidebar-add .add-form input {
-    background: oklch(0% 0 0 / .3) !important;
+
+  /* Non-accent card action button (keeps neutral glass) */
+  .entry-card .entry-actions button:not(.fullscreen-btn):not(.mark-read) {
+    background: oklch(0% 0 0 / .35) !important;
+    color: oklch(100% 0 0) !important;
     border: none !important;
     box-shadow: 0 0 0 1px oklch(0% 0 0 / .1) !important;
   }
-  html[data-theme="light"] .sidebar-add .add-form input {
+  html[data-theme="light"] .entry-card .entry-actions button:not(.fullscreen-btn):not(.mark-read) {
     background: oklch(100% 0 0 / .5) !important;
+    color: oklch(0% 0 0) !important;
     box-shadow: 0 0 0 1px oklch(0% 0 0 / .05) !important;
   }
-  .feed-item:hover {
-    background: oklch(0% 0 0 / .2) !important;
-  }
-  html[data-theme="light"] .feed-item:hover {
-    background: oklch(100% 0 0 / .35) !important;
-  }
-  .feed-item.active {
-    background: color-mix(in oklab, var(--primary) 15%, transparent) !important;
-    border-left: 3px solid var(--primary) !important;
+
+  /* Data notice at the bottom of the content pane — cyan-tinted glass */
+  .data-notice {
+    background: color-mix(in oklab, var(--primary) 8%, transparent) !important;
+    color: var(--primary) !important;
+    border-top: 1px solid color-mix(in oklab, var(--primary) 18%, transparent) !important;
   }
 
   /* ─────────── Translate button — neutral glass ─────────── */
@@ -1304,7 +1247,7 @@ img,
     }
   }
 
-  /* ─────────── TTS button — neutral, blue only while playing ─────────── */
+  /* ─────────── TTS button — neutral at rest, blue only while playing ─────────── */
   #fullscreenButtons .tts-btn-wrapper .tts-btn {
     background: oklch(0% 0 0 / .4) !important;
     color: oklch(100% 0 0) !important;
@@ -1412,8 +1355,10 @@ img,
   body::before {
     content: "";
     position: fixed;
-    top: -15vmax; left: -15vmax;
-    width: 130vmax; height: 130vmax;
+    top: -15vmax;
+    left: -15vmax;
+    width: 130vmax;
+    height: 130vmax;
     pointer-events: none;
     z-index: -1;
     background: radial-gradient(
