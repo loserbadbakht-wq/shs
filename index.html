@@ -1001,18 +1001,16 @@ img,
 <!-- @player-buttons-glass -->
 <style>
   /*
-   * Glass chrome — one material system across the whole UI.
+   * Glass chrome + ambient cyan glow — one material system.
    *
    *   neutral glass = utility  (header bar, content-header strip,
    *                             utility buttons, player, dropdown menu)
    *   blue glass    = primary / active
    *                   (TTS while playing, Refresh, selected language)
    *
-   * Tokens mirror the player bundle:
-   *   dark  →  oklch(0% 0 0 / .3–.55) + blur(16–28px) saturate(110–130%)
-   *   light →  oklch(100% 0 0 / .5–.65) + blur(16–28px) saturate(110–130%)
-   * Larger surfaces get a denser alpha so text stays legible even
-   * when content moves behind them.
+   * Plus a single slow-drifting cyan glow behind the page content
+   * (see bottom of this stylesheet) so the chrome sits on a living
+   * background instead of a flat fill.
    */
 
   /* ─────────── Page header bar — glass ─────────── */
@@ -1071,7 +1069,7 @@ img,
       0 1px 2px -1px oklch(0% 0 0 / .15) !important;
   }
 
-  /* ─────────── Content-header bar (feed title strip) — glass ─────────── */
+  /* ─────────── Content-header bar — glass ─────────── */
   .content-header {
     background: oklch(0% 0 0 / .35) !important;
     border-bottom: none !important;
@@ -1081,8 +1079,6 @@ img,
     background: oklch(100% 0 0 / .5) !important;
     box-shadow: 0 1px 0 0 oklch(0% 0 0 / .05) !important;
   }
-
-  /* Small feed icon inside the content-header */
   .content-header .feed-title-large .feed-icon-large {
     background: oklch(0% 0 0 / .35) !important;
     box-shadow:
@@ -1126,8 +1122,6 @@ img,
       background: oklch(100% 0 0 / .6) !important;
     }
   }
-
-  /* Refresh (primary) — blue glass, matches TTS playing + dropdown active */
   .content-header .feed-actions button.primary {
     background: color-mix(in oklab, var(--primary) 28%, transparent) !important;
     color: var(--primary) !important;
@@ -1139,7 +1133,6 @@ img,
   @media (hover: hover) {
     .content-header .feed-actions button.primary:hover {
       background: color-mix(in oklab, var(--primary) 40%, transparent) !important;
-      color: var(--primary) !important;
     }
   }
 
@@ -1172,7 +1165,7 @@ img,
     }
   }
 
-  /* ─────────── TTS button — neutral at rest, blue only while playing ─────────── */
+  /* ─────────── TTS button — neutral, blue only while playing ─────────── */
   #fullscreenButtons .tts-btn-wrapper .tts-btn {
     background: oklch(0% 0 0 / .4) !important;
     color: oklch(100% 0 0) !important;
@@ -1268,6 +1261,67 @@ img,
   @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
     .fullscreen-overlay { background: oklch(0% 0 0 / .92) !important; }
     html[data-theme="light"] .fullscreen-overlay { background: oklch(100% 0 0 / .95) !important; }
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+   *   Slow-drifting cyan glow behind the main page
+   *
+   *   One soft cyan radial blob, composited on its own GPU layer,
+   *   animating transform + scale only (no layout, no repaint).
+   *   It sits above body’s own background but below all content,
+   *   so it glows through the gutters around the sidebar and cards.
+   * ═══════════════════════════════════════════════════════════════ */
+
+  body {
+    /* Make body a stacking context so body::before sits cleanly
+       between body’s own background and the app content. */
+    position: relative;
+    isolation: isolate;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: -15vmax;
+    left: -15vmax;
+    width: 130vmax;
+    height: 130vmax;
+    pointer-events: none;
+    z-index: -1;
+    background: radial-gradient(
+      circle at center,
+      color-mix(in oklab, var(--primary) 22%, transparent) 0%,
+      color-mix(in oklab, var(--primary) 10%, transparent) 22%,
+      color-mix(in oklab, var(--primary)  4%, transparent) 42%,
+      transparent 62%
+    );
+    animation: cyan-drift 55s ease-in-out infinite;
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+  }
+
+  html[data-theme="light"] body::before {
+    background: radial-gradient(
+      circle at center,
+      color-mix(in oklab, var(--primary) 16%, transparent) 0%,
+      color-mix(in oklab, var(--primary)  7%, transparent) 22%,
+      color-mix(in oklab, var(--primary)  3%, transparent) 42%,
+      transparent 62%
+    );
+  }
+
+  @keyframes cyan-drift {
+    0%, 100% { transform: translate3d(-10%,  -6%, 0) scale(1.00); }
+    33%      { transform: translate3d( 12%,   8%, 0) scale(1.12); }
+    66%      { transform: translate3d( -4%,  14%, 0) scale(1.06); }
+  }
+
+  /* Respect users who ask for less motion — freeze the glow */
+  @media (prefers-reduced-motion: reduce) {
+    body::before {
+      animation: none;
+      transform: translate3d(-6%, -4%, 0) scale(1.05);
+    }
   }
 </style>
 </head>
