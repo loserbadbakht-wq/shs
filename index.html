@@ -1006,10 +1006,10 @@ img,
    *   neutral glass = utility / chrome
    *   blue glass    = primary / active / hover-accent
    *
-   * .content is now a real backdrop-filter pane (not an opaque card),
-   * so its children (including .content-header) can show the page
-   * background through them. Cyan accents stay exactly where they
-   * were: card hover, fullscreen button, mark-read button.
+   * .content is a backdrop-filter pane, so its children can show the
+   * page background through them. On desktop the .content-header is
+   * sticky with its own backdrop-filter, so entry cards scroll UNDER
+   * it and blur through — a real glass bar, not a tinted strip.
    */
 
   /* ─────────── Page header bar — glass ─────────── */
@@ -1062,14 +1062,7 @@ img,
                 0 1px 2px -1px oklch(0% 0 0 / .15) !important;
   }
 
-  /* ═══════════════════════════════════════════════════════════════
-   *   Content pane — glass (the big change)
-   *
-   *   Previously .content was var(--bg-card) (opaque). Its children,
-   *   including .content-header, could not show backdrop-filter.
-   *   Now .content itself is a backdrop-filter pane, so the cyan
-   *   glow (and the page behind) reads through the whole main view.
-   * ═══════════════════════════════════════════════════════════════ */
+  /* ─────────── Content pane — glass ─────────── */
   .content {
     background: oklch(0% 0 0 / .45) !important;
     border: none !important;
@@ -1084,9 +1077,7 @@ img,
                 0 8px 32px 0 oklch(0% 0 0 / .08) !important;
   }
 
-  /* ─────────── Content-header — the “pc headbar” — glass ─────────── */
-  /* No own backdrop-filter: parent .content already blurs; a tint is
-     enough to make it read as a slightly denser strip at the top. */
+  /* ─────────── Content-header — glass ─────────── */
   .content-header {
     background: oklch(0% 0 0 / .55) !important;
     border-bottom: none !important;
@@ -1136,8 +1127,6 @@ img,
       background: oklch(100% 0 0 / .6) !important;
     }
   }
-
-  /* Refresh (primary) — stays cyan, now as cyan glass */
   .content-header .feed-actions button.primary {
     background: color-mix(in oklab, var(--primary) 28%, transparent) !important;
     color: var(--primary) !important;
@@ -1152,11 +1141,36 @@ img,
   }
 
   /* ═══════════════════════════════════════════════════════════════
-   *   Entry cards — glass layers on the glass content pane
+   *   DESKTOP-ONLY: make .content-header a real sticky glass bar
    *
-   *   Translucent tint only — NO own backdrop-filter. The parent
-   *   .content already blurs the page; cards just add a tint so
-   *   they read as distinct elevated layers without double-blur.
+   *   Move the scroll from .content-items up to .content so items
+   *   scroll UNDER the header. Make header sticky + give it its own
+   *   backdrop-filter so items blur through it as they pass.
+   *
+   *   Mobile keeps the original stacked layout (page-level scroll,
+   *   no overlap, no double blur). The breakpoint matches the app’s
+   *   existing mobile switch at 900px.
+   * ═══════════════════════════════════════════════════════════════ */
+  @media (min-width: 901px) {
+    .content {
+      overflow-y: auto !important;
+      overflow-x: hidden !important;
+    }
+    .content-header {
+      position: sticky !important;
+      top: 0 !important;
+      z-index: 10 !important;
+      backdrop-filter: blur(20px) saturate(120%) !important;
+      -webkit-backdrop-filter: blur(20px) saturate(120%) !important;
+    }
+    .content-items {
+      flex: initial !important;
+      overflow: visible !important;
+    }
+  }
+
+  /* ═══════════════════════════════════════════════════════════════
+   *   Entry cards — glass layers on the glass content pane
    * ═══════════════════════════════════════════════════════════════ */
   .entry-card {
     background: oklch(0% 0 0 / .4) !important;
@@ -1167,23 +1181,15 @@ img,
     background: oklch(100% 0 0 / .55) !important;
     box-shadow: 0 0 0 1px oklch(0% 0 0 / .05) !important;
   }
-
-  /* CYAN card hover — kept exactly cyan, now as cyan ring + glow */
   .entry-card:hover {
     box-shadow: 0 0 0 1px var(--primary),
                 0 4px 20px color-mix(in oklab, var(--primary) 22%, transparent) !important;
   }
-
-  /* Dimmed cards keep reading as glass, just softer */
   .entry-card.read {
     opacity: .55 !important;
   }
 
-  /* ═══════════════════════════════════════════════════════════════
-   *   CYAN buttons inside cards — fullscreen + mark-read
-   *   Kept cyan; given a light cyan glassy fill so they still pop
-   *   against the translucent card.
-   * ═══════════════════════════════════════════════════════════════ */
+  /* CYAN buttons inside cards — fullscreen + mark-read */
   .entry-card .entry-actions button.fullscreen-btn,
   .entry-card .entry-actions button.mark-read {
     color: var(--primary) !important;
@@ -1197,8 +1203,6 @@ img,
       background: color-mix(in oklab, var(--primary) 22%, transparent) !important;
     }
   }
-
-  /* Non-accent card action button (keeps neutral glass) */
   .entry-card .entry-actions button:not(.fullscreen-btn):not(.mark-read) {
     background: oklch(0% 0 0 / .35) !important;
     color: oklch(100% 0 0) !important;
@@ -1211,7 +1215,7 @@ img,
     box-shadow: 0 0 0 1px oklch(0% 0 0 / .05) !important;
   }
 
-  /* Data notice at the bottom of the content pane — cyan-tinted glass */
+  /* Data notice — cyan-tinted glass */
   .data-notice {
     background: color-mix(in oklab, var(--primary) 8%, transparent) !important;
     color: var(--primary) !important;
@@ -1247,7 +1251,7 @@ img,
     }
   }
 
-  /* ─────────── TTS button — neutral at rest, blue only while playing ─────────── */
+  /* ─────────── TTS button — neutral, blue only while playing ─────────── */
   #fullscreenButtons .tts-btn-wrapper .tts-btn {
     background: oklch(0% 0 0 / .4) !important;
     color: oklch(100% 0 0) !important;
