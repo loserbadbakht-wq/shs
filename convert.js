@@ -8,10 +8,12 @@ const feeds = [
   { url: 'https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/notif/new2.xml', filename: 'new2.json' }
 ];
 
+// Escape bare '&' to '&amp;' so strict XML parsers don't choke on
+// URLs like "...?a=1&b=2". CDATA sections are left untouched.
 function escapeBareAmpersands(xml) {
   const parts = xml.split(/(<!\[CDATA\[[\s\S]*?\]\]>)/);
   return parts.map((part, i) => {
-    if (i % 2 === 1) return part;
+    if (i % 2 === 1) return part;   // CDATA section – leave as-is
     return part.replace(
       /&(?!(?:amp|lt|gt|quot|apos|#\d+|#x[0-9a-fA-F]+);)/g,
       '&amp;'
@@ -19,14 +21,18 @@ function escapeBareAmpersands(xml) {
   }).join('');
 }
 
+// Move <img src="..."> out of description into a dedicated `image` field
 function extractImageFromDescription(item) {
   if (!item || typeof item.description !== 'string') return item;
+
   const imgRegex = /<img\b[^>]*\bsrc="([^"]+)"[^>]*\/?>/i;
   const match = item.description.match(imgRegex);
   if (!match) return item;
+
   const imageUrl = match[1];
   let newDesc = item.description.replace(imgRegex, '');
   newDesc = newDesc.replace(/^(?:\s|<br\s*\/?>)+/i, '').trim();
+
   const newItem = {};
   if (item.title !== undefined) newItem.title = item.title;
   if (item.link  !== undefined) newItem.link  = item.link;

@@ -17,8 +17,9 @@ def translate_text(text, translator, retries=3):
     if not stripped:
         return text
 
-    # If input has very little Latin text, it's probably already in the
-    # target language (or pure markup/symbols) — don't retry on "no change".
+    # If input has very little Latin text, it's probably already in
+    # the target language (or pure markup/symbols) — don't retry on
+    # "no change".
     total_alpha = sum(1 for c in stripped if c.isalpha())
     latin_alpha = sum(1 for c in stripped if c.isascii() and c.isalpha())
     is_likely_translated = (
@@ -31,8 +32,9 @@ def translate_text(text, translator, retries=3):
         try:
             result = translator.translate(text, dest=TARGET_LANG)
             translated = result.text
-            # Silent-failure detection (googletrans returns original text
-            # when the request silently fails — e.g. rate limit edge cases)
+            # Silent-failure detection (googletrans returns original
+            # text when the request silently fails — e.g. rate limit
+            # edge cases, or oversized payloads it can't handle)
             if (not is_likely_translated
                     and translated.strip() == stripped
                     and attempt < retries - 1):
@@ -49,8 +51,9 @@ def translate_text(text, translator, retries=3):
 def split_with_seps(text, max_len=MAX_CHUNK):
     """Split text into (chunk, sep_after) tuples.
 
-    sep_after is the whitespace that followed the chunk — needed because
-    Google Translate strips leading/trailing whitespace from its output.
+    sep_after is the whitespace that followed the chunk — needed
+    because Google Translate strips leading/trailing whitespace from
+    its output.
     Preference order: sentence boundaries → spaces → hard cut."""
     if len(text) <= max_len:
         return [(text, '')]
@@ -92,7 +95,8 @@ def translate_long(text, translator):
     if len(text) <= MAX_CHUNK:
         return translate_text(text, translator)
 
-    # Split on <br> / <br/> / <br /> first — these are preserved in the output
+    # Split on <br> / <br/> / <br /> first — these are preserved in
+    # the output, and are a natural boundary in these feeds.
     parts = re.split(r'(<br\s*/?>)', text, flags=re.IGNORECASE)
 
     result = []
@@ -100,7 +104,6 @@ def translate_long(text, translator):
 
     for i, part in enumerate(parts):
         if i % 2 == 1:  # <br> separator
-            # Flush and translate any buffered text
             for chunk, sep in split_with_seps(buffer, MAX_CHUNK):
                 result.append(translate_text(chunk, translator) + sep)
             buffer = ''
