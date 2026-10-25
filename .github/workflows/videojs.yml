@@ -93,7 +93,7 @@ jobs:
           console.log('✓ Injected player theme fix');
           EOF
 
-      - name: Patch index.html — glass chrome + drifting cyan glow
+      - name: Patch index.html — full glass UI + drifting cyan glow
         run: |
           node - <<'EOF'
           const fs = require('fs');
@@ -106,16 +106,17 @@ jobs:
           MARKER + '\n' +
           '<style>\n' +
           '  /*\n' +
-          '   * Glass chrome + ambient cyan glow — one material system.\n' +
+          '   * Full glass UI — one material system, everywhere.\n' +
           '   *\n' +
-          '   *   neutral glass = utility  (header bar, content-header strip,\n' +
-          '   *                             utility buttons, player, dropdown menu)\n' +
+          '   *   neutral glass = utility  (header bar, sidebar, content card,\n' +
+          '   *                             content-header strip, utility buttons,\n' +
+          '   *                             player, dropdown menu)\n' +
           '   *   blue glass    = primary / active\n' +
           '   *                   (TTS while playing, Refresh, selected language)\n' +
           '   *\n' +
-          '   * Plus a single slow-drifting cyan glow behind the page content\n' +
-          '   * (see bottom of this stylesheet) so the chrome sits on a living\n' +
-          '   * background instead of a flat fill.\n' +
+          '   * Surfaces nest — page header, sidebar, content, entry cards, and\n' +
+          '   * the content-header strip are all translucent, so a single\n' +
+          '   * slow-drifting cyan blob (body::before) glows through every layer.\n' +
           '   */\n' +
           '\n' +
           '  /* ─────────── Page header bar — glass ─────────── */\n' +
@@ -174,14 +175,40 @@ jobs:
           '      0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
           '  }\n' +
           '\n' +
-          '  /* ─────────── Content-header bar — glass ─────────── */\n' +
+          '  /* ═══════════════════════════════════════════════════════════════\n' +
+          '   *   CONTENT CARD — glass\n' +
+          '   *\n' +
+          '   *   The outer `.content` shell is translucent. Every strip inside\n' +
+          '   *   (content-header, entry cards, data-notice) sits on this glass\n' +
+          '   *   and is itself slightly denser, so the entire column reads as\n' +
+          '   *   one sculpted glass surface with subtle internal layering.\n' +
+          '   * ═══════════════════════════════════════════════════════════════ */\n' +
+          '  .content {\n' +
+          '    background: oklch(0% 0 0 / .42) !important;\n' +
+          '    border: none !important;\n' +
+          '    backdrop-filter: blur(24px) saturate(120%) !important;\n' +
+          '    -webkit-backdrop-filter: blur(24px) saturate(120%) !important;\n' +
+          '    box-shadow:\n' +
+          '      0 0 0 1px oklch(0% 0 0 / .08),\n' +
+          '      0 8px 32px 0 oklch(0% 0 0 / .35),\n' +
+          '      inset 0 1px 0 0 oklch(100% 0 0 / .04) !important;\n' +
+          '  }\n' +
+          '  html[data-theme="light"] .content {\n' +
+          '    background: oklch(100% 0 0 / .55) !important;\n' +
+          '    box-shadow:\n' +
+          '      0 0 0 1px oklch(0% 0 0 / .05),\n' +
+          '      0 8px 32px 0 oklch(0% 0 0 / .1),\n' +
+          '      inset 0 1px 0 0 oklch(100% 0 0 / .55) !important;\n' +
+          '  }\n' +
+          '\n' +
+          '  /* Content-header strip — lighter layer on the content glass */\n' +
           '  .content-header {\n' +
-          '    background: oklch(0% 0 0 / .35) !important;\n' +
+          '    background: oklch(0% 0 0 / .28) !important;\n' +
           '    border-bottom: none !important;\n' +
           '    box-shadow: 0 1px 0 0 oklch(0% 0 0 / .08) !important;\n' +
           '  }\n' +
           '  html[data-theme="light"] .content-header {\n' +
-          '    background: oklch(100% 0 0 / .5) !important;\n' +
+          '    background: oklch(100% 0 0 / .4) !important;\n' +
           '    box-shadow: 0 1px 0 0 oklch(0% 0 0 / .05) !important;\n' +
           '  }\n' +
           '  .content-header .feed-title-large .feed-icon-large {\n' +
@@ -197,7 +224,7 @@ jobs:
           '      0 1px 2px 0 oklch(0% 0 0 / .08) !important;\n' +
           '  }\n' +
           '\n' +
-          '  /* ─────────── Content-header action buttons — glass ─────────── */\n' +
+          '  /* Content-header action buttons (Mark all read / Refresh) — glass */\n' +
           '  .content-header .feed-actions button {\n' +
           '    background: oklch(0% 0 0 / .4) !important;\n' +
           '    color: oklch(100% 0 0) !important;\n' +
@@ -239,6 +266,118 @@ jobs:
           '    .content-header .feed-actions button.primary:hover {\n' +
           '      background: color-mix(in oklab, var(--primary) 40%, transparent) !important;\n' +
           '    }\n' +
+          '  }\n' +
+          '\n' +
+          '  /* Entry cards — glass on glass */\n' +
+          '  .entry-card {\n' +
+          '    background: oklch(0% 0 0 / .22) !important;\n' +
+          '    border: none !important;\n' +
+          '    box-shadow:\n' +
+          '      0 0 0 1px oklch(0% 0 0 / .08),\n' +
+          '      0 1px 3px 0 oklch(0% 0 0 / .1) !important;\n' +
+          '  }\n' +
+          '  html[data-theme="light"] .entry-card {\n' +
+          '    background: oklch(100% 0 0 / .45) !important;\n' +
+          '    box-shadow:\n' +
+          '      0 0 0 1px oklch(0% 0 0 / .05),\n' +
+          '      0 1px 3px 0 oklch(0% 0 0 / .08) !important;\n' +
+          '  }\n' +
+          '  @media (hover: hover) {\n' +
+          '    .entry-card:hover {\n' +
+          '      background: oklch(0% 0 0 / .3) !important;\n' +
+          '      box-shadow:\n' +
+          '        0 0 0 1px var(--primary),\n' +
+          '        0 4px 20px 0 color-mix(in oklab, var(--primary) 12%, transparent) !important;\n' +
+          '    }\n' +
+          '    html[data-theme="light"] .entry-card:hover {\n' +
+          '      background: oklch(100% 0 0 / .55) !important;\n' +
+          '    }\n' +
+          '  }\n' +
+          '  .entry-card .entry-image {\n' +
+          '    background: oklch(0% 0 0 / .2) !important;\n' +
+          '  }\n' +
+          '  html[data-theme="light"] .entry-card .entry-image {\n' +
+          '    background: oklch(100% 0 0 / .3) !important;\n' +
+          '  }\n' +
+          '  .entry-card .entry-actions button {\n' +
+          '    background: oklch(0% 0 0 / .3) !important;\n' +
+          '    border: none !important;\n' +
+          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .1) !important;\n' +
+          '    color: oklch(100% 0 0 / .8) !important;\n' +
+          '  }\n' +
+          '  html[data-theme="light"] .entry-card .entry-actions button {\n' +
+          '    background: oklch(100% 0 0 / .5) !important;\n' +
+          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .05) !important;\n' +
+          '    color: oklch(0% 0 0 / .8) !important;\n' +
+          '  }\n' +
+          '\n' +
+          '  /* data-notice footer strip — glass */\n' +
+          '  .data-notice {\n' +
+          '    background: oklch(0% 0 0 / .28) !important;\n' +
+          '    border-top: none !important;\n' +
+          '    box-shadow: 0 -1px 0 0 oklch(0% 0 0 / .08) !important;\n' +
+          '  }\n' +
+          '  html[data-theme="light"] .data-notice {\n' +
+          '    background: oklch(100% 0 0 / .4) !important;\n' +
+          '    box-shadow: 0 -1px 0 0 oklch(0% 0 0 / .05) !important;\n' +
+          '  }\n' +
+          '\n' +
+          '  /* ═══════════════════════════════════════════════════════════════\n' +
+          '   *   SIDEBAR — glass (matched so both columns speak one language)\n' +
+          '   * ═══════════════════════════════════════════════════════════════ */\n' +
+          '  .sidebar {\n' +
+          '    background: oklch(0% 0 0 / .42) !important;\n' +
+          '    border: none !important;\n' +
+          '    backdrop-filter: blur(24px) saturate(120%) !important;\n' +
+          '    -webkit-backdrop-filter: blur(24px) saturate(120%) !important;\n' +
+          '    box-shadow:\n' +
+          '      0 0 0 1px oklch(0% 0 0 / .08),\n' +
+          '      0 8px 32px 0 oklch(0% 0 0 / .35),\n' +
+          '      inset 0 1px 0 0 oklch(100% 0 0 / .04) !important;\n' +
+          '  }\n' +
+          '  html[data-theme="light"] .sidebar {\n' +
+          '    background: oklch(100% 0 0 / .55) !important;\n' +
+          '    box-shadow:\n' +
+          '      0 0 0 1px oklch(0% 0 0 / .05),\n' +
+          '      0 8px 32px 0 oklch(0% 0 0 / .1),\n' +
+          '      inset 0 1px 0 0 oklch(100% 0 0 / .55) !important;\n' +
+          '  }\n' +
+          '  .sidebar-header, .sidebar-add {\n' +
+          '    border-bottom: none !important;\n' +
+          '    box-shadow: 0 1px 0 0 oklch(0% 0 0 / .08) !important;\n' +
+          '  }\n' +
+          '  html[data-theme="light"] .sidebar-header,\n' +
+          '  html[data-theme="light"] .sidebar-add {\n' +
+          '    box-shadow: 0 1px 0 0 oklch(0% 0 0 / .05) !important;\n' +
+          '  }\n' +
+          '  .sidebar-header .badge,\n' +
+          '  .feed-item .feed-icon,\n' +
+          '  .feed-item .feed-count {\n' +
+          '    background: oklch(0% 0 0 / .3) !important;\n' +
+          '  }\n' +
+          '  html[data-theme="light"] .sidebar-header .badge,\n' +
+          '  html[data-theme="light"] .feed-item .feed-icon,\n' +
+          '  html[data-theme="light"] .feed-item .feed-count {\n' +
+          '    background: oklch(100% 0 0 / .4) !important;\n' +
+          '  }\n' +
+          '  .sidebar-add .add-form input {\n' +
+          '    background: oklch(0% 0 0 / .3) !important;\n' +
+          '    border: none !important;\n' +
+          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .1) !important;\n' +
+          '  }\n' +
+          '  html[data-theme="light"] .sidebar-add .add-form input {\n' +
+          '    background: oklch(100% 0 0 / .5) !important;\n' +
+          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .05) !important;\n' +
+          '  }\n' +
+          '  .feed-item:hover {\n' +
+          '    background: oklch(0% 0 0 / .2) !important;\n' +
+          '  }\n' +
+          '  html[data-theme="light"] .feed-item:hover {\n' +
+          '    background: oklch(100% 0 0 / .35) !important;\n' +
+          '  }\n' +
+          '  .feed-item.active {\n' +
+          '    background: color-mix(in oklab, var(--primary) 15%, transparent) !important;\n' +
+          '    border-left: 3px solid var(--primary) !important;\n' +
           '  }\n' +
           '\n' +
           '  /* ─────────── Translate button — neutral glass ─────────── */\n' +
@@ -370,27 +509,16 @@ jobs:
           '\n' +
           '  /* ═══════════════════════════════════════════════════════════════\n' +
           '   *   Slow-drifting cyan glow behind the main page\n' +
-          '   *\n' +
-          '   *   One soft cyan radial blob, composited on its own GPU layer,\n' +
-          '   *   animating transform + scale only (no layout, no repaint).\n' +
-          '   *   It sits above body’s own background but below all content,\n' +
-          '   *   so it glows through the gutters around the sidebar and cards.\n' +
           '   * ═══════════════════════════════════════════════════════════════ */\n' +
-          '\n' +
           '  body {\n' +
-          '    /* Make body a stacking context so body::before sits cleanly\n' +
-          '       between body’s own background and the app content. */\n' +
           '    position: relative;\n' +
           '    isolation: isolate;\n' +
           '  }\n' +
-          '\n' +
           '  body::before {\n' +
           '    content: "";\n' +
           '    position: fixed;\n' +
-          '    top: -15vmax;\n' +
-          '    left: -15vmax;\n' +
-          '    width: 130vmax;\n' +
-          '    height: 130vmax;\n' +
+          '    top: -15vmax; left: -15vmax;\n' +
+          '    width: 130vmax; height: 130vmax;\n' +
           '    pointer-events: none;\n' +
           '    z-index: -1;\n' +
           '    background: radial-gradient(\n' +
@@ -404,7 +532,6 @@ jobs:
           '    will-change: transform;\n' +
           '    transform: translate3d(0, 0, 0);\n' +
           '  }\n' +
-          '\n' +
           '  html[data-theme="light"] body::before {\n' +
           '    background: radial-gradient(\n' +
           '      circle at center,\n' +
@@ -414,14 +541,11 @@ jobs:
           '      transparent 62%\n' +
           '    );\n' +
           '  }\n' +
-          '\n' +
           '  @keyframes cyan-drift {\n' +
           '    0%, 100% { transform: translate3d(-10%,  -6%, 0) scale(1.00); }\n' +
           '    33%      { transform: translate3d( 12%,   8%, 0) scale(1.12); }\n' +
           '    66%      { transform: translate3d( -4%,  14%, 0) scale(1.06); }\n' +
           '  }\n' +
-          '\n' +
-          '  /* Respect users who ask for less motion — freeze the glow */\n' +
           '  @media (prefers-reduced-motion: reduce) {\n' +
           '    body::before {\n' +
           '      animation: none;\n' +
@@ -433,10 +557,10 @@ jobs:
           const blockRe = new RegExp(esc(MARKER) + '[\\s\\S]*?</style>');
           if (blockRe.test(html)) {
             html = html.replace(blockRe, styleBlock);
-            console.log('✓ Updated glass chrome + cyan glow');
+            console.log('✓ Updated glass UI (content + sidebar now translucent)');
           } else {
             html = html.replace('</head>', styleBlock + '\n</head>');
-            console.log('✓ Injected glass chrome + cyan glow');
+            console.log('✓ Injected glass UI');
           }
           fs.writeFileSync('index.html', html);
           EOF
@@ -444,7 +568,7 @@ jobs:
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "chore: slow-drifting cyan glow behind main page [skip ci]"
+          commit_message: "chore: .content + .sidebar now glass — real glass content-header [skip ci]"
           file_pattern: "player.js index.html"
           commit_user_name: github-actions[bot]
           commit_user_email: github-actions[bot]@users.noreply.github.com
