@@ -93,7 +93,7 @@ jobs:
           console.log('✓ Injected player theme fix');
           EOF
 
-      - name: Patch index.html — glass chrome (header, content-header, buttons, dropdown, overlay)
+      - name: Patch index.html — glass chrome + drifting cyan glow
         run: |
           node - <<'EOF'
           const fs = require('fs');
@@ -106,18 +106,16 @@ jobs:
           MARKER + '\n' +
           '<style>\n' +
           '  /*\n' +
-          '   * Glass chrome — one material system across the whole UI.\n' +
+          '   * Glass chrome + ambient cyan glow — one material system.\n' +
           '   *\n' +
           '   *   neutral glass = utility  (header bar, content-header strip,\n' +
           '   *                             utility buttons, player, dropdown menu)\n' +
           '   *   blue glass    = primary / active\n' +
           '   *                   (TTS while playing, Refresh, selected language)\n' +
           '   *\n' +
-          '   * Tokens mirror the player bundle:\n' +
-          '   *   dark  →  oklch(0% 0 0 / .3–.55) + blur(16–28px) saturate(110–130%)\n' +
-          '   *   light →  oklch(100% 0 0 / .5–.65) + blur(16–28px) saturate(110–130%)\n' +
-          '   * Larger surfaces get a denser alpha so text stays legible even\n' +
-          '   * when content moves behind them.\n' +
+          '   * Plus a single slow-drifting cyan glow behind the page content\n' +
+          '   * (see bottom of this stylesheet) so the chrome sits on a living\n' +
+          '   * background instead of a flat fill.\n' +
           '   */\n' +
           '\n' +
           '  /* ─────────── Page header bar — glass ─────────── */\n' +
@@ -176,7 +174,7 @@ jobs:
           '      0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
           '  }\n' +
           '\n' +
-          '  /* ─────────── Content-header bar (feed title strip) — glass ─────────── */\n' +
+          '  /* ─────────── Content-header bar — glass ─────────── */\n' +
           '  .content-header {\n' +
           '    background: oklch(0% 0 0 / .35) !important;\n' +
           '    border-bottom: none !important;\n' +
@@ -186,8 +184,6 @@ jobs:
           '    background: oklch(100% 0 0 / .5) !important;\n' +
           '    box-shadow: 0 1px 0 0 oklch(0% 0 0 / .05) !important;\n' +
           '  }\n' +
-          '\n' +
-          '  /* Small feed icon inside the content-header */\n' +
           '  .content-header .feed-title-large .feed-icon-large {\n' +
           '    background: oklch(0% 0 0 / .35) !important;\n' +
           '    box-shadow:\n' +
@@ -231,8 +227,6 @@ jobs:
           '      background: oklch(100% 0 0 / .6) !important;\n' +
           '    }\n' +
           '  }\n' +
-          '\n' +
-          '  /* Refresh (primary) — blue glass, matches TTS playing + dropdown active */\n' +
           '  .content-header .feed-actions button.primary {\n' +
           '    background: color-mix(in oklab, var(--primary) 28%, transparent) !important;\n' +
           '    color: var(--primary) !important;\n' +
@@ -244,7 +238,6 @@ jobs:
           '  @media (hover: hover) {\n' +
           '    .content-header .feed-actions button.primary:hover {\n' +
           '      background: color-mix(in oklab, var(--primary) 40%, transparent) !important;\n' +
-          '      color: var(--primary) !important;\n' +
           '    }\n' +
           '  }\n' +
           '\n' +
@@ -277,7 +270,7 @@ jobs:
           '    }\n' +
           '  }\n' +
           '\n' +
-          '  /* ─────────── TTS button — neutral at rest, blue only while playing ─────────── */\n' +
+          '  /* ─────────── TTS button — neutral, blue only while playing ─────────── */\n' +
           '  #fullscreenButtons .tts-btn-wrapper .tts-btn {\n' +
           '    background: oklch(0% 0 0 / .4) !important;\n' +
           '    color: oklch(100% 0 0) !important;\n' +
@@ -374,15 +367,76 @@ jobs:
           '    .fullscreen-overlay { background: oklch(0% 0 0 / .92) !important; }\n' +
           '    html[data-theme="light"] .fullscreen-overlay { background: oklch(100% 0 0 / .95) !important; }\n' +
           '  }\n' +
+          '\n' +
+          '  /* ═══════════════════════════════════════════════════════════════\n' +
+          '   *   Slow-drifting cyan glow behind the main page\n' +
+          '   *\n' +
+          '   *   One soft cyan radial blob, composited on its own GPU layer,\n' +
+          '   *   animating transform + scale only (no layout, no repaint).\n' +
+          '   *   It sits above body’s own background but below all content,\n' +
+          '   *   so it glows through the gutters around the sidebar and cards.\n' +
+          '   * ═══════════════════════════════════════════════════════════════ */\n' +
+          '\n' +
+          '  body {\n' +
+          '    /* Make body a stacking context so body::before sits cleanly\n' +
+          '       between body’s own background and the app content. */\n' +
+          '    position: relative;\n' +
+          '    isolation: isolate;\n' +
+          '  }\n' +
+          '\n' +
+          '  body::before {\n' +
+          '    content: "";\n' +
+          '    position: fixed;\n' +
+          '    top: -15vmax;\n' +
+          '    left: -15vmax;\n' +
+          '    width: 130vmax;\n' +
+          '    height: 130vmax;\n' +
+          '    pointer-events: none;\n' +
+          '    z-index: -1;\n' +
+          '    background: radial-gradient(\n' +
+          '      circle at center,\n' +
+          '      color-mix(in oklab, var(--primary) 22%, transparent) 0%,\n' +
+          '      color-mix(in oklab, var(--primary) 10%, transparent) 22%,\n' +
+          '      color-mix(in oklab, var(--primary)  4%, transparent) 42%,\n' +
+          '      transparent 62%\n' +
+          '    );\n' +
+          '    animation: cyan-drift 55s ease-in-out infinite;\n' +
+          '    will-change: transform;\n' +
+          '    transform: translate3d(0, 0, 0);\n' +
+          '  }\n' +
+          '\n' +
+          '  html[data-theme="light"] body::before {\n' +
+          '    background: radial-gradient(\n' +
+          '      circle at center,\n' +
+          '      color-mix(in oklab, var(--primary) 16%, transparent) 0%,\n' +
+          '      color-mix(in oklab, var(--primary)  7%, transparent) 22%,\n' +
+          '      color-mix(in oklab, var(--primary)  3%, transparent) 42%,\n' +
+          '      transparent 62%\n' +
+          '    );\n' +
+          '  }\n' +
+          '\n' +
+          '  @keyframes cyan-drift {\n' +
+          '    0%, 100% { transform: translate3d(-10%,  -6%, 0) scale(1.00); }\n' +
+          '    33%      { transform: translate3d( 12%,   8%, 0) scale(1.12); }\n' +
+          '    66%      { transform: translate3d( -4%,  14%, 0) scale(1.06); }\n' +
+          '  }\n' +
+          '\n' +
+          '  /* Respect users who ask for less motion — freeze the glow */\n' +
+          '  @media (prefers-reduced-motion: reduce) {\n' +
+          '    body::before {\n' +
+          '      animation: none;\n' +
+          '      transform: translate3d(-6%, -4%, 0) scale(1.05);\n' +
+          '    }\n' +
+          '  }\n' +
           '</style>';
 
           const blockRe = new RegExp(esc(MARKER) + '[\\s\\S]*?</style>');
           if (blockRe.test(html)) {
             html = html.replace(blockRe, styleBlock);
-            console.log('✓ Updated glass chrome');
+            console.log('✓ Updated glass chrome + cyan glow');
           } else {
             html = html.replace('</head>', styleBlock + '\n</head>');
-            console.log('✓ Injected glass chrome');
+            console.log('✓ Injected glass chrome + cyan glow');
           }
           fs.writeFileSync('index.html', html);
           EOF
@@ -390,7 +444,7 @@ jobs:
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "chore: glass content-header bar + glass action buttons [skip ci]"
+          commit_message: "chore: slow-drifting cyan glow behind main page [skip ci]"
           file_pattern: "player.js index.html"
           commit_user_name: github-actions[bot]
           commit_user_email: github-actions[bot]@users.noreply.github.com
