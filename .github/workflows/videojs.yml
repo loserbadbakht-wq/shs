@@ -93,7 +93,7 @@ jobs:
           console.log('✓ Injected player theme fix');
           EOF
 
-      - name: Patch index.html — full glass UI + drifting cyan glow
+      - name: Patch index.html — glass everywhere + glass content + cyan accents
         run: |
           node - <<'EOF'
           const fs = require('fs');
@@ -106,17 +106,15 @@ jobs:
           MARKER + '\n' +
           '<style>\n' +
           '  /*\n' +
-          '   * Full glass UI — one material system, everywhere.\n' +
+          '   * Glass chrome — one material system, top to bottom.\n' +
           '   *\n' +
-          '   *   neutral glass = utility  (header bar, sidebar, content card,\n' +
-          '   *                             content-header strip, utility buttons,\n' +
-          '   *                             player, dropdown menu)\n' +
-          '   *   blue glass    = primary / active\n' +
-          '   *                   (TTS while playing, Refresh, selected language)\n' +
+          '   *   neutral glass = utility / chrome\n' +
+          '   *   blue glass    = primary / active / hover-accent\n' +
           '   *\n' +
-          '   * Surfaces nest — page header, sidebar, content, entry cards, and\n' +
-          '   * the content-header strip are all translucent, so a single\n' +
-          '   * slow-drifting cyan blob (body::before) glows through every layer.\n' +
+          '   * .content is now a real backdrop-filter pane (not an opaque card),\n' +
+          '   * so its children (including .content-header) can show the page\n' +
+          '   * background through them. Cyan accents stay exactly where they\n' +
+          '   * were: card hover, fullscreen button, mark-read button.\n' +
           '   */\n' +
           '\n' +
           '  /* ─────────── Page header bar — glass ─────────── */\n' +
@@ -125,36 +123,31 @@ jobs:
           '    border-bottom: none !important;\n' +
           '    backdrop-filter: blur(16px) saturate(110%) !important;\n' +
           '    -webkit-backdrop-filter: blur(16px) saturate(110%) !important;\n' +
-          '    box-shadow:\n' +
-          '      0 1px 0 0 oklch(0% 0 0 / .1),\n' +
-          '      0 4px 20px 0 oklch(0% 0 0 / .08) !important;\n' +
+          '    box-shadow: 0 1px 0 0 oklch(0% 0 0 / .1),\n' +
+          '                0 4px 20px 0 oklch(0% 0 0 / .08) !important;\n' +
           '  }\n' +
           '  html[data-theme="light"] .header {\n' +
           '    background: oklch(100% 0 0 / .65) !important;\n' +
-          '    box-shadow:\n' +
-          '      0 1px 0 0 oklch(0% 0 0 / .05),\n' +
-          '      0 4px 20px 0 oklch(0% 0 0 / .06) !important;\n' +
+          '    box-shadow: 0 1px 0 0 oklch(0% 0 0 / .05),\n' +
+          '                0 4px 20px 0 oklch(0% 0 0 / .06) !important;\n' +
           '  }\n' +
           '\n' +
-          '  /* ─────────── Page header icon buttons — glass ─────────── */\n' +
           '  .header-actions .btn-icon {\n' +
           '    background: oklch(0% 0 0 / .4) !important;\n' +
           '    color: oklch(100% 0 0) !important;\n' +
           '    border: none !important;\n' +
           '    backdrop-filter: blur(16px) saturate(110%) !important;\n' +
           '    -webkit-backdrop-filter: blur(16px) saturate(110%) !important;\n' +
-          '    box-shadow:\n' +
-          '      0 0 0 1px oklch(0% 0 0 / .1),\n' +
-          '      0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
-          '      0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
+          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .1),\n' +
+          '                0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
+          '                0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
           '  }\n' +
           '  html[data-theme="light"] .header-actions .btn-icon {\n' +
           '    background: oklch(100% 0 0 / .5) !important;\n' +
           '    color: oklch(0% 0 0) !important;\n' +
-          '    box-shadow:\n' +
-          '      0 0 0 1px oklch(0% 0 0 / .05),\n' +
-          '      0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
-          '      0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
+          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .05),\n' +
+          '                0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
+          '                0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
           '  }\n' +
           '  @media (hover: hover) {\n' +
           '    .header-actions .btn-icon:hover {\n' +
@@ -169,81 +162,75 @@ jobs:
           '  .header-actions .btn-icon.active {\n' +
           '    background: color-mix(in oklab, var(--primary) 28%, transparent) !important;\n' +
           '    color: var(--primary) !important;\n' +
-          '    box-shadow:\n' +
-          '      0 0 0 1px color-mix(in oklab, var(--primary) 40%, transparent),\n' +
-          '      0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
-          '      0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
+          '    box-shadow: 0 0 0 1px color-mix(in oklab, var(--primary) 40%, transparent),\n' +
+          '                0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
+          '                0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
           '  }\n' +
           '\n' +
           '  /* ═══════════════════════════════════════════════════════════════\n' +
-          '   *   CONTENT CARD — glass\n' +
+          '   *   Content pane — glass (the big change)\n' +
           '   *\n' +
-          '   *   The outer `.content` shell is translucent. Every strip inside\n' +
-          '   *   (content-header, entry cards, data-notice) sits on this glass\n' +
-          '   *   and is itself slightly denser, so the entire column reads as\n' +
-          '   *   one sculpted glass surface with subtle internal layering.\n' +
+          '   *   Previously .content was var(--bg-card) (opaque). Its children,\n' +
+          '   *   including .content-header, could not show backdrop-filter.\n' +
+          '   *   Now .content itself is a backdrop-filter pane, so the cyan\n' +
+          '   *   glow (and the page behind) reads through the whole main view.\n' +
           '   * ═══════════════════════════════════════════════════════════════ */\n' +
           '  .content {\n' +
-          '    background: oklch(0% 0 0 / .42) !important;\n' +
+          '    background: oklch(0% 0 0 / .45) !important;\n' +
           '    border: none !important;\n' +
-          '    backdrop-filter: blur(24px) saturate(120%) !important;\n' +
-          '    -webkit-backdrop-filter: blur(24px) saturate(120%) !important;\n' +
-          '    box-shadow:\n' +
-          '      0 0 0 1px oklch(0% 0 0 / .08),\n' +
-          '      0 8px 32px 0 oklch(0% 0 0 / .35),\n' +
-          '      inset 0 1px 0 0 oklch(100% 0 0 / .04) !important;\n' +
+          '    backdrop-filter: blur(20px) saturate(120%) !important;\n' +
+          '    -webkit-backdrop-filter: blur(20px) saturate(120%) !important;\n' +
+          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .1),\n' +
+          '                0 8px 32px 0 oklch(0% 0 0 / .2) !important;\n' +
           '  }\n' +
           '  html[data-theme="light"] .content {\n' +
           '    background: oklch(100% 0 0 / .55) !important;\n' +
-          '    box-shadow:\n' +
-          '      0 0 0 1px oklch(0% 0 0 / .05),\n' +
-          '      0 8px 32px 0 oklch(0% 0 0 / .1),\n' +
-          '      inset 0 1px 0 0 oklch(100% 0 0 / .55) !important;\n' +
+          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .05),\n' +
+          '                0 8px 32px 0 oklch(0% 0 0 / .08) !important;\n' +
           '  }\n' +
           '\n' +
-          '  /* Content-header strip — lighter layer on the content glass */\n' +
+          '  /* ─────────── Content-header — the “pc headbar” — glass ─────────── */\n' +
+          '  /* No own backdrop-filter: parent .content already blurs; a tint is\n' +
+          '     enough to make it read as a slightly denser strip at the top. */\n' +
           '  .content-header {\n' +
-          '    background: oklch(0% 0 0 / .28) !important;\n' +
+          '    background: oklch(0% 0 0 / .55) !important;\n' +
           '    border-bottom: none !important;\n' +
-          '    box-shadow: 0 1px 0 0 oklch(0% 0 0 / .08) !important;\n' +
+          '    box-shadow: 0 1px 0 0 oklch(0% 0 0 / .1) !important;\n' +
           '  }\n' +
           '  html[data-theme="light"] .content-header {\n' +
-          '    background: oklch(100% 0 0 / .4) !important;\n' +
+          '    background: oklch(100% 0 0 / .65) !important;\n' +
           '    box-shadow: 0 1px 0 0 oklch(0% 0 0 / .05) !important;\n' +
           '  }\n' +
+          '\n' +
           '  .content-header .feed-title-large .feed-icon-large {\n' +
           '    background: oklch(0% 0 0 / .35) !important;\n' +
-          '    box-shadow:\n' +
-          '      0 0 0 1px oklch(0% 0 0 / .1),\n' +
-          '      0 1px 2px 0 oklch(0% 0 0 / .12) !important;\n' +
+          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .1),\n' +
+          '                0 1px 2px 0 oklch(0% 0 0 / .12) !important;\n' +
           '  }\n' +
           '  html[data-theme="light"] .content-header .feed-title-large .feed-icon-large {\n' +
           '    background: oklch(100% 0 0 / .45) !important;\n' +
-          '    box-shadow:\n' +
-          '      0 0 0 1px oklch(0% 0 0 / .05),\n' +
-          '      0 1px 2px 0 oklch(0% 0 0 / .08) !important;\n' +
+          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .05),\n' +
+          '                0 1px 2px 0 oklch(0% 0 0 / .08) !important;\n' +
           '  }\n' +
           '\n' +
-          '  /* Content-header action buttons (Mark all read / Refresh) — glass */\n' +
+          '  /* ─────────── Content-header action buttons — glass ─────────── */\n' +
           '  .content-header .feed-actions button {\n' +
           '    background: oklch(0% 0 0 / .4) !important;\n' +
           '    color: oklch(100% 0 0) !important;\n' +
           '    border: none !important;\n' +
           '    backdrop-filter: blur(12px) saturate(110%) !important;\n' +
           '    -webkit-backdrop-filter: blur(12px) saturate(110%) !important;\n' +
-          '    box-shadow:\n' +
-          '      0 0 0 1px oklch(0% 0 0 / .1),\n' +
-          '      0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
-          '      0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
+          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .1),\n' +
+          '                0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
+          '                0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
           '    text-shadow: 0 1px 0 oklch(0% 0 0 / .15);\n' +
           '  }\n' +
           '  html[data-theme="light"] .content-header .feed-actions button {\n' +
           '    background: oklch(100% 0 0 / .5) !important;\n' +
           '    color: oklch(0% 0 0) !important;\n' +
-          '    box-shadow:\n' +
-          '      0 0 0 1px oklch(0% 0 0 / .05),\n' +
-          '      0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
-          '      0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
+          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .05),\n' +
+          '                0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
+          '                0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
           '    text-shadow: 0 1px 0 oklch(100% 0 0 / .4);\n' +
           '  }\n' +
           '  @media (hover: hover) {\n' +
@@ -254,13 +241,14 @@ jobs:
           '      background: oklch(100% 0 0 / .6) !important;\n' +
           '    }\n' +
           '  }\n' +
+          '\n' +
+          '  /* Refresh (primary) — stays cyan, now as cyan glass */\n' +
           '  .content-header .feed-actions button.primary {\n' +
           '    background: color-mix(in oklab, var(--primary) 28%, transparent) !important;\n' +
           '    color: var(--primary) !important;\n' +
-          '    box-shadow:\n' +
-          '      0 0 0 1px color-mix(in oklab, var(--primary) 40%, transparent),\n' +
-          '      0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
-          '      0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
+          '    box-shadow: 0 0 0 1px color-mix(in oklab, var(--primary) 40%, transparent),\n' +
+          '                0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
+          '                0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
           '  }\n' +
           '  @media (hover: hover) {\n' +
           '    .content-header .feed-actions button.primary:hover {\n' +
@@ -268,116 +256,71 @@ jobs:
           '    }\n' +
           '  }\n' +
           '\n' +
-          '  /* Entry cards — glass on glass */\n' +
+          '  /* ═══════════════════════════════════════════════════════════════\n' +
+          '   *   Entry cards — glass layers on the glass content pane\n' +
+          '   *\n' +
+          '   *   Translucent tint only — NO own backdrop-filter. The parent\n' +
+          '   *   .content already blurs the page; cards just add a tint so\n' +
+          '   *   they read as distinct elevated layers without double-blur.\n' +
+          '   * ═══════════════════════════════════════════════════════════════ */\n' +
           '  .entry-card {\n' +
-          '    background: oklch(0% 0 0 / .22) !important;\n' +
-          '    border: none !important;\n' +
-          '    box-shadow:\n' +
-          '      0 0 0 1px oklch(0% 0 0 / .08),\n' +
-          '      0 1px 3px 0 oklch(0% 0 0 / .1) !important;\n' +
-          '  }\n' +
-          '  html[data-theme="light"] .entry-card {\n' +
-          '    background: oklch(100% 0 0 / .45) !important;\n' +
-          '    box-shadow:\n' +
-          '      0 0 0 1px oklch(0% 0 0 / .05),\n' +
-          '      0 1px 3px 0 oklch(0% 0 0 / .08) !important;\n' +
-          '  }\n' +
-          '  @media (hover: hover) {\n' +
-          '    .entry-card:hover {\n' +
-          '      background: oklch(0% 0 0 / .3) !important;\n' +
-          '      box-shadow:\n' +
-          '        0 0 0 1px var(--primary),\n' +
-          '        0 4px 20px 0 color-mix(in oklab, var(--primary) 12%, transparent) !important;\n' +
-          '    }\n' +
-          '    html[data-theme="light"] .entry-card:hover {\n' +
-          '      background: oklch(100% 0 0 / .55) !important;\n' +
-          '    }\n' +
-          '  }\n' +
-          '  .entry-card .entry-image {\n' +
-          '    background: oklch(0% 0 0 / .2) !important;\n' +
-          '  }\n' +
-          '  html[data-theme="light"] .entry-card .entry-image {\n' +
-          '    background: oklch(100% 0 0 / .3) !important;\n' +
-          '  }\n' +
-          '  .entry-card .entry-actions button {\n' +
-          '    background: oklch(0% 0 0 / .3) !important;\n' +
+          '    background: oklch(0% 0 0 / .4) !important;\n' +
           '    border: none !important;\n' +
           '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .1) !important;\n' +
-          '    color: oklch(100% 0 0 / .8) !important;\n' +
           '  }\n' +
-          '  html[data-theme="light"] .entry-card .entry-actions button {\n' +
-          '    background: oklch(100% 0 0 / .5) !important;\n' +
+          '  html[data-theme="light"] .entry-card {\n' +
+          '    background: oklch(100% 0 0 / .55) !important;\n' +
           '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .05) !important;\n' +
-          '    color: oklch(0% 0 0 / .8) !important;\n' +
           '  }\n' +
           '\n' +
-          '  /* data-notice footer strip — glass */\n' +
-          '  .data-notice {\n' +
-          '    background: oklch(0% 0 0 / .28) !important;\n' +
-          '    border-top: none !important;\n' +
-          '    box-shadow: 0 -1px 0 0 oklch(0% 0 0 / .08) !important;\n' +
+          '  /* CYAN card hover — kept exactly cyan, now as cyan ring + glow */\n' +
+          '  .entry-card:hover {\n' +
+          '    box-shadow: 0 0 0 1px var(--primary),\n' +
+          '                0 4px 20px color-mix(in oklab, var(--primary) 22%, transparent) !important;\n' +
           '  }\n' +
-          '  html[data-theme="light"] .data-notice {\n' +
-          '    background: oklch(100% 0 0 / .4) !important;\n' +
-          '    box-shadow: 0 -1px 0 0 oklch(0% 0 0 / .05) !important;\n' +
+          '\n' +
+          '  /* Dimmed cards keep reading as glass, just softer */\n' +
+          '  .entry-card.read {\n' +
+          '    opacity: .55 !important;\n' +
           '  }\n' +
           '\n' +
           '  /* ═══════════════════════════════════════════════════════════════\n' +
-          '   *   SIDEBAR — glass (matched so both columns speak one language)\n' +
+          '   *   CYAN buttons inside cards — fullscreen + mark-read\n' +
+          '   *   Kept cyan; given a light cyan glassy fill so they still pop\n' +
+          '   *   against the translucent card.\n' +
           '   * ═══════════════════════════════════════════════════════════════ */\n' +
-          '  .sidebar {\n' +
-          '    background: oklch(0% 0 0 / .42) !important;\n' +
-          '    border: none !important;\n' +
-          '    backdrop-filter: blur(24px) saturate(120%) !important;\n' +
-          '    -webkit-backdrop-filter: blur(24px) saturate(120%) !important;\n' +
-          '    box-shadow:\n' +
-          '      0 0 0 1px oklch(0% 0 0 / .08),\n' +
-          '      0 8px 32px 0 oklch(0% 0 0 / .35),\n' +
-          '      inset 0 1px 0 0 oklch(100% 0 0 / .04) !important;\n' +
+          '  .entry-card .entry-actions button.fullscreen-btn,\n' +
+          '  .entry-card .entry-actions button.mark-read {\n' +
+          '    color: var(--primary) !important;\n' +
+          '    border: 1px solid var(--primary) !important;\n' +
+          '    background: color-mix(in oklab, var(--primary) 10%, transparent) !important;\n' +
+          '    box-shadow: none !important;\n' +
           '  }\n' +
-          '  html[data-theme="light"] .sidebar {\n' +
-          '    background: oklch(100% 0 0 / .55) !important;\n' +
-          '    box-shadow:\n' +
-          '      0 0 0 1px oklch(0% 0 0 / .05),\n' +
-          '      0 8px 32px 0 oklch(0% 0 0 / .1),\n' +
-          '      inset 0 1px 0 0 oklch(100% 0 0 / .55) !important;\n' +
+          '  @media (hover: hover) {\n' +
+          '    .entry-card .entry-actions button.fullscreen-btn:hover,\n' +
+          '    .entry-card .entry-actions button.mark-read:hover {\n' +
+          '      background: color-mix(in oklab, var(--primary) 22%, transparent) !important;\n' +
+          '    }\n' +
           '  }\n' +
-          '  .sidebar-header, .sidebar-add {\n' +
-          '    border-bottom: none !important;\n' +
-          '    box-shadow: 0 1px 0 0 oklch(0% 0 0 / .08) !important;\n' +
-          '  }\n' +
-          '  html[data-theme="light"] .sidebar-header,\n' +
-          '  html[data-theme="light"] .sidebar-add {\n' +
-          '    box-shadow: 0 1px 0 0 oklch(0% 0 0 / .05) !important;\n' +
-          '  }\n' +
-          '  .sidebar-header .badge,\n' +
-          '  .feed-item .feed-icon,\n' +
-          '  .feed-item .feed-count {\n' +
-          '    background: oklch(0% 0 0 / .3) !important;\n' +
-          '  }\n' +
-          '  html[data-theme="light"] .sidebar-header .badge,\n' +
-          '  html[data-theme="light"] .feed-item .feed-icon,\n' +
-          '  html[data-theme="light"] .feed-item .feed-count {\n' +
-          '    background: oklch(100% 0 0 / .4) !important;\n' +
-          '  }\n' +
-          '  .sidebar-add .add-form input {\n' +
-          '    background: oklch(0% 0 0 / .3) !important;\n' +
+          '\n' +
+          '  /* Non-accent card action button (keeps neutral glass) */\n' +
+          '  .entry-card .entry-actions button:not(.fullscreen-btn):not(.mark-read) {\n' +
+          '    background: oklch(0% 0 0 / .35) !important;\n' +
+          '    color: oklch(100% 0 0) !important;\n' +
           '    border: none !important;\n' +
           '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .1) !important;\n' +
           '  }\n' +
-          '  html[data-theme="light"] .sidebar-add .add-form input {\n' +
+          '  html[data-theme="light"] .entry-card .entry-actions button:not(.fullscreen-btn):not(.mark-read) {\n' +
           '    background: oklch(100% 0 0 / .5) !important;\n' +
+          '    color: oklch(0% 0 0) !important;\n' +
           '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .05) !important;\n' +
           '  }\n' +
-          '  .feed-item:hover {\n' +
-          '    background: oklch(0% 0 0 / .2) !important;\n' +
-          '  }\n' +
-          '  html[data-theme="light"] .feed-item:hover {\n' +
-          '    background: oklch(100% 0 0 / .35) !important;\n' +
-          '  }\n' +
-          '  .feed-item.active {\n' +
-          '    background: color-mix(in oklab, var(--primary) 15%, transparent) !important;\n' +
-          '    border-left: 3px solid var(--primary) !important;\n' +
+          '\n' +
+          '  /* Data notice at the bottom of the content pane — cyan-tinted glass */\n' +
+          '  .data-notice {\n' +
+          '    background: color-mix(in oklab, var(--primary) 8%, transparent) !important;\n' +
+          '    color: var(--primary) !important;\n' +
+          '    border-top: 1px solid color-mix(in oklab, var(--primary) 18%, transparent) !important;\n' +
           '  }\n' +
           '\n' +
           '  /* ─────────── Translate button — neutral glass ─────────── */\n' +
@@ -409,7 +352,7 @@ jobs:
           '    }\n' +
           '  }\n' +
           '\n' +
-          '  /* ─────────── TTS button — neutral, blue only while playing ─────────── */\n' +
+          '  /* ─────────── TTS button — neutral at rest, blue only while playing ─────────── */\n' +
           '  #fullscreenButtons .tts-btn-wrapper .tts-btn {\n' +
           '    background: oklch(0% 0 0 / .4) !important;\n' +
           '    color: oklch(100% 0 0) !important;\n' +
@@ -517,8 +460,10 @@ jobs:
           '  body::before {\n' +
           '    content: "";\n' +
           '    position: fixed;\n' +
-          '    top: -15vmax; left: -15vmax;\n' +
-          '    width: 130vmax; height: 130vmax;\n' +
+          '    top: -15vmax;\n' +
+          '    left: -15vmax;\n' +
+          '    width: 130vmax;\n' +
+          '    height: 130vmax;\n' +
           '    pointer-events: none;\n' +
           '    z-index: -1;\n' +
           '    background: radial-gradient(\n' +
@@ -557,10 +502,10 @@ jobs:
           const blockRe = new RegExp(esc(MARKER) + '[\\s\\S]*?</style>');
           if (blockRe.test(html)) {
             html = html.replace(blockRe, styleBlock);
-            console.log('✓ Updated glass UI (content + sidebar now translucent)');
+            console.log('✓ Updated glass chrome + glass content');
           } else {
             html = html.replace('</head>', styleBlock + '\n</head>');
-            console.log('✓ Injected glass UI');
+            console.log('✓ Injected glass chrome + glass content');
           }
           fs.writeFileSync('index.html', html);
           EOF
@@ -568,7 +513,7 @@ jobs:
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "chore: .content + .sidebar now glass — real glass content-header [skip ci]"
+          commit_message: "chore: glass content pane + glass cards + cyan accents preserved [skip ci]"
           file_pattern: "player.js index.html"
           commit_user_name: github-actions[bot]
           commit_user_email: github-actions[bot]@users.noreply.github.com
