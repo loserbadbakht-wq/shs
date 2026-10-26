@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   build:
-    if: github.actor != 'github-actions[bot]'
+    if: github.actor != 'github-actions[bot]'   # loop guard
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -36,18 +36,36 @@ jobs:
           import '@videojs/html/audio/player';
           import '@videojs/html/audio/skin';
           EOF
-          npx esbuild entry.js --bundle --format=esm --minify --outfile=player.js
+          npx esbuild entry.js \
+            --bundle \
+            --format=esm \
+            --minify \
+            --outfile=player.js
 
       - name: Patch player.js — flip every side="top" to side="bottom"
         run: |
           node - <<'EOF'
           const fs = require('fs');
-          let p = fs.readFileSync('player.js', 'utf8');
-          const n = (p.match(/side="top"/g) || []).length;
-          if (!n) { console.log('✓ Nothing to patch'); process.exit(0); }
-          p = p.replace(/side="top"/g, 'side="bottom"');
-          fs.writeFileSync('player.js', p);
-          console.log(`✓ Replaced ${n} side="top" → side="bottom"`);
+          let player = fs.readFileSync('player.js', 'utf8');
+
+          const topMatches = player.match(/side="top"/g) || [];
+          console.log(`side="top" occurrences: ${topMatches.length}`);
+
+          if (topMatches.length === 0) {
+            console.log('✓ Nothing to patch — no side="top" in bundle');
+            process.exit(0);
+          }
+
+          const count = topMatches.length;
+          player = player.replace(/side="top"/g, 'side="bottom"');
+          fs.writeFileSync('player.js', player);
+
+          const remaining = (player.match(/side="top"/g) || []).length;
+          if (remaining !== 0) {
+            console.error(`✗ Post-replace check failed: ${remaining} side="top" still present`);
+            process.exit(1);
+          }
+          console.log(`✓ Replaced ${count} side="top" → side="bottom"`);
           EOF
 
       - name: Inline player.js into index.html
@@ -55,469 +73,76 @@ jobs:
           node - <<'EOF'
           const fs = require('fs');
           const player = fs.readFileSync('player.js', 'utf8');
-          const html = fs.readFileSync('index.html', 'utf8');
+          const html   = fs.readFileSync('index.html', 'utf8');
+
           const safe = player.replace(/<\/script/gi, '<\\/script');
+
           const START = '<!-- @videojs-inline:start -->';
           const END   = '<!-- @videojs-inline:end -->';
           const block = `${START}\n<script type="module">\n${safe}\n</script>\n${END}`;
+
           const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
           const markerRe = new RegExp(esc(START) + '[\\s\\S]*?' + esc(END));
+
           let out;
           if (markerRe.test(html)) {
             out = html.replace(markerRe, block);
           } else {
             const cdnRe = /<script\s+type="module"\s+src="https:\/\/cdn\.jsdelivr\.net\/npm\/@videojs\/cdn[^"]*"[^>]*>\s*<\/script>/;
-            if (!cdnRe.test(html)) { console.error('✗ No CDN <script> and no markers'); process.exit(1); }
+            if (!cdnRe.test(html)) {
+              console.error('✗ No Video.js CDN <script> and no inline markers in index.html');
+              process.exit(1);
+            }
             out = html.replace(cdnRe, block);
           }
+
           if (out === html) console.log('✓ index.html already up to date');
-          else { fs.writeFileSync('index.html', out); console.log('✓ Inlined player.js'); }
+          else { fs.writeFileSync('index.html', out); console.log('✓ Inlined player.js into index.html'); }
           EOF
 
-      - name: Patch index.html — player theme fix
-        run: |
-          node - <<'EOF'
-          const fs = require('fs');
-          let html = fs.readFileSync('index.html', 'utf8');
-          const MARKER = '<!-- @player-theme-fix -->';
-          if (html.includes(MARKER)) { console.log('✓ Already present'); process.exit(0); }
-          const styleBlock =
-          MARKER + '\n<style>\n' +
-          '  html[data-theme="dark"]  audio-player,\n' +
-          '  html[data-theme="dark"]  video-player { color-scheme: dark  !important; }\n' +
-          '  html[data-theme="light"] audio-player,\n' +
-          '  html[data-theme="light"] video-player { color-scheme: light !important; }\n' +
-          '</style>';
-          html = html.replace('</head>', styleBlock + '\n</head>');
-          fs.writeFileSync('index.html', html);
-          console.log('✓ Injected player theme fix');
-          EOF
-
-      - name: Patch index.html — glass chrome + sticky glass content-header + cyan accents
+      - name: Patch index.html — player follows page theme toggle
         run: |
           node - <<'EOF'
           const fs = require('fs');
           let html = fs.readFileSync('index.html', 'utf8');
 
-          const MARKER = '<!-- @player-buttons-glass -->';
-          const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const MARKER = '<!-- @videojs-theme-fix -->';
+          if (html.includes(MARKER)) {
+            console.log('✓ Player theme-fix already present — skipping');
+            process.exit(0);
+          }
+
+          if (!html.includes('</head>')) {
+            console.error('✗ Could not find </head> in index.html');
+            process.exit(1);
+          }
 
           const styleBlock =
           MARKER + '\n' +
           '<style>\n' +
           '  /*\n' +
-          '   * Glass chrome — one material system, top to bottom.\n' +
+          '   * Video.js players follow the page theme toggle.\n' +
           '   *\n' +
-          '   *   neutral glass = utility / chrome\n' +
-          '   *   blue glass    = primary / active / hover-accent\n' +
-          '   *\n' +
-          '   * .content is a backdrop-filter pane, so its children can show the\n' +
-          '   * page background through them. On desktop the .content-header is\n' +
-          '   * sticky with its own backdrop-filter, so entry cards scroll UNDER\n' +
-          '   * it and blur through — a real glass bar, not a tinted strip.\n' +
+          '   * The player uses `all: initial`, which resets color-scheme to\n' +
+          '   * `normal` (light). That breaks inheritance of the page theme, so\n' +
+          '   * the `light-dark()` values inside the skin never react to the\n' +
+          '   * toggle. Forcing color-scheme to match data-theme fixes it.\n' +
           '   */\n' +
-          '\n' +
-          '  /* ─────────── Page header bar — glass ─────────── */\n' +
-          '  .header {\n' +
-          '    background: oklch(0% 0 0 / .5) !important;\n' +
-          '    border-bottom: none !important;\n' +
-          '    backdrop-filter: blur(16px) saturate(110%) !important;\n' +
-          '    -webkit-backdrop-filter: blur(16px) saturate(110%) !important;\n' +
-          '    box-shadow: 0 1px 0 0 oklch(0% 0 0 / .1),\n' +
-          '                0 4px 20px 0 oklch(0% 0 0 / .08) !important;\n' +
-          '  }\n' +
-          '  html[data-theme="light"] .header {\n' +
-          '    background: oklch(100% 0 0 / .65) !important;\n' +
-          '    box-shadow: 0 1px 0 0 oklch(0% 0 0 / .05),\n' +
-          '                0 4px 20px 0 oklch(0% 0 0 / .06) !important;\n' +
-          '  }\n' +
-          '\n' +
-          '  .header-actions .btn-icon {\n' +
-          '    background: oklch(0% 0 0 / .4) !important;\n' +
-          '    color: oklch(100% 0 0) !important;\n' +
-          '    border: none !important;\n' +
-          '    backdrop-filter: blur(16px) saturate(110%) !important;\n' +
-          '    -webkit-backdrop-filter: blur(16px) saturate(110%) !important;\n' +
-          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .1),\n' +
-          '                0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
-          '                0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
-          '  }\n' +
-          '  html[data-theme="light"] .header-actions .btn-icon {\n' +
-          '    background: oklch(100% 0 0 / .5) !important;\n' +
-          '    color: oklch(0% 0 0) !important;\n' +
-          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .05),\n' +
-          '                0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
-          '                0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
-          '  }\n' +
-          '  @media (hover: hover) {\n' +
-          '    .header-actions .btn-icon:hover {\n' +
-          '      background: oklch(0% 0 0 / .5) !important;\n' +
-          '      color: oklch(100% 0 0) !important;\n' +
-          '    }\n' +
-          '    html[data-theme="light"] .header-actions .btn-icon:hover {\n' +
-          '      background: oklch(100% 0 0 / .6) !important;\n' +
-          '      color: oklch(0% 0 0) !important;\n' +
-          '    }\n' +
-          '  }\n' +
-          '  .header-actions .btn-icon.active {\n' +
-          '    background: color-mix(in oklab, var(--primary) 28%, transparent) !important;\n' +
-          '    color: var(--primary) !important;\n' +
-          '    box-shadow: 0 0 0 1px color-mix(in oklab, var(--primary) 40%, transparent),\n' +
-          '                0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
-          '                0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
-          '  }\n' +
-          '\n' +
-          '  /* ─────────── Content pane — glass ─────────── */\n' +
-          '  .content {\n' +
-          '    background: oklch(0% 0 0 / .45) !important;\n' +
-          '    border: none !important;\n' +
-          '    backdrop-filter: blur(20px) saturate(120%) !important;\n' +
-          '    -webkit-backdrop-filter: blur(20px) saturate(120%) !important;\n' +
-          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .1),\n' +
-          '                0 8px 32px 0 oklch(0% 0 0 / .2) !important;\n' +
-          '  }\n' +
-          '  html[data-theme="light"] .content {\n' +
-          '    background: oklch(100% 0 0 / .55) !important;\n' +
-          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .05),\n' +
-          '                0 8px 32px 0 oklch(0% 0 0 / .08) !important;\n' +
-          '  }\n' +
-          '\n' +
-          '  /* ─────────── Content-header — glass ─────────── */\n' +
-          '  .content-header {\n' +
-          '    background: oklch(0% 0 0 / .55) !important;\n' +
-          '    border-bottom: none !important;\n' +
-          '    box-shadow: 0 1px 0 0 oklch(0% 0 0 / .1) !important;\n' +
-          '  }\n' +
-          '  html[data-theme="light"] .content-header {\n' +
-          '    background: oklch(100% 0 0 / .65) !important;\n' +
-          '    box-shadow: 0 1px 0 0 oklch(0% 0 0 / .05) !important;\n' +
-          '  }\n' +
-          '\n' +
-          '  .content-header .feed-title-large .feed-icon-large {\n' +
-          '    background: oklch(0% 0 0 / .35) !important;\n' +
-          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .1),\n' +
-          '                0 1px 2px 0 oklch(0% 0 0 / .12) !important;\n' +
-          '  }\n' +
-          '  html[data-theme="light"] .content-header .feed-title-large .feed-icon-large {\n' +
-          '    background: oklch(100% 0 0 / .45) !important;\n' +
-          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .05),\n' +
-          '                0 1px 2px 0 oklch(0% 0 0 / .08) !important;\n' +
-          '  }\n' +
-          '\n' +
-          '  /* ─────────── Content-header action buttons — glass ─────────── */\n' +
-          '  .content-header .feed-actions button {\n' +
-          '    background: oklch(0% 0 0 / .4) !important;\n' +
-          '    color: oklch(100% 0 0) !important;\n' +
-          '    border: none !important;\n' +
-          '    backdrop-filter: blur(12px) saturate(110%) !important;\n' +
-          '    -webkit-backdrop-filter: blur(12px) saturate(110%) !important;\n' +
-          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .1),\n' +
-          '                0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
-          '                0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
-          '    text-shadow: 0 1px 0 oklch(0% 0 0 / .15);\n' +
-          '  }\n' +
-          '  html[data-theme="light"] .content-header .feed-actions button {\n' +
-          '    background: oklch(100% 0 0 / .5) !important;\n' +
-          '    color: oklch(0% 0 0) !important;\n' +
-          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .05),\n' +
-          '                0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
-          '                0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
-          '    text-shadow: 0 1px 0 oklch(100% 0 0 / .4);\n' +
-          '  }\n' +
-          '  @media (hover: hover) {\n' +
-          '    .content-header .feed-actions button:hover {\n' +
-          '      background: oklch(0% 0 0 / .5) !important;\n' +
-          '    }\n' +
-          '    html[data-theme="light"] .content-header .feed-actions button:hover {\n' +
-          '      background: oklch(100% 0 0 / .6) !important;\n' +
-          '    }\n' +
-          '  }\n' +
-          '  .content-header .feed-actions button.primary {\n' +
-          '    background: color-mix(in oklab, var(--primary) 28%, transparent) !important;\n' +
-          '    color: var(--primary) !important;\n' +
-          '    box-shadow: 0 0 0 1px color-mix(in oklab, var(--primary) 40%, transparent),\n' +
-          '                0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
-          '                0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
-          '  }\n' +
-          '  @media (hover: hover) {\n' +
-          '    .content-header .feed-actions button.primary:hover {\n' +
-          '      background: color-mix(in oklab, var(--primary) 40%, transparent) !important;\n' +
-          '    }\n' +
-          '  }\n' +
-          '\n' +
-          '  /* ═══════════════════════════════════════════════════════════════\n' +
-          '   *   DESKTOP-ONLY: make .content-header a real sticky glass bar\n' +
-          '   *\n' +
-          '   *   Move the scroll from .content-items up to .content so items\n' +
-          '   *   scroll UNDER the header. Make header sticky + give it its own\n' +
-          '   *   backdrop-filter so items blur through it as they pass.\n' +
-          '   *\n' +
-          '   *   Mobile keeps the original stacked layout (page-level scroll,\n' +
-          '   *   no overlap, no double blur). The breakpoint matches the app’s\n' +
-          '   *   existing mobile switch at 900px.\n' +
-          '   * ═══════════════════════════════════════════════════════════════ */\n' +
-          '  @media (min-width: 901px) {\n' +
-          '    .content {\n' +
-          '      overflow-y: auto !important;\n' +
-          '      overflow-x: hidden !important;\n' +
-          '    }\n' +
-          '    .content-header {\n' +
-          '      position: sticky !important;\n' +
-          '      top: 0 !important;\n' +
-          '      z-index: 10 !important;\n' +
-          '      backdrop-filter: blur(20px) saturate(120%) !important;\n' +
-          '      -webkit-backdrop-filter: blur(20px) saturate(120%) !important;\n' +
-          '    }\n' +
-          '    .content-items {\n' +
-          '      flex: initial !important;\n' +
-          '      overflow: visible !important;\n' +
-          '    }\n' +
-          '  }\n' +
-          '\n' +
-          '  /* ═══════════════════════════════════════════════════════════════\n' +
-          '   *   Entry cards — glass layers on the glass content pane\n' +
-          '   * ═══════════════════════════════════════════════════════════════ */\n' +
-          '  .entry-card {\n' +
-          '    background: oklch(0% 0 0 / .4) !important;\n' +
-          '    border: none !important;\n' +
-          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .1) !important;\n' +
-          '  }\n' +
-          '  html[data-theme="light"] .entry-card {\n' +
-          '    background: oklch(100% 0 0 / .55) !important;\n' +
-          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .05) !important;\n' +
-          '  }\n' +
-          '  .entry-card:hover {\n' +
-          '    box-shadow: 0 0 0 1px var(--primary),\n' +
-          '                0 4px 20px color-mix(in oklab, var(--primary) 22%, transparent) !important;\n' +
-          '  }\n' +
-          '  .entry-card.read {\n' +
-          '    opacity: .55 !important;\n' +
-          '  }\n' +
-          '\n' +
-          '  /* CYAN buttons inside cards — fullscreen + mark-read */\n' +
-          '  .entry-card .entry-actions button.fullscreen-btn,\n' +
-          '  .entry-card .entry-actions button.mark-read {\n' +
-          '    color: var(--primary) !important;\n' +
-          '    border: 1px solid var(--primary) !important;\n' +
-          '    background: color-mix(in oklab, var(--primary) 10%, transparent) !important;\n' +
-          '    box-shadow: none !important;\n' +
-          '  }\n' +
-          '  @media (hover: hover) {\n' +
-          '    .entry-card .entry-actions button.fullscreen-btn:hover,\n' +
-          '    .entry-card .entry-actions button.mark-read:hover {\n' +
-          '      background: color-mix(in oklab, var(--primary) 22%, transparent) !important;\n' +
-          '    }\n' +
-          '  }\n' +
-          '  .entry-card .entry-actions button:not(.fullscreen-btn):not(.mark-read) {\n' +
-          '    background: oklch(0% 0 0 / .35) !important;\n' +
-          '    color: oklch(100% 0 0) !important;\n' +
-          '    border: none !important;\n' +
-          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .1) !important;\n' +
-          '  }\n' +
-          '  html[data-theme="light"] .entry-card .entry-actions button:not(.fullscreen-btn):not(.mark-read) {\n' +
-          '    background: oklch(100% 0 0 / .5) !important;\n' +
-          '    color: oklch(0% 0 0) !important;\n' +
-          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .05) !important;\n' +
-          '  }\n' +
-          '\n' +
-          '  /* Data notice — cyan-tinted glass */\n' +
-          '  .data-notice {\n' +
-          '    background: color-mix(in oklab, var(--primary) 8%, transparent) !important;\n' +
-          '    color: var(--primary) !important;\n' +
-          '    border-top: 1px solid color-mix(in oklab, var(--primary) 18%, transparent) !important;\n' +
-          '  }\n' +
-          '\n' +
-          '  /* ─────────── Translate button — neutral glass ─────────── */\n' +
-          '  #fullscreenButtons .translate-btn-wrapper .translate-btn {\n' +
-          '    background: oklch(0% 0 0 / .4) !important;\n' +
-          '    color: oklch(100% 0 0) !important;\n' +
-          '    border: none !important;\n' +
-          '    backdrop-filter: blur(16px) saturate(110%) !important;\n' +
-          '    -webkit-backdrop-filter: blur(16px) saturate(110%) !important;\n' +
-          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .1),\n' +
-          '                0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
-          '                0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
-          '    text-shadow: 0 1px 0 oklch(0% 0 0 / .15);\n' +
-          '  }\n' +
-          '  html[data-theme="light"] #fullscreenButtons .translate-btn-wrapper .translate-btn {\n' +
-          '    background: oklch(100% 0 0 / .5) !important;\n' +
-          '    color: oklch(0% 0 0) !important;\n' +
-          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .05),\n' +
-          '                0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
-          '                0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
-          '    text-shadow: 0 1px 0 oklch(100% 0 0 / .4);\n' +
-          '  }\n' +
-          '  @media (hover: hover) {\n' +
-          '    #fullscreenButtons .translate-btn-wrapper .translate-btn:hover {\n' +
-          '      background: oklch(0% 0 0 / .5) !important; transform: scale(1.03);\n' +
-          '    }\n' +
-          '    html[data-theme="light"] #fullscreenButtons .translate-btn-wrapper .translate-btn:hover {\n' +
-          '      background: oklch(100% 0 0 / .6) !important;\n' +
-          '    }\n' +
-          '  }\n' +
-          '\n' +
-          '  /* ─────────── TTS button — neutral, blue only while playing ─────────── */\n' +
-          '  #fullscreenButtons .tts-btn-wrapper .tts-btn {\n' +
-          '    background: oklch(0% 0 0 / .4) !important;\n' +
-          '    color: oklch(100% 0 0) !important;\n' +
-          '    border: none !important;\n' +
-          '    backdrop-filter: blur(16px) saturate(110%) !important;\n' +
-          '    -webkit-backdrop-filter: blur(16px) saturate(110%) !important;\n' +
-          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .1),\n' +
-          '                0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
-          '                0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
-          '    text-shadow: 0 1px 0 oklch(0% 0 0 / .15);\n' +
-          '  }\n' +
-          '  html[data-theme="light"] #fullscreenButtons .tts-btn-wrapper .tts-btn {\n' +
-          '    background: oklch(100% 0 0 / .5) !important;\n' +
-          '    color: oklch(0% 0 0) !important;\n' +
-          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .05),\n' +
-          '                0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
-          '                0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
-          '    text-shadow: 0 1px 0 oklch(100% 0 0 / .4);\n' +
-          '  }\n' +
-          '  @media (hover: hover) {\n' +
-          '    #fullscreenButtons .tts-btn-wrapper .tts-btn:hover {\n' +
-          '      background: oklch(0% 0 0 / .5) !important; transform: scale(1.03);\n' +
-          '    }\n' +
-          '    html[data-theme="light"] #fullscreenButtons .tts-btn-wrapper .tts-btn:hover {\n' +
-          '      background: oklch(100% 0 0 / .6) !important;\n' +
-          '    }\n' +
-          '  }\n' +
-          '  #fullscreenButtons .tts-btn-wrapper .tts-btn.playing {\n' +
-          '    background: color-mix(in oklab, var(--primary) 82%, transparent) !important;\n' +
-          '    color: oklch(100% 0 0) !important;\n' +
-          '    backdrop-filter: blur(16px) saturate(110%) !important;\n' +
-          '    -webkit-backdrop-filter: blur(16px) saturate(110%) !important;\n' +
-          '    box-shadow: 0 0 0 1px color-mix(in oklab, var(--primary) 55%, transparent),\n' +
-          '                0 1px 3px 0 oklch(0% 0 0 / .2),\n' +
-          '                0 1px 2px -1px oklch(0% 0 0 / .2) !important;\n' +
-          '    text-shadow: 0 1px 0 oklch(0% 0 0 / .25);\n' +
-          '  }\n' +
-          '  @media (hover: hover) {\n' +
-          '    #fullscreenButtons .tts-btn-wrapper .tts-btn.playing:hover {\n' +
-          '      background: color-mix(in oklab, var(--primary) 92%, transparent) !important;\n' +
-          '      transform: none;\n' +
-          '    }\n' +
-          '  }\n' +
-          '\n' +
-          '  /* ─────────── Translate dropdown — glass menu ─────────── */\n' +
-          '  #fullscreenButtons .translate-dropdown {\n' +
-          '    background: oklch(0% 0 0 / .4) !important;\n' +
-          '    border: none !important;\n' +
-          '    border-radius: var(--radius-sm) !important;\n' +
-          '    backdrop-filter: blur(16px) saturate(110%) !important;\n' +
-          '    -webkit-backdrop-filter: blur(16px) saturate(110%) !important;\n' +
-          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .1),\n' +
-          '                0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
-          '                0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
-          '    overflow: hidden !important;\n' +
-          '  }\n' +
-          '  html[data-theme="light"] #fullscreenButtons .translate-dropdown {\n' +
-          '    background: oklch(100% 0 0 / .5) !important;\n' +
-          '    box-shadow: 0 0 0 1px oklch(0% 0 0 / .05),\n' +
-          '                0 1px 3px 0 oklch(0% 0 0 / .15),\n' +
-          '                0 1px 2px -1px oklch(0% 0 0 / .15) !important;\n' +
-          '  }\n' +
-          '  #fullscreenButtons .translate-dropdown .dropdown-item {\n' +
-          '    background: transparent !important;\n' +
-          '    color: oklch(100% 0 0) !important;\n' +
-          '  }\n' +
-          '  html[data-theme="light"] #fullscreenButtons .translate-dropdown .dropdown-item {\n' +
-          '    color: oklch(0% 0 0) !important;\n' +
-          '  }\n' +
-          '  @media (hover: hover) {\n' +
-          '    #fullscreenButtons .translate-dropdown .dropdown-item:hover {\n' +
-          '      background: oklch(0% 0 0 / .15) !important;\n' +
-          '    }\n' +
-          '    html[data-theme="light"] #fullscreenButtons .translate-dropdown .dropdown-item:hover {\n' +
-          '      background: oklch(0% 0 0 / .08) !important;\n' +
-          '    }\n' +
-          '  }\n' +
-          '  #fullscreenButtons .translate-dropdown .dropdown-item.active {\n' +
-          '    background: color-mix(in oklab, var(--primary) 28%, transparent) !important;\n' +
-          '    color: var(--primary) !important;\n' +
-          '    font-weight: 600;\n' +
-          '  }\n' +
-          '\n' +
-          '  /* ─────────── Fullscreen overlay — glass background ─────────── */\n' +
-          '  .fullscreen-overlay {\n' +
-          '    background: oklch(0% 0 0 / .55) !important;\n' +
-          '    backdrop-filter: blur(28px) saturate(130%) !important;\n' +
-          '    -webkit-backdrop-filter: blur(28px) saturate(130%) !important;\n' +
-          '  }\n' +
-          '  html[data-theme="light"] .fullscreen-overlay {\n' +
-          '    background: oklch(100% 0 0 / .6) !important;\n' +
-          '  }\n' +
-          '  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {\n' +
-          '    .fullscreen-overlay { background: oklch(0% 0 0 / .92) !important; }\n' +
-          '    html[data-theme="light"] .fullscreen-overlay { background: oklch(100% 0 0 / .95) !important; }\n' +
-          '  }\n' +
-          '\n' +
-          '  /* ═══════════════════════════════════════════════════════════════\n' +
-          '   *   Slow-drifting cyan glow behind the main page\n' +
-          '   * ═══════════════════════════════════════════════════════════════ */\n' +
-          '  body {\n' +
-          '    position: relative;\n' +
-          '    isolation: isolate;\n' +
-          '  }\n' +
-          '  body::before {\n' +
-          '    content: "";\n' +
-          '    position: fixed;\n' +
-          '    top: -15vmax;\n' +
-          '    left: -15vmax;\n' +
-          '    width: 130vmax;\n' +
-          '    height: 130vmax;\n' +
-          '    pointer-events: none;\n' +
-          '    z-index: -1;\n' +
-          '    background: radial-gradient(\n' +
-          '      circle at center,\n' +
-          '      color-mix(in oklab, var(--primary) 22%, transparent) 0%,\n' +
-          '      color-mix(in oklab, var(--primary) 10%, transparent) 22%,\n' +
-          '      color-mix(in oklab, var(--primary)  4%, transparent) 42%,\n' +
-          '      transparent 62%\n' +
-          '    );\n' +
-          '    animation: cyan-drift 55s ease-in-out infinite;\n' +
-          '    will-change: transform;\n' +
-          '    transform: translate3d(0, 0, 0);\n' +
-          '  }\n' +
-          '  html[data-theme="light"] body::before {\n' +
-          '    background: radial-gradient(\n' +
-          '      circle at center,\n' +
-          '      color-mix(in oklab, var(--primary) 16%, transparent) 0%,\n' +
-          '      color-mix(in oklab, var(--primary)  7%, transparent) 22%,\n' +
-          '      color-mix(in oklab, var(--primary)  3%, transparent) 42%,\n' +
-          '      transparent 62%\n' +
-          '    );\n' +
-          '  }\n' +
-          '  @keyframes cyan-drift {\n' +
-          '    0%, 100% { transform: translate3d(-10%,  -6%, 0) scale(1.00); }\n' +
-          '    33%      { transform: translate3d( 12%,   8%, 0) scale(1.12); }\n' +
-          '    66%      { transform: translate3d( -4%,  14%, 0) scale(1.06); }\n' +
-          '  }\n' +
-          '  @media (prefers-reduced-motion: reduce) {\n' +
-          '    body::before {\n' +
-          '      animation: none;\n' +
-          '      transform: translate3d(-6%, -4%, 0) scale(1.05);\n' +
-          '    }\n' +
-          '  }\n' +
+          '  html[data-theme="dark"]  audio-player,\n' +
+          '  html[data-theme="dark"]  video-player { color-scheme: dark  !important; }\n' +
+          '  html[data-theme="light"] audio-player,\n' +
+          '  html[data-theme="light"] video-player { color-scheme: light !important; }\n' +
           '</style>';
 
-          const blockRe = new RegExp(esc(MARKER) + '[\\s\\S]*?</style>');
-          if (blockRe.test(html)) {
-            html = html.replace(blockRe, styleBlock);
-            console.log('✓ Updated glass chrome — sticky glass content-header');
-          } else {
-            html = html.replace('</head>', styleBlock + '\n</head>');
-            console.log('✓ Injected glass chrome — sticky glass content-header');
-          }
+          html = html.replace('</head>', styleBlock + '\n</head>');
           fs.writeFileSync('index.html', html);
+          console.log('✓ Injected Video.js theme-fix before </head>');
           EOF
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "chore: sticky glass content-header — items blur under it [skip ci]"
+          commit_message: "chore: rebuild videojs player.js + inline + theme fix [skip ci]"
           file_pattern: "player.js index.html"
           commit_user_name: github-actions[bot]
           commit_user_email: github-actions[bot]@users.noreply.github.com
