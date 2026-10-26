@@ -16,5 +16,11 @@
     "url_en": "https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/json/new2.json",
     "url_fa": "https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/json/translated/new2.json",
     "title": "Eurogamer News"
+  },
+  {
+    "url": "https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/json/new3.json",
+    "url_en": "https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/json/new3.json",
+    "url_fa": "https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/json/translated/new3.json",
+    "title": "Game8 News"
   }
 ]
