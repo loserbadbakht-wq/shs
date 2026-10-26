@@ -1397,6 +1397,21 @@ img,
     }
   }
 </style>
+<!-- @videojs-theme-fix -->
+<style>
+  /*
+   * Video.js players follow the page theme toggle.
+   *
+   * The player uses `all: initial`, which resets color-scheme to
+   * `normal` (light). That breaks inheritance of the page theme, so
+   * the `light-dark()` values inside the skin never react to the
+   * toggle. Forcing color-scheme to match data-theme fixes it.
+   */
+  html[data-theme="dark"]  audio-player,
+  html[data-theme="dark"]  video-player { color-scheme: dark  !important; }
+  html[data-theme="light"] audio-player,
+  html[data-theme="light"] video-player { color-scheme: light !important; }
+</style>
 </head>
 <body>
     <header class="header">
