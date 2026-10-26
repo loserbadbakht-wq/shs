@@ -9,7 +9,8 @@
     "url": "https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/json/new1.json",
     "url_en": "https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/json/new1.json",
     "url_fa": "https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/json/translated/new1.json",
-    "title": "IGN News"
+    "title": "IGN News",
+    "icon": "https://sea.ign.com/s/ign/default_event.svg"
   },
   {
     "url": "https://raw.githubusercontent.com/loserbadbakht-wq/sh/refs/heads/main/json/new2.json",
